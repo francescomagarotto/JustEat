@@ -15,9 +15,7 @@
 	\usepackage{color}
 	\usepackage{framed}
 	\usepackage{amsmath}
-
-	\usepackage{hyperref}
-}
+	\usepackage{float}
 	%\ Creazione nuova indentazione "subsubsubsection" 
 	\titleclass{\subsubsubsection}{straight}[\subsection]
 	
@@ -69,10 +67,9 @@
 	\end{abstract}
 	\end{LARGE}
 	\pagebreak
-	\selectlanguage{italian}                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         
+	\selectlanguage{italian}
 	\tableofcontents{}
 	\pagebreak
- k
 	\section{Analisi dei requisiti}
 	Si vuole realizzare una base di dati che contenga e gestisca gli ordini Just Eat\texttrademark{}, effettuati dai clienti presso i vari ristoranti localizzati nelle diverse citt\`a, con i relativi metodi di pagamento impiegati. In particolare, per quanto riguarda i clienti \`e fondamentale che questi siano registrati sul sistema per permettere loro di lasciare un \textit{feedback}, cio\`e un commento relativo alla qualità delle pietanze ricevute, ed effettuare gli ordini presso i vari ristoranti. Quest'ultimi si servono di fattorini\footnotemark{} dipendenti di Just Eat\texttrademark{} che una volta consegnato l'ordine ricevono un punteggio (per ogni ordine completato correttamente, cio\`e completato senza danneggiamenti dovuti al trasporto, l'impiegato riceve un punto in più. In caso contrario, i danneggiamenti vengono segnalati, specificandone la natura, direttamente dall'utente attraverso l'apertura di un \textit{ticket}, che porta alla perdita di un punto per il fattorino. Ogni mese il fattorino più giovane con il punteggio più alto riceve un incremento stipendiale di 0,20 \euro{} all'ora. \`E quindi necessario tener conto dei dati anagrafici del fattorino (nome, cognome, codice fiscale, recapito telefonico) e del suo \textbf{stipendio} (composto dalle ore lavorate mensilmente e dallo stipendio all'ora). I clienti sono identificati all'interno della piattaforma attraverso l'indirizzo email che dev'essere confermato, se la conferma non dovesse avvenire l'utente non può effettuare ordini. Inoltre, per i clienti si ritiene opportuno memorizzare i dati anagrafici come data di nascita, nome, cognome, indirizzo ed eventuali allergie. I ristoranti mettono a disposizione del cliente un men\`u composto da diverse \textit{pietanze} caratterizzate da un codice univoco, una descrizione, la disponibilità e il costo; la pietanza può essere vegetariana o di altre tipologie, per quanto riguarda quelle le prime si vuole sapere se queste sono ad alta digeribilità. Il cliente nel proprio ordine indica per ogni pietanza desiderata la quantità (espressa in porzioni) di cui necessita, e il metodo di pagamento preferito. Ogni ordine \`e indentificabile in tutta la piattaforma Just Eat\texttrademark{} tramite un codice univoco e contiene l'orario di ricezione dell'ordine e l'orario indicativo di consegna. Per i ristoranti è d'interesse sapere la partita iva, il nome, la locazione, il genere culinario, il titolare, un eventuale sito web e il numero di telefono.
 	\footnotetext{Si analizza un contesto internazionale dove i fattorini sono dipendenti Just Eat\texttrademark{}. In Italia invece il 90\% di questi sono dipendenti del ristorante dove lavorano}
@@ -196,8 +193,7 @@
 				\paragraph{Totalità: parziale verso Ordine / totale verso Cliente registrato} Un cliente registrato può non effettuare alcun ordine, l'ordine deve essere effettuato da un solo cliente registrato.
 			\subsubsection{Cliente registrato-Ristorante: "Feedback"}
 				L'associazione feedback conterrà un attributo \textbf{commento}, che sarà la descrizione del feedback.
-		\pagebreak
-  raph{Molteplicità N:N} Un cliente registrato può rilasciare più feedback al ristorante, il ristorante può ottenere più feedback dai suoi clienti registrati.
+				\paragraph{Molteplicità N:N} Un cliente registrato può rilasciare più feedback al ristorante, il ristorante può ottenere più feedback dai suoi clienti registrati.
 				\paragraph{Totalità: parziale verso Ristorante / parziale verso Cliente registrato} Un cliente registrato può non rilasciare alcun feedback al ristorante, il ristorante può non ottenere nessun feedback dai suoi clienti registrati. 
 			\subsubsection{Ticket-Ordine: "Relativo"}
 				\paragraph{Molteplicità 1:1} Un ticket si riferisce ad un solo ordine, un ordine può avere al massimo un ticket.
@@ -206,8 +202,7 @@
 		\begin{figure}[H]
 			\begin{center}
 				\hspace*{-1cm}%
-<<<<<<< HEAD
-graphics[scale=0.54]{er.pdf}%
+				\includegraphics[scale=0.54]{er.pdf}%
 				\hspace*{-1cm}%
 			\end{center}			
 			\caption{Modello ER rappresentativo della base di dati \label{fig:ER1}}
@@ -243,9 +238,8 @@ graphics[scale=0.54]{er.pdf}%
 			\paragraph{Pietanza}
 			L'entità Pientanza rappresenta l'insieme di pietanze che l'utente può ordinare. \newline
 			Rispetto alla precedente entit\`a aggiungiamo gli attributi:
-=======
- df6d0a84bc59fe383447733dfda2c59b2082dee9
-a: \textit{string} - tipologia del cibo (i.e. vegana, vegetariana, [...])
+			\begin{itemize}[noitemsep]
+				\item Tipologia: \textit{string} - tipologia del cibo (i.e. vegana, vegetariana, [...])
 				\item Alta digeribilit\`a: \textit{bool} - indica se la pietanza \`e ad alta digeriblit\`a oppure no
 			\end{itemize}
 		\begin{framed}
@@ -259,14 +253,7 @@ a: \textit{string} - tipologia del cibo (i.e. vegana, vegetariana, [...])
 		\end{framed}
 		\begin{itemize}[noitemsep]
 			\item[] \textbf{Cliente}(\underline{Email}, Nome, Cognome, Indirizzo, Data di nascita, Data attivazione account, Allergie\textsuperscript{*})
-			\item[] \tex 
-               	\pagebreak
-n{Descrizione testuale dello schema relazionale}
-1}) non ristrutturato possiamo fare alcune osservazioni relativamente alle entità \texttt{Utente} e \texttt{Pietanza}. In particolare, nell'analisi dei requisiti \`e specificato che un utente registrato pu\`o soffrire di una o pi\`u allergie, \`e pertanto necessario trasformare questo attributo \texttt{multivalore} \textit{Allergia} in un'entit\`a indipendente legata tramite una relazione \texttt{molti a molti}. Infatti, ogni utente pu\`o soffrire di una o pi\`u allergie e la stessa allergia potrebbe essere la medesima per pi\`u clienti. Per quanto riguarda l'entit\`a \textit{Pietanza} invece, introduciamo un attributo \texttt{Tipologia} che indica il tipo di pietanza (vegana, composta da carne, ecc), se questa pientanza apparterrà alle tipologia vegana allora sarà necessario conoscere le vitamine presenti nella pientanza. Pertanto, visto che la stessa vitamina potrebbe essere presente in più pietanze, anche l'attributo \textit{Vitamina} caratteristico della pietanza vegana diviene entità collegato alla relazione pietanza tramite una relazione \texttt{molti a molti}. 
-{itemize}
-nte registrato-Allergia: "Soffre"}
-rire di più allergie, un'allergia può essere sofferta da più clienti.
-allergia appartiene ad almeno un cliente.tbf{Ordine}(\underline{Codice}, Orario, Orario ordine, Orario Consegna, \textit{Cliente})
+			\item[] \textbf{Ordine}(\underline{Codice}, Orario, Orario ordine, Orario Consegna, \textit{Cliente})
 			\item[] \textbf{Ristorante}(\underline{PIVA}, Nome, Titolare, Web, Indirizzo, Telefono, Genere, \textit{Città})
 			\item[] \textbf{Fattorino}(\underline{CF}, Nome, Cognome, Data di nascita, Telefono, Stipendio/h, Ore lavorate)			
 			\item[] \textbf{Pietanza}(\underline{Codice}, \underline{\textit{Ristorante}}, Costo, Disponibilità, Descrizione,	Tipologia, Vitamine\textsuperscript{*})
