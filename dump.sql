@@ -40,5 +40,20 @@ CREATE TABLE IF NOT EXISTS ristorante (
     genere VARCHAR(30) NOT NULL,
     citta VARCHAR(20) DEFAULT NULL REFERENCES citta(nome)
 		ON UPDATE CASCADE
-        ON DELETE SET NULL    
+        ON DELETE SET NULL,
+	telefono varchar(25)
 );
+
+CREATE TABLE IF NOT EXISTS pietanza (
+	codice INT(11) NOT NULL,
+    ristorante varchar(11) NOT NULL REFERENCES ristorante(piva)
+    ON DELETE CASCADE
+    ON UPDATE CASCADE,
+    PRIMARY KEY(codice, ristorante),
+    costo FLOAT(4, 2) NOT NULL,
+    descrizione VARCHAR(300),
+    tipologia varchar(20) not null default 'ALTRO',
+    alta_digeribilita BOOL not null default false  
+    
+);
+
