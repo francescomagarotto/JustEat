@@ -255,11 +255,12 @@
 		Gli attributi marcati in \textit{corsivo} indicano una \texttt{CHIAVE ESTERNA}.
 		\end{framed}
 		\begin{itemize}[noitemsep]
-			\item[] \textbf{Cliente}(\underline{Email}, Nome, Cognome, Indirizzo, Data di nascita, Data attivazione account, Allergie\textsuperscript{*})
+			\item[] \textbf{Allergia}(\underline{Codice}, Nome)
+			\item[] \textbf{Cliente}(\underline{Email}, Nome, Cognome, Indirizzo, Data di nascita, Data attivazione account, Allergia\textsuperscript{*})
 			\item[] \textbf{Ordine}(\underline{Codice}, Orario, Orario ordine, Orario Consegna, \textit{Cliente})
 			\item[] \textbf{Ristorante}(\underline{PIVA}, Nome, Titolare, Web, Indirizzo, Telefono, Genere, \textit{Città})
 			\item[] \textbf{Fattorino}(\underline{CF}, Nome, Cognome, Data di nascita, Telefono, Stipendio/h, Ore lavorate)			
-			\item[] \textbf{Pietanza}(\underline{Codice}, \underline{\textit{Ristorante}}, Costo, Disponibilità, Descrizione,	Tipologia, Alta digeribilit\`a\textsuperscript{*})
+			\item[] \textbf{Pietanza}(\underline{Codice}, \underline{\textit{Ristorante}}, Costo, Disponibilità, Descrizione, Tipologia, Alta digeribilit\`a\textsuperscript{*})
 			\item[] \textbf{Città}(\underline{Nome}, Nazione)
 			\item[] \textbf{Dettagli Ordine}(\underline{Ordine}, \underline{Pietanza}, Quantità)
 			\item[] \textbf{Ticket}(\underline{Codice}, \underline{Ordine}, Commento)
