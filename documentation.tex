@@ -97,6 +97,7 @@
 			\end{tabular}
 			}
 		\end{table}
+	\pagebreak
 	\section{Progettazione concettuale}
 		\subsection{Descrizione testuale delle classi}
 			\subsubsection{Città}
@@ -175,6 +176,7 @@
 						\item Codice: \textit{string <<PK>>} - codice del ticket.
 						\item Commento: \textit{string} - commento relativo al ticket.
 					\end{itemize}
+		\pagebreak
 		\subsection{Descrizione testuale delle associazioni}
 			\subsubsection{Città-Ristorante: "Appartenenza"}
 				\paragraph{Molteplicità N:1} Una città può avere più ristoranti, il ristorante appartiene ad una e una sola città.
@@ -219,8 +221,8 @@
 			\end{center}
                         \caption{Modello E/R ristrutturato, si omettono gli attributi rispetto al modello precedente poichè sono gli stessi mentre si introducono le nuove entità }
 		\end{figure}
-			\subsubsection{Cliente registrato} 
-			L'attributo multivalore Allergie\footnotemark{} diventerà una nuova entità legata a cliente registrato.
+			\subsubsection{Cliente} 
+			L'attributo multivalore Allergie\footnotemark{} diventerà una nuova entità legata a cliente.
 			\footnotetext{Le allergie non sono strettamente dipendenti dai clienti.} 
 			\paragraph{Attributi aggiornati}
 				\begin{itemize}[noitemsep]
@@ -230,13 +232,14 @@
 				L'entità Allergia conterrà solamente il nome dell'allergia.
 				\paragraph{Attributi}
 					\begin{itemize}[noitemsep]
-						\item Nome: \textit{string <<PK>>} - nome dell'allergia.
+						\item Nome: \textit{string} - nome dell'allergia.
+						\item Codice: \textit{int <<PK>>} - codice dell'allergia.
 					\end{itemize}
-			\paragraph{Cliente registrato-Allergia: "Appartiene"}
-				\paragraph{Molteplicità N:N} Il cliente può avere più allergie, un'allergia può appartenere a più clienti.
-				\paragraph{Totalità: parziale verso Allergia/ Totale verso Cliente registrato} Un cliente può non avere allergie, un'allergia appartiene ad almeno un cliente.
-			\paragraph{Pietanza}
-			L'entità Pientanza rappresenta l'insieme di pietanze che l'utente può ordinare. \newline
+			\paragraph{Cliente-Allergia: "Soffre"}
+				\paragraph{Molteplicità N:N} Il cliente può soffrire di più allergie, un'allergia può appartenere a più clienti.
+				\paragraph{Totalità: parziale verso Allergia/ Totale verso Cliente} Un cliente può non avere allergie, un'allergia appartiene ad almeno un cliente.
+			\subsubsection{Pietanza}
+			L'entità Pietanza rappresenta l'insieme di pietanze che l'utente può ordinare. \newline
 			Rispetto alla precedente entit\`a aggiungiamo gli attributi:
 			\begin{itemize}[noitemsep]
 				\item Tipologia: \textit{string} - tipologia del cibo (i.e. vegana, vegetariana, [...])
@@ -247,9 +250,9 @@
 		\end{framed}
 		\subsection{Schema logico}
 		\begin{framed}
-		\noindent Gli attributi marcati con * sono attrbuti facoltativi che possono avere valore \texttt{\color{blue}NULL} \newline
+		\noindent Gli attributi marcati con * sono attrbuti facoltativi che possono avere valore \texttt{\color{blue}NULL}. \newline
 		Gli attributi (o l'attributo) \underline{sottolineati/o} indicano una \texttt{CHIAVE}. \newline
-		Gli attributi marcati in \textit{corsivo} indicano una \texttt{CHIAVE ESTERNA}
+		Gli attributi marcati in \textit{corsivo} indicano una \texttt{CHIAVE ESTERNA}.
 		\end{framed}
 		\begin{itemize}[noitemsep]
 			\item[] \textbf{Cliente}(\underline{Email}, Nome, Cognome, Indirizzo, Data di nascita, Data attivazione account, Allergie\textsuperscript{*})
@@ -261,7 +264,7 @@
 			\item[] \textbf{Dettagli Ordine}(\underline{Ordine}, \underline{Pietanza}, Quantità)
 			\item[] \textbf{Ticket}(\underline{Codice}, \underline{Ordine}, Commento)
 			\item[] \textbf{Feedback}(\underline{Cliente}, \underline{Ristorante}, Commento)
-			\item[] \textbf{
+			
 		\end{itemize}
 	%\section{Definizione dello schema logico tramite DDL di MySql} Futile
 	\section{Query}
