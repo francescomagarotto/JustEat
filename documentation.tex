@@ -211,7 +211,7 @@
 		\end{figure}
 	\section{Progettazione logica}
 		\subsection{Descrizione testuale dello schema relazionale}
-		Partendo dallo schema Entità/Relazioni (Figura \ref{fig:ER1}) non ristrutturato possiamo fare alcune osservazioni relativamente alle entità \texttt{Utente} e \texttt{Pietanza}. In particolare, nell'analisi dei requisiti \`e specificato che un utente registrato pu\`o soffrire di una o pi\`u allergie, \`e pertanto necessario trasformare questo attributo \texttt{multivalore} \textit{Allergia} in un'entit\`a indipendente legata tramite una relazione \texttt{molti a molti}. Infatti, ogni utente pu\`o soffrire di una o pi\`u allergie e la stessa allergia potrebbe essere la medesima per pi\`u clienti. Per quanto riguarda l'entit\`a \textit{Pietanza} invece, introduciamo un attributo \texttt{Tipologia} che indica il tipo di pietanza (vegana, composta da carne, ecc), se questa pientanza apparterrà alle tipologia vegana allora sarà necessario conoscere le vitamine presenti nella pientanza. Pertanto, visto che la stessa vitamina potrebbe essere presente in più pietanze, anche l'attributo \textit{Vitamina} caratterisco della pietanza vegana diviene entità collegato alla relazione pietanza tramite una relazione \texttt{molti a molti}.  
+Partendo dallo schema Entità/Relazioni (Figura \ref{fig:ER1}) non ristrutturato possiamo fare alcune osservazioni relativamente alle entità \texttt{Utente} e \texttt{Pietanza}. In particolare, nell'analisi dei requisiti \`e specificato che un utente registrato pu\`o soffrire di una o pi\`u allergie, \`e pertanto necessario trasformare questo attributo \texttt{multivalore} \textit{Allergia} in un'entit\`a indipendente legata tramite una relazione \texttt{molti a molti}. Infatti, ogni utente pu\`o soffrire di una o pi\`u allergie e la stessa allergia potrebbe essere la medesima per pi\`u clienti. Per quanto riguarda l'entit\`a \textit{Pietanza} invece, introduciamo un attributo \texttt{Tipologia} che indica il tipo di pietanza (vegana, composta da carne, ecc), se questa pientanza apparterrà alle tipologia vegetariana allora sarà necessario conoscere il metodo di cottura della pietanza. Pertanto, la relazione \texttt{Pietanza} avr\`a l'attributo \textit{metodo di cottura} che eventualmente avr\`a valore nullo.  
 		\subsection{Ristrutturazione schema E/R}
 			\begin{figure}[H]
 			\begin{center}
@@ -260,7 +260,7 @@
 			\item[] \textbf{Ordine}(\underline{Codice}, Orario ordine, Orario Consegna, \textit{Cliente})
 			\item[] \textbf{Ristorante}(\underline{PIVA}, Nome, Titolare, Web, Indirizzo, Telefono, Genere, \textit{Città})
 			\item[] \textbf{Fattorino}(\underline{CF}, Nome, Cognome, Data di nascita, Telefono, Stipendio/h, Ore lavorate)			
-			\item[] \textbf{Pietanza}(\underline{Codice}, \underline{\textit{Ristorante}}, Costo, Disponibilità, Descrizione, Tipologia, Alta digeribilit\`a\textsuperscript{*})
+			\item[] \textbf{Pietanza}(\underline{Codice}, \underline{\textit{Ristorante}}, Costo, Disponibilità, Descrizione, Tipologia, Metodo di cottura\textsuperscript{*})
 			\item[] \textbf{Città}(\underline{Nome}, Nazione)
 			\item[] \textbf{Dettagli Ordine}(\underline{Ordine}, \underline{Pietanza}, Quantità)
 			\item[] \textbf{Ticket}(\underline{Codice}, \underline{Ordine}, Commento)
