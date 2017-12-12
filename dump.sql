@@ -57,3 +57,49 @@ CREATE TABLE IF NOT EXISTS pietanza (
     
 );
 
+CREATE TABLE IF NOT EXISTS fattorino (
+	CF varchar(20),
+	telefono int(20) NOT NULL,
+	cognome varchar(20) NOT NULL,
+	nome varchar(20) NOT NULL,
+	data_di_nascita date NOT NULL,
+	stipendio FLOAT(4,2) NOT NULL,
+	PRIMARY KEY(CF)
+);
+
+CREATE TABLE IF NOT EXISTS ordine (
+	codice int(11),
+	orario_ordine timestamp NOT NULL DEFAULT,
+	orario_consegna timestamp NOT NULL,
+	PRIMARY KEY(codice)
+);
+
+CREATE TABLE IF NOT EXISTS dettagli_ordine (
+    quantità int(3) NOT NULL,
+    ordine int(11) REFERENCES ordine(codice)
+    ON DELETE CASCADE
+    ON UPDATE CASCADE,
+    pietanza int(11) REFERENCES pietanza(codice)
+    ON DELETE CASCADE
+    ON UPDATE CASCADE,
+    PRIMARY KEY(ordine, pietanza)
+);
+
+CREATE TABLE IF NOT EXISTS ticket (
+	commento varchar(300) NOT NULL,
+	codice int(11) REFERENCES ordine(codice)
+	ON UPDATE CASCADE
+	ON DELETE SET NULL,
+	PRIMARY KEY(codice) 
+);
+
+CREATE TABLE IF NOT EXISTS feedback (
+    commento varchar(300) NOT NULL,
+    cliente varchar(20) REFERENCES cliente(email)
+    ON DELETE CASCADE
+    ON UPDATE CASCADE,
+    ristorante varchar(30) REFERENCES ristorante(piva)
+    ON DELETE CASCADE
+    ON UPDATE CASCADE,
+    PRIMARY KEY(cliente, ristorante)
+);  
