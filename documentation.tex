@@ -243,11 +243,8 @@ Partendo dallo schema Entità/Relazioni (Figura \ref{fig:ER1}) non ristrutturato
 			Rispetto alla precedente entit\`a aggiungiamo gli attributi:
 			\begin{itemize}[noitemsep]
 				\item Tipologia: \textit{string} - tipologia del cibo (i.e. vegana, vegetariana, [...])
-				\item Alta digeribilit\`a: \textit{bool} - indica se la pietanza \`e ad alta digeriblit\`a oppure no
+				\item Metodo di cottura: \textit{string} - indica il metodo di cottura della pietanza.
 			\end{itemize}
-		\begin{framed}
-			\noindent Nonostante nell'analisi dei requisiti sia espressa la necessit\`a di tenere conto dell'alta digeribilit\`a solo per le pientanze vegetariane, l'attributo \texttt{Alta digeribilit\`a} \`e stato inserito all'interno dell'entit\`a \texttt{Pietanza} in quanto ha una dimensione nel sistema esigua (1 bit) e la separazione dell'entit\`a pietanza avrebbe aumentato il numero di accessi per il riperimento delle informazioni.
-		\end{framed}
 		\subsection{Schema logico}
 		\begin{framed}
 		\noindent Gli attributi marcati con * sono attrbuti facoltativi che possono avere valore \texttt{\color{blue}NULL}. \newline
