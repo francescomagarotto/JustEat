@@ -74,6 +74,17 @@ CREATE TABLE IF NOT EXISTS ordine (
 	PRIMARY KEY(codice)
 );
 
+CREATE TABLE IF NOT EXISTS dettagli_ordine (
+    quantità int(3) NOT NULL,
+    ordine int(11) REFERENCES ordine(codice)
+    ON DELETE CASCADE
+    ON UPDATE CASCADE,
+    pietanza int(11) REFERENCES pietanza(codice)
+    ON DELETE CASCADE
+    ON UPDATE CASCADE,
+    PRIMARY KEY(ordine, pietanza)
+);
+
 CREATE TABLE IF NOT EXISTS ticket (
 	commento varchar(300) NOT NULL,
 	codice int(11) REFERENCES ordine(codice)
@@ -82,3 +93,13 @@ CREATE TABLE IF NOT EXISTS ticket (
 	PRIMARY KEY(codice) 
 );
 
+CREATE TABLE IF NOT EXISTS feedback (
+    commento varchar(300) NOT NULL,
+    cliente varchar(20) REFERENCES cliente(email)
+    ON DELETE CASCADE
+    ON UPDATE CASCADE,
+    ristorante varchar(30) REFERENCES ristorante(piva)
+    ON DELETE CASCADE
+    ON UPDATE CASCADE,
+    PRIMARY KEY(cliente, ristorante)
+);  
