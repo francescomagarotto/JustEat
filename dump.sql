@@ -2,8 +2,7 @@ CREATE DATABASE IF NOT EXISTS just_eat;
 USE just_eat;
 CREATE TABLE IF NOT EXISTS citta (
 	nome varchar(20) primary key,
-    nazione varchar(20) not null,
-    unique(nome, nazione)
+    nazione varchar(20) not null
 );
 CREATE TABLE IF NOT EXISTS allergia (
 	codice INT(11) PRIMARY KEY AUTO_INCREMENT,
@@ -16,7 +15,7 @@ CREATE TABLE IF NOT EXISTS cliente (
     cognome VARCHAR(25) NOT NULL,
     indirizzo VARCHAR(20) NOT NULL,
     data_di_nascita DATE NOT NULL,
-    data_di_attivazione TIMESTAMP NOT NULL DEFAULT NOW()
+    data_di_attivazione TIMESTAMP
 );
 
 CREATE TABLE IF NOT EXISTS patologia (
@@ -41,7 +40,7 @@ CREATE TABLE IF NOT EXISTS ristorante (
     citta VARCHAR(20) DEFAULT NULL REFERENCES citta(nome)
 		ON UPDATE CASCADE
         ON DELETE SET NULL,
-	telefono varchar(25)
+	telefono varchar(25) DEFAULT NULL
 );
 
 CREATE TABLE IF NOT EXISTS pietanza (
@@ -50,32 +49,37 @@ CREATE TABLE IF NOT EXISTS pietanza (
     ON DELETE CASCADE
     ON UPDATE CASCADE,
     PRIMARY KEY(codice, ristorante),
-    costo FLOAT(4, 2) NOT NULL,
-    descrizione VARCHAR(300),
+    costo NUMERIC(4, 2) NOT NULL,
+    descrizione TEXT,
     tipologia varchar(20) not null default 'ALTRO',
-    alta_digeribilita BOOL not null default false  
-    
+    cottura varchar(10) default null,
+    disponibilita bool default true not null
 );
 
 CREATE TABLE IF NOT EXISTS fattorino (
-	CF varchar(20),
+	CF varchar(20) PRIMARY KEY,
 	telefono int(20) NOT NULL,
 	cognome varchar(20) NOT NULL,
 	nome varchar(20) NOT NULL,
 	data_di_nascita date NOT NULL,
-	stipendio FLOAT(4,2) NOT NULL,
-	PRIMARY KEY(CF)
+	stipendio_ora NUMERIC(4,2) NOT NULL,
+    ore_lavorate int(10) not null,
+    check(ore_lavorate >= 0)
 );
 
 CREATE TABLE IF NOT EXISTS ordine (
-	codice int(11),
-	orario_ordine timestamp NOT NULL DEFAULT,
-	orario_consegna timestamp NOT NULL,
-	PRIMARY KEY(codice)
+	codice int(11) PRIMARY KEY AUTO_INCREMENT,
+    cliente varchar(50)  references cliente(email)
+    on delete cascade
+    on update cascade, 
+	orario_ordine timestamp NOT NULL DEFAULT NOW(),
+	orario_consegna timestamp,
+    check(orario_consegna > orario_ordine)
 );
 
 CREATE TABLE IF NOT EXISTS dettagli_ordine (
-    quantità int(3) NOT NULL,
+    quantita smallint NOT NULL,
+    check(quantita > 0),
     ordine int(11) REFERENCES ordine(codice)
     ON DELETE CASCADE
     ON UPDATE CASCADE,
@@ -86,11 +90,14 @@ CREATE TABLE IF NOT EXISTS dettagli_ordine (
 );
 
 CREATE TABLE IF NOT EXISTS ticket (
-	commento varchar(300) NOT NULL,
-	codice int(11) REFERENCES ordine(codice)
+	cliente varchar(50) not null references cliente(email)
+    on delete cascade
+    on update cascade,
+	commento text NOT NULL,
+	ordine int(11) REFERENCES ordine(codice)
 	ON UPDATE CASCADE
-	ON DELETE SET NULL,
-	PRIMARY KEY(codice) 
+	ON DELETE CASCADE,
+    PRIMARY KEY(cliente, ordine)
 );
 
 CREATE TABLE IF NOT EXISTS feedback (
