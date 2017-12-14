@@ -46,7 +46,6 @@
   	tabsize=4,
   	title=\lstname
 }
-
 	%\ Creazione nuova indentazione "subsubsubsection" 
 	\titleclass{\subsubsubsection}{straight}[\subsection]
 	
@@ -292,10 +291,8 @@ Partendo dallo schema Entità/Relazioni (Figura \ref{fig:ER1}) non ristrutturato
 			\item[] \textbf{Città}(\underline{Nome}, Nazione)
 			\item[] \textbf{Dettagli Ordine}(\underline{Ordine}, \underline{Pietanza}, Quantità)
 			\item[] \textbf{Ticket}(\underline{Codice}, \underline{Ordine}, Commento)
-			\item[] \textbf{Feedback}(\underline{Cliente}, \underline{Ristorante}, Commento)
-			
+			\item[] \textbf{Feedback}(\underline{Codice}, Cliente, Ristorante, Data commento, Commento)
 		\end{itemize}
-	%\section{Definizione dello schema logico tramite DDL di MySql} Futile
 	\section{Query}
 	\section{Eventi, Viste, procedure, trigger e funzioni}
 		\subsection{Eventi}
