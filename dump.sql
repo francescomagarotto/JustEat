@@ -37,23 +37,25 @@ CREATE TABLE IF NOT EXISTS ristorante (
     web VARCHAR(150) DEFAULT NULL,
     indirizzo VARCHAR(75) NOT NULL UNIQUE,
     genere VARCHAR(30) NOT NULL,
-    citta VARCHAR(20) DEFAULT NULL REFERENCES citta(nome)
+    citta VARCHAR(20) DEFAULT NULL,
+	telefono varchar(25) DEFAULT NULL,
+	FOREIGN KEY (citta) REFERENCES citta(nome)
 		ON UPDATE CASCADE
-        ON DELETE SET NULL,
-	telefono varchar(25) DEFAULT NULL
+        ON DELETE SET NULL
 );
 
 CREATE TABLE IF NOT EXISTS pietanza (
 	codice INT(11) NOT NULL,
-    ristorante varchar(11) NOT NULL REFERENCES ristorante(piva)
-    ON DELETE CASCADE
-    ON UPDATE CASCADE,
+    ristorante varchar(11) NOT NULL,
     PRIMARY KEY(codice, ristorante),
     costo NUMERIC(4, 2) NOT NULL,
     descrizione TEXT,
     tipologia varchar(20) not null default 'ALTRO',
     cottura varchar(10) default null,
-    disponibilita bool default true not null
+    disponibilita bool default true not null,
+    FOREIGN KEY (ristorante) REFERENCES ristorante(piva)
+    ON DELETE CASCADE
+    ON UPDATE CASCADE
 );
 
 CREATE TABLE IF NOT EXISTS fattorino (
@@ -69,44 +71,58 @@ CREATE TABLE IF NOT EXISTS fattorino (
 
 CREATE TABLE IF NOT EXISTS ordine (
 	codice int(11) PRIMARY KEY AUTO_INCREMENT,
-    cliente varchar(50)  references cliente(email)
-    on delete cascade
-    on update cascade, 
+    cliente varchar(50) NOT NULL, 
 	orario_ordine timestamp NOT NULL DEFAULT NOW(),
 	orario_consegna timestamp,
-    check(orario_consegna > orario_ordine)
+	fattorino VARCHAR(20),
+	FOREIGN KEY (fattorino)	REFERENCES fattorino(CF)
+		ON UPDATE CASCADE
+		ON DELETE SET NULL,
+    check(orario_consegna > orario_ordine),
+    FOREIGN KEY (cliente) REFERENCES cliente(email)
+    	ON UPDATE CASCADE
+    	ON DELETE CASCADE,
 );
 
 CREATE TABLE IF NOT EXISTS dettagli_ordine (
     quantita smallint NOT NULL,
     check(quantita > 0),
-    ordine int(11) REFERENCES ordine(codice)
+    ordine int(11) NOT NULL, 
+    pietanza int(11) NOT NULL,
+    PRIMARY KEY(ordine, pietanza),
+    FOREIGN KEY (ordine) REFERENCES ordine(codice)
     ON DELETE CASCADE
     ON UPDATE CASCADE,
-    pietanza int(11) REFERENCES pietanza(codice)
-    ON DELETE CASCADE
-    ON UPDATE CASCADE,
-    PRIMARY KEY(ordine, pietanza)
+    FOREIGN KEY (pietanza) REFERENCES pietanza(codice)
+    ON DELETE NO ACTION
+    ON UPDATE CASCADE
 );
 
 CREATE TABLE IF NOT EXISTS ticket (
-	cliente varchar(50) not null references cliente(email)
-    on delete cascade
-    on update cascade,
+	cliente varchar(50) not null,
 	commento text NOT NULL,
-	ordine int(11) REFERENCES ordine(codice)
+	ordine int(11) NOT NULL,
 	ON UPDATE CASCADE
 	ON DELETE CASCADE,
-    PRIMARY KEY(cliente, ordine)
-);
+    PRIMARY KEY(cliente, ordine),
+    FOREIGN KEY (cliente) REFERENCES cliente(email)
+    	ON UPDATE CASCADE
+    	ON DELETE CASCADE,
+    FOREIGN KEY (ordine) REFERENCES ordine(codice)
+    	ON DELETE NO ACTION
+    	ON UPDATE NO ACTION
+    );
 
 CREATE TABLE IF NOT EXISTS feedback (
+	codice_feedback int(11) NOT NULL PRIMARY KEY AUTO_INCREMENT,
+	data_feedback date not null default NOW(),
     commento varchar(300) NOT NULL,
-    cliente varchar(20) REFERENCES cliente(email)
-    ON DELETE CASCADE
-    ON UPDATE CASCADE,
-    ristorante varchar(30) REFERENCES ristorante(piva)
-    ON DELETE CASCADE
-    ON UPDATE CASCADE,
-    PRIMARY KEY(cliente, ristorante)
+    cliente varchar(20) NOT NULL,
+    ristorante varchar(30) NOT NULL,
+    FOREIGN KEY (cliente) REFERENCES cliente(email) 
+    	ON DELETE SET NULL
+    	ON UPDATE CASCADE,
+    FOREIGN KEY (ristorante) REFERENCES ristorante(piva)
+    	ON DELETE CASCADE
+    	ON UPDATE CASCADE
 );  
