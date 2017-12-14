@@ -68,9 +68,9 @@ CREATE TABLE IF NOT EXISTS fattorino (
 	nome varchar(20) NOT NULL,
 	data_di_nascita date NOT NULL,
 	stipendio_ora NUMERIC(4,2) NOT NULL,
-    ore_lavorate int(10) not null,
-    punteggio int(3) NOT NULL,
-    check(ore_lavorate >= 0)
+    ore_lavoro int(10) not null,
+    punteggio int(10) not null default 0,
+    check(ore_lavoro >= 0)
 );
 
 CREATE TABLE IF NOT EXISTS ordine (
