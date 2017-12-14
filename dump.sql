@@ -22,7 +22,7 @@ CREATE TABLE IF NOT EXISTS cliente (
 );
 
 CREATE TABLE IF NOT EXISTS patologia (
-	cliente varchar(50) NOT NULL,
+	 cliente varchar(50) NOT NULL,
     allergia int(11) NOT NULL,
     PRIMARY KEY(cliente, allergia),
     FOREIGN KEY (cliente) REFERENCES cliente(email)
@@ -35,12 +35,12 @@ CREATE TABLE IF NOT EXISTS patologia (
 
 CREATE TABLE IF NOT EXISTS ristorante (
 	piva VARCHAR(11) PRIMARY KEY,
-    nome VARCHAR(50) NOT NULL,
-    titolare VARCHAR(50) NOT NULL,
-    web VARCHAR(150) DEFAULT NULL,
-    indirizzo VARCHAR(75) NOT NULL UNIQUE,
-    genere VARCHAR(30) NOT NULL,
-    citta VARCHAR(20) DEFAULT NULL,
+   nome VARCHAR(50) NOT NULL,
+   titolare VARCHAR(50) NOT NULL,
+   web VARCHAR(150) DEFAULT NULL,
+   indirizzo VARCHAR(75) NOT NULL UNIQUE,
+   genere VARCHAR(30) NOT NULL,
+   citta VARCHAR(20) DEFAULT NULL,
 	telefono varchar(25) DEFAULT NULL,
 	FOREIGN KEY (citta) REFERENCES citta(nome)
 		ON UPDATE CASCADE
@@ -62,7 +62,7 @@ CREATE TABLE IF NOT EXISTS pietanza (
 );
 
 CREATE TABLE IF NOT EXISTS fattorino (
-	CF varchar(20) PRIMARY KEY,
+	CF char(20) PRIMARY KEY,
 	telefono int(20) NOT NULL,
 	cognome varchar(20) NOT NULL,
 	nome varchar(20) NOT NULL,
@@ -78,7 +78,7 @@ CREATE TABLE IF NOT EXISTS ordine (
     cliente varchar(50) NOT NULL, 
 	orario_ordine timestamp NOT NULL DEFAULT NOW(),
 	orario_consegna timestamp,
-	fattorino VARCHAR(20),
+	fattorino CHAR(20),
 	FOREIGN KEY (fattorino)	REFERENCES fattorino(CF)
 		ON UPDATE CASCADE
 		ON DELETE SET NULL,
@@ -106,13 +106,11 @@ CREATE TABLE IF NOT EXISTS ticket (
 	cliente varchar(50) not null,
 	commento text NOT NULL,
 	ordine int(11) NOT NULL,
-	ON UPDATE CASCADE
-	ON DELETE CASCADE,
-    PRIMARY KEY(cliente, ordine),
-    FOREIGN KEY (cliente) REFERENCES cliente(email)
+   PRIMARY KEY(cliente, ordine),
+   FOREIGN KEY (cliente) REFERENCES cliente(email)
     	ON UPDATE CASCADE
     	ON DELETE CASCADE,
-    FOREIGN KEY (ordine) REFERENCES ordine(codice)
+   FOREIGN KEY (ordine) REFERENCES ordine(codice)
     	ON DELETE NO ACTION
     	ON UPDATE NO ACTION
     );
