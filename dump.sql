@@ -85,7 +85,7 @@ CREATE TABLE IF NOT EXISTS ordine (
     check(orario_consegna > orario_ordine),
     FOREIGN KEY (cliente) REFERENCES cliente(email)
     	ON UPDATE CASCADE
-    	ON DELETE CASCADE,
+    	ON DELETE CASCADE
 );
 
 CREATE TABLE IF NOT EXISTS dettagli_ordine (
