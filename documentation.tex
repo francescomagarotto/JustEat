@@ -16,6 +16,37 @@
 	\usepackage{framed}
 	\usepackage{amsmath}
 	\usepackage{float}
+	\usepackage{amssymb}
+	\usepackage{listings}	
+	\definecolor{dkgreen}{rgb}{0,0.6,0}
+	\definecolor{ltgray}{rgb}{0.5,0.5,0.5}
+	\lstset{
+  	backgroundcolor=\color{white},
+  	basicstyle=\footnotesize,
+  	breakatwhitespace=false,
+  	breaklines=true,
+  	captionpos=b,
+  	commentstyle=\color{dkgreen},
+  	deletekeywords={...},
+  	escapeinside={\%*}{*)},
+  	extendedchars=true,
+  	frame=single,
+  	keepspaces=true,
+  	keywordstyle=\color{blue},
+  	language=SQL,
+  	morekeywords={*,modify,MODIFY,..., DELIMITER},
+  	numbers=left,
+  	numbersep=15pt,
+  	numberstyle=\tiny,
+  	rulecolor=\color{ltgray},
+  	showspaces=false,
+  	showstringspaces=false, 
+  	showtabs=false,
+  	stepnumber=1,
+  	tabsize=4,
+  	title=\lstname
+}
+
 	%\ Creazione nuova indentazione "subsubsubsection" 
 	\titleclass{\subsubsubsection}{straight}[\subsection]
 	
@@ -50,22 +81,22 @@
 	
 	\makeindex
 	%\setmainfont{Arial}
-	\usepackage[english,italian]{babel}
-	\title{Just Eat}
+	\usepackage[english, italian]{babel}
+	\title{\begin{Huge}Just Eat\end{Huge}}
 	\author{Davide Zilio\\Francesco Magarotto}
 	\date{21 Novembre 2017}
-	\renewcommand\thelinenumber{\Roman{linenumber}}
+	\renewcommand\thelinenumber{\large\Roman{linenumber}}
 	\begin{document}
 	\maketitle
-	\selectlanguage{english}
-	\begin{LARGE}
-	\begin{abstract}
+	\begin{large}
+		\begin{center}
+			\LARGE Abstract
+		\end{center}
 	\begin{linenumbers}
 	Just Eat \`e un servizio per la spedizione pasti fondato nel 2005 da Jesper Buch in Regno Unito. Il sito permette al cliente di ordinare comodamente le pietanze da lui preferite e farsele recapitare ovunque lui voglia: al lavoro o a casa. 
 	Oggigiorno, l'azienda \`e presente in 13 paesi diversi, e a partire dal 2011 il servizio \`e  attivo anche in Italia. Just Eat propone diversi tipi di cucine a seconda della citt\`a in cui si trova il cliente, e delle attivit\`a ristorative nelle vicinanze con cui la società inglese ha stretto una partnership. Ad esempio, nella citt\`a di Padova \`e possibile spaziare da un men\`u classico, come la pizza, fino all'innovativa cucina Asianfusion. Il servizio \`e in continua espansione, elaborando migliaia di ordini al mese, e cerca di essere alla portata di tutti: permette ordinazioni telefoniche e pagamento alla consegna, consentendo cos\`i l'utilizzo dei servizio anche a coloro che non sono ``nativi digitali". A quest'ultimi, invece, viene messa a disposizione una pratica applicazione, disponibile per le piattaforme Android\texttrademark{} e iOS\texttrademark{}, con possibilit\`a di pagamento tramite Paypal\texttrademark{}  o carta di credito. 
 	\end{linenumbers}
-	\end{abstract}
-	\end{LARGE}
+	\end{large}
 	\pagebreak
 	\selectlanguage{italian}
 	\tableofcontents{}
@@ -266,7 +297,24 @@ Partendo dallo schema Entità/Relazioni (Figura \ref{fig:ER1}) non ristrutturato
 		\end{itemize}
 	%\section{Definizione dello schema logico tramite DDL di MySql} Futile
 	\section{Query}
-	\section{Viste, procedure, trigger e funzioni}
+	\section{Eventi, Viste, procedure, trigger e funzioni}
+		\subsection{Eventi}
+		Nell'analisi dei requisiti viene espressamente richiesto che ogni mese il fattorino pi\`u giovane con punteggio pi\`u alto riceva un incremento stipendiale di 0,20 \euro{} all'ora.
+		Le operazioni sulla tabella fattorino vengono delegate alla procedure \texttt{AumentoStip}.
+\begin{lstlisting}[language=sql]
+DELIMITER $$
+	CREATE EVENT MigliorImpiegato
+		ON SCHEDULE EVERY '1' MONTH
+		STARTS '2018-01-01 00:00:00'
+		DO 
+		BEGIN
+			DECLARE CF_fattorino varchar(20);
+			CF_fattorino = SELECT cf FROM fattorino WHERE punteggio = (SELECT MAX(punteggio) FROM fattorino) 
+					AND data_di_nascita = (SELECT MAX(data_di_nascita) FROM fattorino);
+			CALL AumentoStip(CF_fattorino);
+		END$$
+DELIMITER ;	
+\end{lstlisting}
 		\subsection{Viste}
 		\subsection{Procedure}
 		\subsection{Trigger}
