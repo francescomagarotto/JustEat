@@ -319,8 +319,9 @@ DELIMITER ;\end{lstlisting}
 		\subsection{Procedure}
 		\begin{lstlisting}[language=sql]
 		DELIMITER $$
-		CREATE PROCEDURE AumentoStip(IN cf CHAR(20))
+		CREATE PROCEDURE AumentoStip(IN cf_var CHAR(20))
 		BEGIN
+			UPDATE fattorino SET stipendio_ora = stipendio_ora + 0.20 WHERE fattorino.cf = cf_var;
 		END; $$
 		DELIMITER ;
 		\end{lstlisting}
