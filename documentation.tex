@@ -37,6 +37,7 @@
   	morekeywords={*,modify,MODIFY,..., DELIMITER},
   	numbers=left,
   	numbersep=15pt,
+  	xleftmargin=0cm,
   	numberstyle=\tiny,
   	rulecolor=\color{ltgray},
   	showspaces=false,
@@ -301,22 +302,28 @@ Partendo dallo schema Entità/Relazioni (Figura \ref{fig:ER1}) non ristrutturato
 		\subsection{Eventi}
 		Nell'analisi dei requisiti viene espressamente richiesto che ogni mese il fattorino pi\`u giovane con punteggio pi\`u alto riceva un incremento stipendiale di 0,20 \euro{} all'ora.
 		Le operazioni sulla tabella fattorino vengono delegate alla procedure \texttt{AumentoStip}.
-\begin{lstlisting}[language=sql]
+		\begin{lstlisting}[language=sql]
 DELIMITER $$
 	CREATE EVENT MigliorImpiegato
 		ON SCHEDULE EVERY '1' MONTH
 		STARTS '2018-01-01 00:00:00'
 		DO 
 		BEGIN
-			DECLARE CF_fattorino varchar(20);
+			DECLARE CF_fattorino char(20);
 			CF_fattorino = SELECT cf FROM fattorino WHERE punteggio = (SELECT MAX(punteggio) FROM fattorino) 
-					AND data_di_nascita = (SELECT MAX(data_di_nascita) FROM fattorino);
+						AND data_di_nascita = (SELECT MAX(data_di_nascita) FROM fattorino);
 			CALL AumentoStip(CF_fattorino);
-		END$$
-DELIMITER ;	
-\end{lstlisting}
+		END; $$
+DELIMITER ;\end{lstlisting}
 		\subsection{Viste}
 		\subsection{Procedure}
+		\begin{lstlisting}[language=sql]
+		DELIMITER $$
+		CREATE PROCEDURE AumentoStip(IN cf CHAR(20))
+		BEGIN
+		END; $$
+		DELIMITER ;
+		\end{lstlisting}
 		\subsection{Trigger}
 		\subsection{Funzioni}
 	\end{document}

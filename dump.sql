@@ -62,7 +62,7 @@ CREATE TABLE IF NOT EXISTS pietanza (
 );
 
 CREATE TABLE IF NOT EXISTS fattorino (
-	CF varchar(20) PRIMARY KEY,
+	CF char(20) PRIMARY KEY,
 	telefono int(20) NOT NULL,
 	cognome varchar(20) NOT NULL,
 	nome varchar(20) NOT NULL,
@@ -78,7 +78,7 @@ CREATE TABLE IF NOT EXISTS ordine (
     cliente varchar(50) NOT NULL, 
 	orario_ordine timestamp NOT NULL DEFAULT NOW(),
 	orario_consegna timestamp,
-	fattorino VARCHAR(20),
+	fattorino CHAR(20),
 	FOREIGN KEY (fattorino)	REFERENCES fattorino(CF)
 		ON UPDATE CASCADE
 		ON DELETE SET NULL,
