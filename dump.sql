@@ -1,9 +1,12 @@
 CREATE DATABASE IF NOT EXISTS just_eat;
+
 USE just_eat;
+
 CREATE TABLE IF NOT EXISTS citta (
 	nome varchar(20) primary key,
     nazione varchar(20) not null
 );
+
 CREATE TABLE IF NOT EXISTS allergia (
 	codice INT(11) PRIMARY KEY AUTO_INCREMENT,
     nome VARCHAR(20) NOT NULL UNIQUE
@@ -66,6 +69,7 @@ CREATE TABLE IF NOT EXISTS fattorino (
 	data_di_nascita date NOT NULL,
 	stipendio_ora NUMERIC(4,2) NOT NULL,
     ore_lavorate int(10) not null,
+    punteggio int(3) NOT NULL,
     check(ore_lavorate >= 0)
 );
 
