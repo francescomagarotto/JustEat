@@ -22,7 +22,7 @@ CREATE TABLE IF NOT EXISTS cliente (
 );
 
 CREATE TABLE IF NOT EXISTS patologia (
-	cliente varchar(50) NOT NULL,
+	 cliente varchar(50) NOT NULL,
     allergia int(11) NOT NULL,
     PRIMARY KEY(cliente, allergia),
     FOREIGN KEY (cliente) REFERENCES cliente(email)
@@ -35,12 +35,12 @@ CREATE TABLE IF NOT EXISTS patologia (
 
 CREATE TABLE IF NOT EXISTS ristorante (
 	piva VARCHAR(11) PRIMARY KEY,
-    nome VARCHAR(50) NOT NULL,
-    titolare VARCHAR(50) NOT NULL,
-    web VARCHAR(150) DEFAULT NULL,
-    indirizzo VARCHAR(75) NOT NULL UNIQUE,
-    genere VARCHAR(30) NOT NULL,
-    citta VARCHAR(20) DEFAULT NULL,
+   nome VARCHAR(50) NOT NULL,
+   titolare VARCHAR(50) NOT NULL,
+   web VARCHAR(150) DEFAULT NULL,
+   indirizzo VARCHAR(75) NOT NULL UNIQUE,
+   genere VARCHAR(30) NOT NULL,
+   citta VARCHAR(20) DEFAULT NULL,
 	telefono varchar(25) DEFAULT NULL,
 	FOREIGN KEY (citta) REFERENCES citta(nome)
 		ON UPDATE CASCADE
@@ -85,7 +85,7 @@ CREATE TABLE IF NOT EXISTS ordine (
     check(orario_consegna > orario_ordine),
     FOREIGN KEY (cliente) REFERENCES cliente(email)
     	ON UPDATE CASCADE
-    	ON DELETE CASCADE,
+    	ON DELETE CASCADE
 );
 
 CREATE TABLE IF NOT EXISTS dettagli_ordine (
@@ -106,13 +106,11 @@ CREATE TABLE IF NOT EXISTS ticket (
 	cliente varchar(50) not null,
 	commento text NOT NULL,
 	ordine int(11) NOT NULL,
-	ON UPDATE CASCADE
-	ON DELETE CASCADE,
-    PRIMARY KEY(cliente, ordine),
-    FOREIGN KEY (cliente) REFERENCES cliente(email)
+   PRIMARY KEY(cliente, ordine),
+   FOREIGN KEY (cliente) REFERENCES cliente(email)
     	ON UPDATE CASCADE
     	ON DELETE CASCADE,
-    FOREIGN KEY (ordine) REFERENCES ordine(codice)
+   FOREIGN KEY (ordine) REFERENCES ordine(codice)
     	ON DELETE NO ACTION
     	ON UPDATE NO ACTION
     );
