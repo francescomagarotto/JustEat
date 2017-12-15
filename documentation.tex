@@ -205,7 +205,6 @@
 						\item Codice: \textit{string  $\ll$ PK $\gg$} - codice del ticket.
 						\item Commento: \textit{string} - commento relativo al ticket.
 					\end{itemize}
-		\pagebreak
 		\subsection{Descrizione testuale delle associazioni}
 			\subsubsection{Citt\`a-Ristorante: ``Appartenenza"}
 				\paragraph{Molteplicit\`a N:1} Una citt\`a può avere più ristoranti, il ristorante appartiene ad una e una sola citt\`a.
@@ -268,21 +267,18 @@ Partendo dallo schema Entit\`a/Relazioni (Figura \ref{fig:ER1}) non ristrutturat
 				\paragraph{Molteplicit\`a N:N} Il cliente può soffrire di più allergie, un'allergia può appartenere a più clienti.
 				\paragraph{Totalit\`a: parziale verso Allergia/ Totale verso Cliente} Un cliente può non avere allergie, un'allergia appartiene ad almeno un cliente.
 			\subsubsection{Pietanza}
-			L'entit\`a Pietanza rappresenta l'insieme di pietanze che l'utente può ordinare. \newline
+			L'entit\`a Pietanza rappresenta l'insieme di pietanze che l'utente può ordinare.
 			Rispetto alla precedente entit\`a aggiungiamo gli attributi:
 			\begin{itemize}[noitemsep]
 				\item Tipologia: \textit{string} - tipologia del cibo (i.e. vegana, vegetariana, [...])
 				\item Metodo di cottura: \textit{string} - indica il metodo di cottura della pietanza.
 			\end{itemize}
 		\subsection{Schema logico}
-		\begin{figure}[H]
 			\begin{center}
 				\hspace*{-1cm}
 				\includegraphics[scale=0.9]{modello_logico.pdf}
 				\hspace*{-1cm}
 			\end{center}
-                        \caption{Modello E/R ristrutturato, si omettono gli attributi rispetto al modello precedente poich\`e sono gli stessi mentre si introducono le nuove entit\`a }
-		\end{figure}
 		\subsection{Modello relazionale}
 		\begin{framed}
 		\noindent Gli attributi marcati con * sono attrbuti facoltativi che possono avere valore \texttt{\color{blue}NULL}. \newline
