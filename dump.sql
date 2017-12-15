@@ -34,7 +34,7 @@ CREATE TABLE IF NOT EXISTS patologia (
 );
 
 CREATE TABLE IF NOT EXISTS ristorante (
-	piva VARCHAR(11) PRIMARY KEY,
+   piva CHAR(11) PRIMARY KEY,
    nome VARCHAR(50) NOT NULL,
    titolare VARCHAR(50) NOT NULL,
    web VARCHAR(150) DEFAULT NULL,
@@ -77,7 +77,7 @@ CREATE TABLE IF NOT EXISTS ordine (
 	codice int(11) PRIMARY KEY AUTO_INCREMENT,
     cliente varchar(50) NOT NULL, 
 	orario_ordine timestamp NOT NULL DEFAULT NOW(),
-	orario_consegna timestamp,
+	orario_consegna timestamp DEFAULT NOW(),
 	fattorino CHAR(20),
 	FOREIGN KEY (fattorino)	REFERENCES fattorino(CF)
 		ON UPDATE CASCADE
@@ -117,10 +117,10 @@ CREATE TABLE IF NOT EXISTS ticket (
 
 CREATE TABLE IF NOT EXISTS feedback (
 	codice_feedback int(11) NOT NULL PRIMARY KEY AUTO_INCREMENT,
-	data_feedback date not null default NOW(),
+	data_feedback date not null,
     commento varchar(300) NOT NULL,
-    cliente varchar(20) NOT NULL,
-    ristorante varchar(30) NOT NULL,
+    cliente varchar(50),
+    ristorante CHAR(11) NOT NULL,
     FOREIGN KEY (cliente) REFERENCES cliente(email) 
     	ON DELETE SET NULL
     	ON UPDATE CASCADE,
