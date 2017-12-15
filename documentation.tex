@@ -93,7 +93,7 @@
 		\end{center}
 	\begin{linenumbers}
 	Just Eat \`e un servizio per la spedizione pasti fondato nel 2005 da Jesper Buch in Regno Unito. Il sito permette al cliente di ordinare comodamente le pietanze da lui preferite e farsele recapitare ovunque lui voglia: al lavoro o a casa. 
-	Oggigiorno, l'azienda \`e presente in 13 paesi diversi, e a partire dal 2011 il servizio \`e  attivo anche in Italia. Just Eat propone diversi tipi di cucine a seconda della citt\`a in cui si trova il cliente, e delle attivit\`a ristorative nelle vicinanze con cui la società inglese ha stretto una partnership. Ad esempio, nella citt\`a di Padova \`e possibile spaziare da un men\`u classico, come la pizza, fino all'innovativa cucina Asianfusion. Il servizio \`e in continua espansione, elaborando migliaia di ordini al mese, e cerca di essere alla portata di tutti: permette ordinazioni telefoniche e pagamento alla consegna, consentendo cos\`i l'utilizzo dei servizio anche a coloro che non sono ``nativi digitali". A quest'ultimi, invece, viene messa a disposizione una pratica applicazione, disponibile per le piattaforme Android\texttrademark{} e iOS\texttrademark{}, con possibilit\`a di pagamento tramite Paypal\texttrademark{}  o carta di credito. 
+	Oggigiorno, l'azienda \`e presente in 13 paesi diversi, e a partire dal 2011 il servizio \`e  attivo anche in Italia. Just Eat propone diversi tipi di cucine a seconda della citt\`a in cui si trova il cliente, e delle attivit\`a ristorative nelle vicinanze con cui la societ\`a inglese ha stretto una partnership. Ad esempio, nella citt\`a di Padova \`e possibile spaziare da un men\`u classico, come la pizza, fino all'innovativa cucina Asianfusion. Il servizio \`e in continua espansione, elaborando migliaia di ordini al mese, e cerca di essere alla portata di tutti: permette ordinazioni telefoniche e pagamento alla consegna, consentendo cos\`i l'utilizzo dei servizio anche a coloro che non sono ``nativi digitali". A quest'ultimi, invece, viene messa a disposizione una pratica applicazione, disponibile per le piattaforme Android\texttrademark{} e iOS\texttrademark{}, con possibilit\`a di pagamento tramite Paypal\texttrademark{}  o carta di credito. 
 	\end{linenumbers}
 	\end{large}
 	\pagebreak
@@ -101,7 +101,7 @@
 	\tableofcontents{}
 	\pagebreak
 	\section{Analisi dei requisiti}
-	Si vuole realizzare una base di dati che contenga e gestisca gli ordini Just Eat\texttrademark{}, effettuati dai clienti presso i vari ristoranti localizzati nelle diverse citt\`a, con i relativi metodi di pagamento impiegati. In particolare, per quanto riguarda i clienti \`e fondamentale che questi siano registrati sul sistema per permettere loro di lasciare un \textit{feedback}, cio\`e un commento relativo alla qualità delle pietanze ricevute, ed effettuare gli ordini presso i vari ristoranti. Quest'ultimi si servono di fattorini\footnotemark{} dipendenti di Just Eat\texttrademark{} che una volta consegnato l'ordine ricevono un punteggio (per ogni ordine completato correttamente, cio\`e completato senza danneggiamenti dovuti al trasporto, l'impiegato riceve un punto in più. In caso contrario, i danneggiamenti vengono segnalati, specificandone la natura, direttamente dall'utente attraverso l'apertura di un \textit{ticket}, che porta alla perdita di un punto per il fattorino. Ogni mese il fattorino più giovane con il punteggio più alto riceve un incremento stipendiale di 0,20 \euro{} all'ora. \`E quindi necessario tener conto dei dati anagrafici del fattorino (nome, cognome, codice fiscale, recapito telefonico) e del suo \textbf{stipendio} (composto dalle ore lavorate mensilmente e dallo stipendio all'ora). I clienti sono identificati all'interno della piattaforma attraverso l'indirizzo email che dev'essere confermato, se la conferma non dovesse avvenire l'utente non può effettuare ordini. Inoltre, per i clienti si ritiene opportuno memorizzare i dati anagrafici come data di nascita, nome, cognome, indirizzo ed eventuali allergie. I ristoranti mettono a disposizione del cliente un men\`u composto da diverse \textit{pietanze} caratterizzate da un codice univoco, una descrizione, la disponibilità e il costo; la pietanza può essere vegetariana o di altre tipologie, per quanto riguarda le prime si vuole sapere il \textit{metodo di cottura} (al vapore, sottovuoto, al forno). Il cliente nel proprio ordine indica per ogni pietanza desiderata la quantità (espressa in porzioni) di cui necessita, e il metodo di pagamento preferito. Ogni ordine \`e indentificabile in tutta la piattaforma Just Eat\texttrademark{} tramite un codice univoco e contiene l'orario di ricezione dell'ordine e l'orario indicativo di consegna. Per i ristoranti è d'interesse sapere la partita iva, il nome, la locazione, il genere culinario, il titolare, un eventuale sito web e il numero di telefono.
+	Si vuole realizzare una base di dati che contenga e gestisca gli ordini Just Eat\texttrademark{}, effettuati dai clienti presso i vari ristoranti localizzati nelle diverse citt\`a, con i relativi metodi di pagamento impiegati. In particolare, per quanto riguarda i clienti \`e fondamentale che questi siano registrati sul sistema per permettere loro di lasciare un \textit{feedback}, cio\`e un commento relativo alla qualit\`a delle pietanze ricevute, ed effettuare gli ordini presso i vari ristoranti. Quest'ultimi si servono di fattorini\footnotemark{} dipendenti di Just Eat\texttrademark{} che una volta consegnato l'ordine ricevono un punteggio (per ogni ordine completato correttamente, cio\`e completato senza danneggiamenti dovuti al trasporto, l'impiegato riceve un punto in più. In caso contrario, i danneggiamenti vengono segnalati, specificandone la natura, direttamente dall'utente attraverso l'apertura di un \textit{ticket}, che porta alla perdita di un punto per il fattorino. Ogni mese il fattorino più giovane con il punteggio più alto riceve un incremento stipendiale di 0,20 \euro{} all'ora. \`E quindi necessario tener conto dei dati anagrafici del fattorino (nome, cognome, codice fiscale, recapito telefonico) e del suo \textbf{stipendio} (composto dalle ore lavorate mensilmente e dallo stipendio all'ora). I clienti sono identificati all'interno della piattaforma attraverso l'indirizzo email che dev'essere confermato, se la conferma non dovesse avvenire l'utente non può effettuare ordini. Inoltre, per i clienti si ritiene opportuno memorizzare i dati anagrafici come data di nascita, nome, cognome, indirizzo ed eventuali allergie. I ristoranti mettono a disposizione del cliente un men\`u composto da diverse \textit{pietanze} caratterizzate da un codice univoco, una descrizione, la disponibilit\`a e il costo; la pietanza può essere vegetariana o di altre tipologie, per quanto riguarda le prime si vuole sapere il \textit{metodo di cottura} (al vapore, sottovuoto, al forno). Il cliente nel proprio ordine indica per ogni pietanza desiderata la quantit\`a (espressa in porzioni) di cui necessita, e il metodo di pagamento preferito. Ogni ordine \`e indentificabile in tutta la piattaforma Just Eat\texttrademark{} tramite un codice univoco e contiene l'orario di ricezione dell'ordine e l'orario indicativo di consegna. Per i ristoranti \`e d'interesse sapere la partita iva, il nome, la locazione, il genere culinario, il titolare, un eventuale sito web e il numero di telefono.
 	\footnotetext{Si analizza un contesto internazionale dove i fattorini sono dipendenti Just Eat\texttrademark{}. In Italia invece il 90\% di questi sono dipendenti del ristorante dove lavorano}
 		\subsection{Glossario dei termini}
 		\begin{table}[ht]
@@ -116,26 +116,25 @@
 			 \hline
 			 Fattorino& Persona fisica che consegna l'ordine a casa di un cliente. & Nome, Cognome, CF, Data di nascita, Telefono, Stipendio &  CF\\
 			 \hline
-			 Ristorante& Attività imprenditoriale munita di partita iva  & Nome, Partita IVA, genere culinario, titolare, indirizzo, sito web e numero di telefono &  Partita iva\\
+			 Ristorante& Attivit\`a imprenditoriale munita di partita iva  & Nome, Partita IVA, genere culinario, titolare, indirizzo, sito web e numero di telefono &  Partita iva\\
 			 \hline
-			 Città&   Luogo di appartenenza del ristorante.  & Nome, Nazione& Nome\\
+			 Citt\`a&   Luogo di appartenenza del ristorante.  & Nome, Nazione& Nome\\
 			 \hline
 			 Ticket& Ticket virtuale aperto dal cliente per segnalare a JustEat una problematica relativa alla consegna. & Codice, descrizione & Codice \\
 			 \hline 
-			 Pietanza & Pietanza realizzata da un ristorante & Codice, prezzo, disponibilità, descrizione & Codice \\ 
+			 Pietanza & Pietanza realizzata da un ristorante & Codice, prezzo, disponibilit\`a, descrizione & Codice \\ 
 			 \hline
 			\end{tabular}
 			}
 		\end{table}
-	\pagebreak
 	\section{Progettazione concettuale}
 		\subsection{Descrizione testuale delle classi}
-			\subsubsection{Città}
-				La classe città rappresenta la città e la nazione del ristorante.
+			\subsubsection{Citt\`a}
+				La classe citt\`a rappresenta la citt\`a e la nazione del ristorante.
 				\paragraph{Attributi}
 				\begin{itemize}
-					\item Nome: \textit{string <<PK>>} - nome della città.
-					\item Nazione: \textit{string} - nazione della città.
+					\item Nome: \textit{string  $\ll$ PK $\gg$} - nome della citt\`a.
+					\item Nazione: \textit{string} - nazione della citt\`a.
 				\end{itemize}
 			\subsubsection{Cliente}
 				La classe cliente contiene tutte le informazioni di un cliente.
@@ -143,14 +142,14 @@
 				\begin{itemize}
 					\item Nome: \textit{string} - nome del cliente.
 					\item Cognome: \textit{string} - cognome del cliente.
-					\item CF: \textit{string <<PK>>} - codice fiscale del cliente.
+					\item CF: \textit{string  $\ll$ PK $\gg$} - codice fiscale del cliente.
 					\item Indirizzo: \textit{string} - indirizzo di casa del cliente.
 				\end{itemize}
 				\subsubsubsection{Cliente registrato}
 					La classe cliente registrato contiene l'email del cliente registrato a JustEat, la data di attivazione dell'account e le sue eventuali allergie.
 				\paragraph{Attributi}
 					\begin{itemize}
-							\item Email: \textit{string <<PK>>} - email con la quale il cliente si è registrato.
+							\item Email: \textit{string  $\ll$ PK $\gg$} - email con la quale il cliente si \`e registrato.
 							\item Data attivazione: \textit{date} - data di attivazione dell'account del cliente.
 							\item Allergia: \textit{string} - possibili allergie di un cliente (attributo multivalore 0:N).
 					\end{itemize}
@@ -158,9 +157,9 @@
 				La classe ristorante contiene le informazioni di un ristorante.
 				\paragraph{Attributi}
 					\begin{itemize}
-						\item Nome: \textit{string} - nome del ristorante.
+						\item Nome: \textit{string}  - nome del ristorante.
 						\item Titolare: \textit{string} - nome del titotare del ristorante.
-						\item PIVA: \textit{string <<PK>>} - partita iva del ristorante.
+						\item PIVA: \textit{string  $\ll$ PK $\gg$} - partita iva del ristorante.
 						\item Indirizzo: \textit{string} - indirizzo del ristorante.
 						\item Sito web: \textit{string} - sito web del ristorante.
 						\item Telefono: \textit{string} - recapito telefonico ristorante.
@@ -171,10 +170,10 @@
 				\paragraph{Attributi}
 					\begin{itemize}
 						\item Nome: \textit{string} - nome della pietanza.
-						\item Codice: \textit{string <<PK>>} - codice identificativo della pietanza.
+						\item Codice: \textit{string  $\ll$ PK $\gg$} - codice identificativo della pietanza.
 						\item Descrizione: \textit{string} - descrizione della pietanza.
 						\item Costo: \textit{int} - costo della pietanza.
-						\item Disponibilità: \textit{bool} - presenza o meno della pietanza.
+						\item Disponibilit\`a: \textit{bool} - presenza o meno della pietanza.
 					\end{itemize}
 					La pietanza può essere di 2 tipi:
 					\begin{itemize}
@@ -187,49 +186,49 @@
 					\begin{itemize}
 						\item Nome: \textit{string} - nome del fattorino.
 						\item Cognome: \textit{string} - cognome del fattorino.
-						\item CF: \textit{string <<PK>>} - codice fiscale della fattorino.
+						\item CF: \textit{string  $\ll$ PK $\gg$} - codice fiscale della fattorino.
 						\item Numero di telefono: \textit{int} - numero telefonico del fattorino.
 						\item Stipendio: \textit{string} - stipendio del fattorino (ore lavorate + stipendio all'ora).
 					\end{itemize}
 			\subsubsection{Ordine}
-				La classe ordine è composta da un codice identificativo e dall'ora in cui l'ordine è stato effettuato.
+				La classe ordine \`e composta da un codice identificativo e dall'ora in cui l'ordine \`e stato effettuato.
 				\paragraph{Attributi}
 					\begin{itemize}
-						\item Codice: \textit{string <<PK>>} - codice dell'ordinazione.
+						\item Codice: \textit{string  $\ll$ PK $\gg$} - codice dell'ordinazione.
 						\item Orario ordine: \textit{time} - ora dell'ordinazione.
 						\item Orario consegna: \textit{time} - ora della consegna dell'ordine.
 					\end{itemize}
 			\subsubsection{Ticket}
-				La classe ticket è identificata da un codice e contiene il commento relativo al danneggiamento della pietanza ordinata.
+				La classe ticket \`e identificata da un codice e contiene il commento relativo al danneggiamento della pietanza ordinata.
 				\paragraph{Attributi}
 					\begin{itemize}
-						\item Codice: \textit{string <<PK>>} - codice del ticket.
+						\item Codice: \textit{string  $\ll$ PK $\gg$} - codice del ticket.
 						\item Commento: \textit{string} - commento relativo al ticket.
 					\end{itemize}
 		\pagebreak
 		\subsection{Descrizione testuale delle associazioni}
-			\subsubsection{Città-Ristorante: "Appartenenza"}
-				\paragraph{Molteplicità N:1} Una città può avere più ristoranti, il ristorante appartiene ad una e una sola città.
-				\paragraph{Totalità: parziale verso Ristorante / totale verso Città} Una città può non avere un ristorante, il ristorante deve appartenere ad una e una sola città. 
-			\subsubsection{Ristorante-Pietanza: "Proposta"}
-				\paragraph{Molteplicità N:1} Un ristorante propone più pietanze, la pietanza viene proposta solo da un ristorante (quello di riferimento).
+			\subsubsection{Citt\`a-Ristorante: ``Appartenenza"}
+				\paragraph{Molteplicit\`a N:1} Una citt\`a può avere più ristoranti, il ristorante appartiene ad una e una sola citt\`a.
+				\paragraph{Totalità: parziale verso Ristorante / totale verso Citt\`a} Una citt\`a può non avere un ristorante, il ristorante deve appartenere ad una e una sola citt\`a. 
+			\subsubsection{Ristorante-Pietanza: ``Proposta"}
+				\paragraph{Molteplicit\`a N:1} Un ristorante propone più pietanze, la pietanza viene proposta solo da un ristorante (quello di riferimento).
 				\paragraph{Totalità: totale verso Pietanza / totale verso Ristorante} Un ristorante propone almeno una pietanza, la pietanza viene proposta da un solo ristorante.
-			\subsubsection{Pietanza-Ordine: "Composizione"}
-				\paragraph{Molteplicità N:N} Una pietanza può comporre un ordine, un ordine è composto da una o più pietanze.
+			\subsubsection{Pietanza-Ordine: ``Composizione"}
+				\paragraph{Molteplicit\`a N:N} Una pietanza può comporre un ordine, un ordine \`e composto da una o più pietanze.
 				\paragraph{Totalità: totale verso Pietanza / parziale verso Ordine} Una pietanza può non comporre un ordine, un ordine deve essere composto da almeno una pietanza.
-			\subsubsection{Ordine-Fattorino: "Trasporto"}
-				\paragraph{Molteplicità 1:N} Un ordine viene trasportato da un solo fattorino, il fattorino può trasportare più ordini.
+			\subsubsection{Ordine-Fattorino: ``Trasporto"}
+				\paragraph{Molteplicit\`a 1:N} Un ordine viene trasportato da un solo fattorino, il fattorino può trasportare più ordini.
 				\paragraph{Totalità: totale verso Fattorino / parziale verso Ordine} Un ordine deve essere trasportato da un solo fattorino, il fattorino può non avere ordini da trasportare.
-			\subsubsection{Cliente registrato-Ordine: "Effettua"}
-				\paragraph{Molteplicità N:1} Il cliente registrato può effettuare più ordini, un ordine viene effettuato da un cliente.
+			\subsubsection{Cliente registrato-Ordine: ``Effettua"}
+				\paragraph{Molteplicit\`a N:1} Il cliente registrato può effettuare più ordini, un ordine viene effettuato da un cliente.
 				\paragraph{Totalità: parziale verso Ordine / totale verso Cliente registrato} Un cliente registrato può non effettuare alcun ordine, l'ordine deve essere effettuato da un solo cliente registrato.
-			\subsubsection{Cliente registrato-Ristorante: "Feedback"}
-				L'associazione feedback conterrà un attributo \textbf{commento}, che sarà la descrizione del feedback.
-				\paragraph{Molteplicità N:N} Un cliente registrato può rilasciare più feedback al ristorante, il ristorante può ottenere più feedback dai suoi clienti registrati.
+			\subsubsection{Cliente registrato-Ristorante: ``Feedback"}
+				L'associazione feedback conterr\`a un attributo \textbf{commento}, che sar\`a la descrizione del feedback.
+				\paragraph{Molteplicit\`a N:N} Un cliente registrato può rilasciare più feedback al ristorante, il ristorante può ottenere più feedback dai suoi clienti registrati.
 				\paragraph{Totalità: parziale verso Ristorante / parziale verso Cliente registrato} Un cliente registrato può non rilasciare alcun feedback al ristorante, il ristorante può non ottenere nessun feedback dai suoi clienti registrati. 
-			\subsubsection{Ticket-Ordine: "Relativo"}
-				\paragraph{Molteplicità 1:1} Un ticket si riferisce ad un solo ordine, un ordine può avere al massimo un ticket.
-				\paragraph{Totalità: totale verso Ordine / parziale verso Ticket} Un ticket è riferito ad un solo ordine, un ordine può non avere un ticket.
+			\subsubsection{Ticket-Ordine: ``Relativo"}
+				\paragraph{Molteplicit\`a 1:1} Un ticket si riferisce ad un solo ordine, un ordine può avere al massimo un ticket.
+				\paragraph{Totalit\`a: totale verso Ordine / parziale verso Ticket} Un ticket \`e riferito ad un solo ordine, un ordine può non avere un ticket.
 		\subsection{Output: Modello E/R}
 		\begin{figure}[H]
 			\begin{center}
@@ -241,7 +240,7 @@
 		\end{figure}
 	\section{Progettazione logica}
 		\subsection{Descrizione testuale dello schema relazionale}
-Partendo dallo schema Entità/Relazioni (Figura \ref{fig:ER1}) non ristrutturato possiamo fare alcune osservazioni relativamente alle entità \texttt{Utente} e \texttt{Pietanza}. In particolare, nell'analisi dei requisiti \`e specificato che un utente registrato pu\`o soffrire di una o pi\`u allergie, \`e pertanto necessario trasformare questo attributo \texttt{multivalore} \textit{Allergia} in un'entit\`a indipendente legata tramite una relazione \texttt{molti a molti}. Infatti, ogni utente pu\`o soffrire di una o pi\`u allergie e la stessa allergia potrebbe essere la medesima per pi\`u clienti. Per quanto riguarda l'entit\`a \textit{Pietanza} invece, introduciamo un attributo \texttt{Tipologia} che indica il tipo di pietanza (vegana, composta da carne, ecc), se questa pientanza apparterrà alle tipologia vegetariana allora sarà necessario conoscere il metodo di cottura della pietanza. Pertanto, la relazione \texttt{Pietanza} avr\`a l'attributo \textit{metodo di cottura} che eventualmente avr\`a valore nullo.  
+Partendo dallo schema Entit\`a/Relazioni (Figura \ref{fig:ER1}) non ristrutturato possiamo fare alcune osservazioni relativamente alle entit\`a \texttt{Utente} e \texttt{Pietanza}. In particolare, nell'analisi dei requisiti \`e specificato che un utente registrato pu\`o soffrire di una o pi\`u allergie, \`e pertanto necessario trasformare questo attributo \texttt{multivalore} \textit{Allergia} in un'entit\`a indipendente legata tramite una relazione \texttt{molti a molti}. Infatti, ogni utente pu\`o soffrire di una o pi\`u allergie e la stessa allergia potrebbe essere la medesima per pi\`u clienti. Per quanto riguarda l'entit\`a \textit{Pietanza} invece, introduciamo un attributo \texttt{Tipologia} che indica il tipo di pietanza (vegana, composta da carne, ecc), se questa pientanza apparterr\`a alle tipologia vegetariana allora sar\`a necessario conoscere il metodo di cottura della pietanza. Pertanto, la relazione \texttt{Pietanza} avr\`a l'attributo \textit{metodo di cottura} che eventualmente avr\`a valore nullo.  
 		\subsection{Ristrutturazione schema E/R}
 			\begin{figure}[H]
 			\begin{center}
@@ -249,33 +248,42 @@ Partendo dallo schema Entità/Relazioni (Figura \ref{fig:ER1}) non ristrutturato
 				\includegraphics[scale=0.54]{er_ristrutturato.pdf}
 				\hspace*{-1cm}
 			\end{center}
-                        \caption{Modello E/R ristrutturato, si omettono gli attributi rispetto al modello precedente poichè sono gli stessi mentre si introducono le nuove entità }
+                        \caption{Modello E/R ristrutturato, si omettono gli attributi rispetto al modello precedente poich\`e sono gli stessi mentre si introducono le nuove entit\`a }
 		\end{figure}
 			\subsubsection{Cliente} 
-			L'attributo multivalore Allergie\footnotemark{} diventerà una nuova entità legata a cliente.
+			L'attributo multivalore Allergie\footnotemark{} diventer\`a una nuova entit\`a legata a cliente.
 			\footnotetext{Le allergie non sono strettamente dipendenti dai clienti.} 
 			\paragraph{Attributi aggiornati}
 				\begin{itemize}[noitemsep]
-						\item Email: \textit{string <<PK>>} - email con la quale il cliente si è registrato.
+						\item Email: \textit{string  $\ll$ PK $\gg$} - email con la quale il cliente si \`e registrato.
 				\end{itemize}
 			\subsubsection{Allergia}
-				L'entità Allergia conterrà il nome dell'allergia e il relativo codice identificativo.
+				L'entit\`a Allergia conterr\`a il nome dell'allergia e il relativo codice identificativo.
 				\paragraph{Attributi}
 					\begin{itemize}[noitemsep]
 						\item Nome: \textit{string} - nome dell'allergia.
-						\item Codice: \textit{int <<PK>>} - codice dell'allergia.
+						\item Codice: \textit{int  $\ll$ PK $\gg$} - codice dell'allergia.
 					\end{itemize}
-			\paragraph{Cliente-Allergia: "Soffre"}
-				\paragraph{Molteplicità N:N} Il cliente può soffrire di più allergie, un'allergia può appartenere a più clienti.
-				\paragraph{Totalità: parziale verso Allergia/ Totale verso Cliente} Un cliente può non avere allergie, un'allergia appartiene ad almeno un cliente.
+			\paragraph{Cliente-Allergia: ``Soffre"}
+				\paragraph{Molteplicit\`a N:N} Il cliente può soffrire di più allergie, un'allergia può appartenere a più clienti.
+				\paragraph{Totalit\`a: parziale verso Allergia/ Totale verso Cliente} Un cliente può non avere allergie, un'allergia appartiene ad almeno un cliente.
 			\subsubsection{Pietanza}
-			L'entità Pietanza rappresenta l'insieme di pietanze che l'utente può ordinare. \newline
+			L'entit\`a Pietanza rappresenta l'insieme di pietanze che l'utente può ordinare. \newline
 			Rispetto alla precedente entit\`a aggiungiamo gli attributi:
 			\begin{itemize}[noitemsep]
 				\item Tipologia: \textit{string} - tipologia del cibo (i.e. vegana, vegetariana, [...])
 				\item Metodo di cottura: \textit{string} - indica il metodo di cottura della pietanza.
 			\end{itemize}
 		\subsection{Schema logico}
+		\begin{figure}[H]
+			\begin{center}
+				\hspace*{-1cm}
+				\includegraphics[scale=0.9]{modello_logico.pdf}
+				\hspace*{-1cm}
+			\end{center}
+                        \caption{Modello E/R ristrutturato, si omettono gli attributi rispetto al modello precedente poich\`e sono gli stessi mentre si introducono le nuove entit\`a }
+		\end{figure}
+		\subsection{Modello relazionale}
 		\begin{framed}
 		\noindent Gli attributi marcati con * sono attrbuti facoltativi che possono avere valore \texttt{\color{blue}NULL}. \newline
 		Gli attributi (o l'attributo) \underline{sottolineati/o} indicano una \texttt{CHIAVE}. \newline
@@ -285,11 +293,11 @@ Partendo dallo schema Entità/Relazioni (Figura \ref{fig:ER1}) non ristrutturato
 			\item[] \textbf{Allergia}(\underline{Codice}, Nome)
 			\item[] \textbf{Cliente}(\underline{Email}, Nome, Cognome, Indirizzo, Data di nascita, Data attivazione account, Allergia\textsuperscript{*})
 			\item[] \textbf{Ordine}(\underline{Codice}, Orario ordine, Orario Consegna, \textit{Cliente})
-			\item[] \textbf{Ristorante}(\underline{PIVA}, Nome, Titolare, Web, Indirizzo, Telefono, Genere, \textit{Città})
+			\item[] \textbf{Ristorante}(\underline{PIVA}, Nome, Titolare, Web, Indirizzo, Telefono, Genere, \textit{Citt\`a})
 			\item[] \textbf{Fattorino}(\underline{CF}, Nome, Cognome, Data di nascita, Telefono, Stipendio/h, Ore lavorate)			
-			\item[] \textbf{Pietanza}(\underline{Codice}, \underline{\textit{Ristorante}}, Costo, Disponibilità, Descrizione, Tipologia, Metodo di cottura\textsuperscript{*})
-			\item[] \textbf{Città}(\underline{Nome}, Nazione)
-			\item[] \textbf{Dettagli Ordine}(\underline{Ordine}, \underline{Pietanza}, Quantità)
+			\item[] \textbf{Pietanza}(\underline{Codice}, \underline{\textit{Ristorante}}, Costo, Disponibilit\`a, Descrizione, Tipologia, Metodo di cottura\textsuperscript{*})
+			\item[] \textbf{Citt\`a}(\underline{Nome}, Nazione)
+			\item[] \textbf{Dettagli Ordine}(\underline{Ordine}, \underline{Pietanza}, Quantit\`a)
 			\item[] \textbf{Ticket}(\underline{Codice}, \underline{Ordine}, Commento)
 			\item[] \textbf{Feedback}(\underline{Codice}, Cliente, Ristorante, Data commento, Commento)
 		\end{itemize}
