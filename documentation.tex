@@ -299,6 +299,27 @@ Partendo dallo schema Entit\`a/Relazioni (Figura \ref{fig:ER1}) non ristrutturat
 			\item[] \textbf{Feedback}(\underline{Codice}, Cliente, Ristorante, Data commento, Commento)
 		\end{itemize}
 	\section{Query}
+	\begin{enumerate}[noitemsep]
+		\item Query che ritorna tutti i codici degli ordini (conclusi e non) e le email dei clienti che li hanno effettuati, nei quali sono stati ordinate solamente pietanze vegetariane cotte a vapore.
+\begin{lstlisting}[language=sql]
+SELECT o.codice, o.cliente
+FROM ordine o join cliente c on o.cliente = c.email
+WHERE NOT EXISTS (
+	SELECT *
+	FROM ordine o join dettagli_ordine do on o.codice = do.ordine join pietanza p on do.pietanza = p.codice
+	WHERE cottura <> "vapore" and tipologia <> "vegetariana"
+)
+\end{lstlisting}
+	\item Query che ritorna i codici fiscali di tutti i fattorini che hanno portato a termine tutti gli ordini senza nessun ticket aperto ed hanno ottenuto un punteggio superiore a 10.
+\begin{lstlisting}[language=sql]
+SELECT cf
+FROM (SELECT f.cf, f.punteggio FROM fattorino f
+		EXCEPT
+	  SELECT f.cf
+	  FROM fattorino f join ordine o on f.cf = o.codice join ticket t on o.codice = t.ordine)
+WHERE punteggio > 10
+\end{lstlisting}	
+	\end{enumerate}
 	\section{Eventi, Viste, procedure, trigger e funzioni}
 		\subsection{Eventi}
 		Nell'analisi dei requisiti viene espressamente richiesto che ogni mese il fattorino pi\`u giovane con punteggio pi\`u alto riceva un incremento stipendiale di 0,20 \euro{} all'ora.
