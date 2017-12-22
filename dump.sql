@@ -3,7 +3,7 @@ CREATE DATABASE IF NOT EXISTS just_eat;
 USE just_eat;
 
 CREATE TABLE IF NOT EXISTS citta (
-	cap int(5) primary key,
+	cap char(5) primary key,
 	nome varchar(20) not null,
     nazione varchar(20) not nullz
 );
@@ -18,7 +18,7 @@ CREATE TABLE IF NOT EXISTS cliente (
     nome VARCHAR(25) NOT NULL, 
     cognome VARCHAR(25) NOT NULL,
     indirizzo VARCHAR(20) NOT NULL,
-    citta int(5) NOT NULL,
+    citta char(5) NOT NULL,
     data_di_nascita DATE NOT NULL,
     data_di_attivazione TIMESTAMP,
     FOREIGN KEY (citta) REFERENCES citta(cap) 
@@ -144,13 +144,21 @@ INSERT INTO allergia(nome) VALUES ('Latte');
 INSERT INTO allergia(nome) VALUES ('Arachide');
 INSERT INTO allergia(nome) VALUES ('Soia');
 
-INSERT INTO citta(nome, nazione) VALUES ('Roma','Italia');
-INSERT INTO citta(nome, nazione) VALUES ('Milano','Italia');
-INSERT INTO citta(nome, nazione) VALUES ('Torino','Italia');
-INSERT INTO citta(nome, nazione) VALUES ('Padova','Italia');
-INSERT INTO citta(nome, nazione) VALUES ('Genova','Italia');
-INSERT INTO citta(nome, nazione) VALUES ('Vicenza','Italia');
-INSERT INTO citta(nome, nazione) VALUES ('Palermo','Italia');
+INSERT INTO citta(cap, nome, nazione) VALUES ('12345','Roma','Italia');
+INSERT INTO citta(cap, nome, nazione) VALUES ('67891','Milano','Italia');
+INSERT INTO citta(cap, nome, nazione) VALUES ('01112','Torino','Italia');
+INSERT INTO citta(cap, nome, nazione) VALUES ('13141','Padova','Italia');
+INSERT INTO citta(cap, nome, nazione) VALUES ('51617','Genova','Italia');
+INSERT INTO citta(cap, nome, nazione) VALUES ('18192','Vicenza','Italia');
+INSERT INTO citta(cap, nome, nazione) VALUES ('12223','Palermo','Italia');
 
-INSERT INTO utente(email, nome, cognome, indirizzo, data_di_nascita, data_di_attivazione)
-VALUES ('ezio12@gmail.com', 'Ezio', 'Auditore', 'Via Maseralino 12, Codevigo', )
+INSERT INTO utente(email, nome, cognome, indirizzo, citta, data_di_nascita, data_di_attivazione)
+VALUES ('ezio12@gmail.com', 'Ezio', 'Auditore', 'Via Maseralino 12', '12345', '1969-05-23', NULL);
+INSERT INTO utente(email, nome, cognome, indirizzo, citta, data_di_nascita, data_di_attivazione)
+VALUES ('caty65@icloud.com', 'Caty', 'Rowling', 'Via Re D\'Italia 43', '51617', '1965-01-2', '2017-04-21');
+INSERT INTO utente(email, nome, cognome, indirizzo, citta, data_di_nascita, data_di_attivazione)
+VALUES ('timoty96@yahoo.com', 'Timoty', 'Genialetti', 'Via Pippo Baudo 69', '18192', '1965-01-2', '2017-04-21');
+INSERT INTO utente(email, nome, cognome, indirizzo, citta, data_di_nascita, data_di_attivazione)
+VALUES ('caty65@libero.com', 'Caty', 'Rowling', 'Via Belzoni 23', '12223', '1965-01-2', '2017-04-21');
+INSERT INTO utente(email, nome, cognome, indirizzo, citta, data_di_nascita, data_di_attivazione)
+VALUES ('sharona_123@gmail.com', 'Sharona', 'Jet', 'Via Ohibò 12', '13141', '1965-01-2', '2017-04-21');

@@ -118,11 +118,11 @@
 			 \hline
 			 Ristorante& Attivit\`a imprenditoriale munita di partita iva  & Nome, Partita IVA, genere culinario, titolare, indirizzo, sito web e numero di telefono &  Partita iva\\
 			 \hline
-			 Citt\`a&   Luogo di appartenenza del ristorante.  & Nome, Nazione& Nome\\
+			 Citt\`a&   Luogo di appartenenza del ristorante e citt\`a di residenza del cliente  & CAP, Nome, Nazione& CAP\\
 			 \hline
 			 Ticket& Ticket virtuale aperto dal cliente per segnalare a JustEat una problematica relativa alla consegna. & Codice, descrizione & Codice \\
 			 \hline 
-			 Pietanza & Pietanza realizzata da un ristorante & Codice, prezzo, disponibilit\`a, descrizione & Codice \\ 
+			 Pietanza & Pietanza realizzata da un ristorante & Codice, prezzo, disponibilit\`a, Descrizione & Codice \\ 
 			 \hline
 			\end{tabular}
 			}
@@ -134,68 +134,69 @@
 				La classe citt\`a rappresenta la citt\`a e la nazione del ristorante.
 				\paragraph{Attributi}
 				\begin{itemize}
-					\item Nome: \textit{string  $\ll$ PK $\gg$} - nome della citt\`a.
-					\item Nazione: \textit{string} - nazione della citt\`a.
+					\item CAP: \textit{intero $\ll$PK$\gg$} - codice identificativo della citt\`a 
+					\item Nome: \textit{stringa} - nome della citt\`a.
+					\item Nazione: \textit{stringa} - nazione della citt\`a.
 				\end{itemize}
 			\subsubsection{Cliente}
 				La classe cliente contiene tutte le informazioni di un cliente.
 				\paragraph{Attributi}
 				\begin{itemize}
-					\item Nome: \textit{string} - nome del cliente.
-					\item Cognome: \textit{string} - cognome del cliente.
-					\item CF: \textit{string  $\ll$ PK $\gg$} - codice fiscale del cliente.
-					\item Indirizzo: \textit{string} - indirizzo di casa del cliente.
+					\item CF: \textit{stringa  $\ll$PK$\gg$} - codice fiscale del cliente.
+					\item Nome: \textit{stringa} - nome del cliente.
+					\item Cognome: \textit{stringa} - cognome del cliente.
+					\item Indirizzo: \textit{stringa} - indirizzo di casa del cliente.
 				\end{itemize}
 				\subsubsubsection{Cliente registrato}
 					La classe cliente registrato contiene l'email del cliente registrato a JustEat, la data di attivazione dell'account e le sue eventuali allergie.
 				\paragraph{Attributi}
 					\begin{itemize}
-							\item Email: \textit{string  $\ll$ PK $\gg$} - email con la quale il cliente si \`e registrato.
+							\item Email: \textit{stringa  $\ll$PK$\gg$} - email con la quale il cliente si \`e registrato.
 							\item Data attivazione: \textit{date} - data di attivazione dell'account del cliente.
-							\item Allergia: \textit{string} - possibili allergie di un cliente (attributo multivalore 0:N).
+							\item Allergia: \textit{stringa} - possibili allergie di un cliente (attributo multivalore 0:N).
 					\end{itemize}
 			\subsubsection{Ristorante}
 				La classe ristorante contiene le informazioni di un ristorante.
 				\paragraph{Attributi}
 					\begin{itemize}
-						\item Nome: \textit{string}  - nome del ristorante.
-						\item Titolare: \textit{string} - nome del titotare del ristorante.
-						\item PIVA: \textit{string  $\ll$ PK $\gg$} - partita iva del ristorante.
-						\item Indirizzo: \textit{string} - indirizzo del ristorante.
-						\item Sito web: \textit{string} - sito web del ristorante.
-						\item Telefono: \textit{string} - recapito telefonico ristorante.
-						\item Genere culinario: \textit{string} - genere di cucina realizzata nel ristorante.
+						\item PIVA: \textit{stringa  $\ll$PK$\gg$} - partita iva del ristorante.
+						\item Nome: \textit{stringa}  - nome del ristorante.
+						\item Titolare: \textit{stringa} - nome del titotare del ristorante.
+						\item Indirizzo: \textit{stringa} - indirizzo del ristorante.
+						\item Sito web: \textit{stringa} - sito web del ristorante.
+						\item Telefono: \textit{stringa} - recapito telefonico ristorante.
+						\item Genere culinario: \textit{stringa} - genere di cucina realizzata nel ristorante.
 					\end{itemize}
 			\subsubsection{Pietanza}
 				La classe pietanza rappresenta il cibo che il ristorante propone e che il cliente registrato ordina.
 				\paragraph{Attributi}
 					\begin{itemize}
-						\item Nome: \textit{string} - nome della pietanza.
-						\item Codice: \textit{string  $\ll$ PK $\gg$} - codice identificativo della pietanza.
+						\item Codice: \textit{stringa  $\ll$PK$\gg$} - codice identificativo della pietanza.
+						\item Nome: \textit{stringa} - nome della pietanza.
 						\item Descrizione: \textit{string} - descrizione della pietanza.
-						\item Costo: \textit{int} - costo della pietanza.
-						\item Disponibilit\`a: \textit{bool} - presenza o meno della pietanza.
+						\item Costo: \textit{intero} - costo della pietanza.
+						\item Disponibilit\`a: \textit{booleano} - presenza o meno della pietanza.
 					\end{itemize}
 					La pietanza può essere di 2 tipi:
 					\begin{itemize}
 						\item Altre: pietanze non vegetariane.
-						\item Vegetariana: pesce, uova, verdura.
+						\item Vegetariana: verdura, legumi, [...].
 					\end{itemize}
 			\subsubsection{Fattorino}
 				La classe fattorino contiene le informazioni del fattorino e il suo codice identificativo.
 				\paragraph{Attributi}
 					\begin{itemize}
-						\item Nome: \textit{string} - nome del fattorino.
-						\item Cognome: \textit{string} - cognome del fattorino.
-						\item CF: \textit{string  $\ll$ PK $\gg$} - codice fiscale della fattorino.
-						\item Numero di telefono: \textit{int} - numero telefonico del fattorino.
-						\item Stipendio: \textit{string} - stipendio del fattorino (ore lavorate + stipendio all'ora).
+						\item CF: \textit{stringa  $\ll$PK$\gg$} - codice fiscale della fattorino.
+						\item Nome: \textit{stringa} - nome del fattorino.
+						\item Cognome: \textit{stringa} - cognome del fattorino.
+						\item Numero di telefono: \textit{intero} - numero telefonico del fattorino.
+						\item Stipendio: \textit{stringa} - stipendio del fattorino (ore lavorate + stipendio all'ora).
 					\end{itemize}
 			\subsubsection{Ordine}
 				La classe ordine \`e composta da un codice identificativo e dall'ora in cui l'ordine \`e stato effettuato.
 				\paragraph{Attributi}
 					\begin{itemize}
-						\item Codice: \textit{string  $\ll$ PK $\gg$} - codice dell'ordinazione.
+						\item Codice: \textit{stringa  $\ll$PK$\gg$} - codice dell'ordinazione.
 						\item Orario ordine: \textit{time} - ora dell'ordinazione.
 						\item Orario consegna: \textit{time} - ora della consegna dell'ordine.
 					\end{itemize}
@@ -203,11 +204,14 @@
 				La classe ticket \`e identificata da un codice e contiene il commento relativo al danneggiamento della pietanza ordinata.
 				\paragraph{Attributi}
 					\begin{itemize}
-						\item Codice: \textit{string  $\ll$ PK $\gg$} - codice del ticket.
-						\item Commento: \textit{string} - commento relativo al ticket.
+						\item Codice: \textit{stringa  $\ll$PK$\gg$} - codice del ticket.
+						\item Commento: \textit{stringa} - commento relativo al ticket.
 					\end{itemize}
 		\subsection{Descrizione testuale delle associazioni}
-			\subsubsection{Citt\`a-Ristorante: ``Appartenenza"}
+		\subsubsection{Citt\`a - Cliente: ``Residenza"}
+				\paragraph{Molteplicit\`a N:1} Una citt\`a pu\`o essere citt\`a di residenza per pi\`u clienti; ogni cliente risiede in una ed una sola citt\`a.
+				\paragraph{Totalità: parziale verso Cliente / totale verso Citt\`a} Una citt\`a può non avere clienti, ogni cliente deve risiedere ad una e una sola citt\`a. 
+				\subsubsection{Citt\`a-Ristorante: ``Appartenenza"}
 				\paragraph{Molteplicit\`a N:1} Una citt\`a può avere più ristoranti, il ristorante appartiene ad una e una sola citt\`a.
 				\paragraph{Totalità: parziale verso Ristorante / totale verso Citt\`a} Una citt\`a può non avere un ristorante, il ristorante deve appartenere ad una e una sola citt\`a. 
 			\subsubsection{Ristorante-Pietanza: ``Proposta"}
@@ -247,22 +251,23 @@ Partendo dallo schema Entit\`a/Relazioni (Figura \ref{fig:ER1}) non ristrutturat
 				\hspace*{-1cm}
 				\includegraphics[scale=0.54]{er_ristrutturato.pdf}
 				\hspace*{-1cm}
-			\end{center}
-                        \caption{Modello E/R ristrutturato, si omettono gli attributi rispetto al modello precedente poich\`e sono gli stessi mentre si introducono le nuove entit\`a }
+            \caption{Modello E/R ristrutturato, si omettono gli attributi rispetto al modello precedente poich\`e sono gli stessi mentre si introducono le nuove entit\`a }
+            \label{fig:ER2}
+        	\end{center}
 		\end{figure}
 			\subsubsection{Cliente} 
 			L'attributo multivalore Allergie\footnotemark{} diventer\`a una nuova entit\`a legata a cliente.
 			\footnotetext{Le allergie non sono strettamente dipendenti dai clienti.} 
 			\paragraph{Attributi aggiornati}
 				\begin{itemize}[noitemsep]
-						\item Email: \textit{string  $\ll$ PK $\gg$} - email con la quale il cliente si \`e registrato.
+						\item Email: \textit{stringa  $\ll$PK$\gg$} - email con la quale il cliente si \`e registrato.
 				\end{itemize}
 			\subsubsection{Allergia}
 				L'entit\`a Allergia conterr\`a il nome dell'allergia e il relativo codice identificativo.
 				\paragraph{Attributi}
 					\begin{itemize}[noitemsep]
-						\item Nome: \textit{string} - nome dell'allergia.
-						\item Codice: \textit{int  $\ll$ PK $\gg$} - codice dell'allergia.
+						\item Codice: \textit{intero  $\ll$PK$\gg$} - codice dell'allergia.
+						\item Nome: \textit{stringa} - nome dell'allergia.
 					\end{itemize}
 			\paragraph{Cliente-Allergia: ``Soffre"}
 				\paragraph{Molteplicit\`a N:N} Il cliente può soffrire di più allergie, un'allergia può appartenere a più clienti.
@@ -271,8 +276,8 @@ Partendo dallo schema Entit\`a/Relazioni (Figura \ref{fig:ER1}) non ristrutturat
 			L'entit\`a Pietanza rappresenta l'insieme di pietanze che l'utente può ordinare.
 			Rispetto alla precedente entit\`a aggiungiamo gli attributi:
 			\begin{itemize}[noitemsep]
-				\item Tipologia: \textit{string} - tipologia del cibo (i.e. vegana, vegetariana, [...])
-				\item Metodo di cottura: \textit{string} - indica il metodo di cottura della pietanza.
+				\item Tipologia: \textit{stringa} - tipologia del cibo (i.e. vegana, vegetariana, [...])
+				\item Metodo di cottura: \textit{stringa} - indica il metodo di cottura della pietanza.
 			\end{itemize}
 		\subsection{Schema logico}
 			\begin{center}
