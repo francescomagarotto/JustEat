@@ -3,8 +3,9 @@ CREATE DATABASE IF NOT EXISTS just_eat;
 USE just_eat;
 
 CREATE TABLE IF NOT EXISTS citta (
-	nome varchar(20) primary key,
-    nazione varchar(20) not null
+	cap int(5) primary key,
+	nome varchar(20) not null,
+    nazione varchar(20) not nullz
 );
 
 CREATE TABLE IF NOT EXISTS allergia (
@@ -17,8 +18,12 @@ CREATE TABLE IF NOT EXISTS cliente (
     nome VARCHAR(25) NOT NULL, 
     cognome VARCHAR(25) NOT NULL,
     indirizzo VARCHAR(20) NOT NULL,
+    citta int(5) NOT NULL,
     data_di_nascita DATE NOT NULL,
-    data_di_attivazione TIMESTAMP
+    data_di_attivazione TIMESTAMP,
+    FOREIGN KEY (citta) REFERENCES citta(cap) 
+    	ON DELETE NO ACTION
+    	ON UPDATE CASCADE
 );
 
 CREATE TABLE IF NOT EXISTS patologia (
@@ -128,3 +133,24 @@ CREATE TABLE IF NOT EXISTS feedback (
     	ON DELETE CASCADE
     	ON UPDATE CASCADE
 );  
+
+INSERT INTO allergia(nome) VALUES ('Coloranti');
+INSERT INTO allergia(nome) VALUES ('Preservanti');
+INSERT INTO allergia(nome) VALUES ('Antiossidanti');
+INSERT INTO allergia(nome) VALUES ('Esaltatori del sapore');
+INSERT INTO allergia(nome) VALUES ('Molluschi');
+INSERT INTO allergia(nome) VALUES ('Uovo');
+INSERT INTO allergia(nome) VALUES ('Latte');
+INSERT INTO allergia(nome) VALUES ('Arachide');
+INSERT INTO allergia(nome) VALUES ('Soia');
+
+INSERT INTO citta(nome, nazione) VALUES ('Roma','Italia');
+INSERT INTO citta(nome, nazione) VALUES ('Milano','Italia');
+INSERT INTO citta(nome, nazione) VALUES ('Torino','Italia');
+INSERT INTO citta(nome, nazione) VALUES ('Padova','Italia');
+INSERT INTO citta(nome, nazione) VALUES ('Genova','Italia');
+INSERT INTO citta(nome, nazione) VALUES ('Vicenza','Italia');
+INSERT INTO citta(nome, nazione) VALUES ('Palermo','Italia');
+
+INSERT INTO utente(email, nome, cognome, indirizzo, data_di_nascita, data_di_attivazione)
+VALUES ('ezio12@gmail.com', 'Ezio', 'Auditore', 'Via Maseralino 12, Codevigo', )
