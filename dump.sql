@@ -5,7 +5,7 @@ USE just_eat;
 CREATE TABLE IF NOT EXISTS citta (
 	cap char(5) primary key,
 	nome varchar(20) not null,
-    nazione varchar(20) not nullz
+    nazione varchar(20) not null
 );
 
 CREATE TABLE IF NOT EXISTS allergia (
@@ -45,11 +45,11 @@ CREATE TABLE IF NOT EXISTS ristorante (
    web VARCHAR(150) DEFAULT NULL,
    indirizzo VARCHAR(75) NOT NULL UNIQUE,
    genere VARCHAR(30) NOT NULL,
-   citta VARCHAR(20) DEFAULT NULL,
-	telefono varchar(25) DEFAULT NULL,
-	FOREIGN KEY (citta) REFERENCES citta(nome)
+   citta CHAR(5) NOT NULL,
+   telefono varchar(25) DEFAULT NULL,
+   FOREIGN KEY (citta) REFERENCES citta(cap)
 		ON UPDATE CASCADE
-        ON DELETE SET NULL
+        ON DELETE NO ACTION
 );
 
 CREATE TABLE IF NOT EXISTS pietanza (
@@ -152,13 +152,28 @@ INSERT INTO citta(cap, nome, nazione) VALUES ('51617','Genova','Italia');
 INSERT INTO citta(cap, nome, nazione) VALUES ('18192','Vicenza','Italia');
 INSERT INTO citta(cap, nome, nazione) VALUES ('12223','Palermo','Italia');
 
-INSERT INTO utente(email, nome, cognome, indirizzo, citta, data_di_nascita, data_di_attivazione)
+INSERT INTO cliente(email, nome, cognome, indirizzo, citta, data_di_nascita, data_di_attivazione)
 VALUES ('ezio12@gmail.com', 'Ezio', 'Auditore', 'Via Maseralino 12', '12345', '1969-05-23', NULL);
-INSERT INTO utente(email, nome, cognome, indirizzo, citta, data_di_nascita, data_di_attivazione)
+INSERT INTO cliente(email, nome, cognome, indirizzo, citta, data_di_nascita, data_di_attivazione)
 VALUES ('caty65@icloud.com', 'Caty', 'Rowling', 'Via Re D\'Italia 43', '51617', '1965-01-2', '2017-04-21');
-INSERT INTO utente(email, nome, cognome, indirizzo, citta, data_di_nascita, data_di_attivazione)
-VALUES ('timoty96@yahoo.com', 'Timoty', 'Genialetti', 'Via Pippo Baudo 69', '18192', '1965-01-2', '2017-04-21');
-INSERT INTO utente(email, nome, cognome, indirizzo, citta, data_di_nascita, data_di_attivazione)
-VALUES ('caty65@libero.com', 'Caty', 'Rowling', 'Via Belzoni 23', '12223', '1965-01-2', '2017-04-21');
-INSERT INTO utente(email, nome, cognome, indirizzo, citta, data_di_nascita, data_di_attivazione)
-VALUES ('sharona_123@gmail.com', 'Sharona', 'Jet', 'Via Ohibò 12', '13141', '1965-01-2', '2017-04-21');
+INSERT INTO cliente(email, nome, cognome, indirizzo, citta, data_di_nascita, data_di_attivazione)
+VALUES ('timoty96@yahoo.com', 'Timoty', 'Genialetti', 'Via Pippo Baudo 69', '18192', '1965-01-2', NULL);
+INSERT INTO cliente(email, nome, cognome, indirizzo, citta, data_di_nascita, data_di_attivazione)
+VALUES ('caty65@libero.com', 'Caty', 'Rowling', 'Via Belzoni 23', '12223', '1965-01-2', '2016-03-01');
+INSERT INTO cliente(email, nome, cognome, indirizzo, citta, data_di_nascita, data_di_attivazione)
+VALUES ('sharona_123@gmail.com', 'Sharona', 'Jet', 'Via Ohibò 12', '13141', '1965-01-2', '2015-12-12');
+
+INSERT INTO ristorante(piva, nome, titolare, web, indirizzo, genere, citta, telefono)
+VALUES ('01234567891', 'Da Gino', 'Gino Strada', 'www.dagino.italia.it', 'Via Vo\' dei Puffi 12', 'Italiana','67891', '34812829873');
+INSERT INTO ristorante(piva, nome, titolare, web, indirizzo, genere, citta, telefono)
+VALUES ('21222324252', 'Ristorante 88', 'Shen Chang', 'www.ristorante88.it', 'Via Uruguay 23', 'Cinese','67891', '3296785671');
+INSERT INTO ristorante(piva, nome, titolare, web, indirizzo, genere, citta, telefono)
+VALUES ('62728293031', 'Marok', 'Abdul Joyrien', 'www.marok.com/it', 'Via Vittorio Emanuele II 14', 'Marocchina', '67891', '34812829873');
+INSERT INTO ristorante(piva, nome, titolare, web, indirizzo, genere, citta, telefono)
+VALUES ('33343536762', 'Da Never', 'Marco Silvestrin', 'www.danever.it', 'Via Maseralino 3A', 'Italiana', '67891', '33812365401');
+INSERT INTO ristorante(piva, nome, titolare, web, indirizzo, genere, citta, telefono)
+VALUES ('98712456123', 'Il Ripetente', 'Marco Rosin', 'www.ripetente.rosinmarco.com/it', 'Via Belzoni 21', 'Italiana', '13141','34812829873');
+INSERT INTO ristorante(piva, nome, titolare, web, indirizzo, genere, citta, telefono)
+VALUES ('10111234685', 'El Gaucio', 'Rodrigo Suarez', 'www.elgaucio.rome.it', 'Via Unita\' d\'Italia', 'Spagnola', '12345', '34812829873');
+INSERT INTO ristorante(piva, nome, titolare, web, indirizzo, genere, citta, telefono)
+VALUES ('17247391301', 'El Pito', 'Giuseppe Rovetti', 'www.elpito.it', 'Via Gustavo Modena 19', 'Italiana', '13141', '34812829873');
