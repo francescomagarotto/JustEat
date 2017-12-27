@@ -1,7 +1,7 @@
 	\documentclass[10pt]{article}
 	\usepackage[top=1.5cm, bottom=1.5cm, left=1.5cm, right=1.5cm]{geometry}
 	\usepackage{lineno}
-	%\usepackage{fontspec}
+	\usepackage{fontspec}
 	\usepackage{graphicx}
 	\usepackage{textcomp}
 	\usepackage{blindtext}
@@ -79,10 +79,10 @@
 	\setcounter{tocdepth}{4}
 	
 	\makeindex
-	%\setmainfont{Arial}
+	\setmainfont{Arial}
 	\usepackage[english, italian]{babel}
 	\title{\begin{Huge}Just Eat\end{Huge}}
-	\author{Davide Zilio\\Francesco Magarotto}
+	\author{Davide Zilio\\Francesco Magarotto\\Written in \LaTeX}
 	\date{21 Novembre 2017}
 	\renewcommand\thelinenumber{\large\Roman{linenumber}}
 	\begin{document}
@@ -122,7 +122,7 @@
 			 \hline
 			 Ticket& Ticket virtuale aperto dal cliente per segnalare a JustEat una problematica relativa alla consegna. & Codice, descrizione & Codice \\
 			 \hline 
-			 Pietanza & Pietanza realizzata da un ristorante & Codice, prezzo, disponibilit\`a, Descrizione & Codice \\ 
+			 Pietanza & Pietanza realizzata da un ristorante & Codice, nome, prezzo, disponibilit\`a, Descrizione & Codice \\ 
 			 \hline
 			\end{tabular}
 			}
@@ -308,11 +308,11 @@ Partendo dallo schema Entit\`a/Relazioni (Figura \ref{fig:ER1}) non ristrutturat
 		\item Query che ritorna tutti i codici degli ordini (conclusi e non) e le email dei clienti che li hanno effettuati, nei quali sono stati ordinate solamente pietanze vegetariane cotte a vapore.
 \begin{lstlisting}[language=sql]
 SELECT o.codice, o.cliente
-FROM ordine o join cliente c on o.cliente = c.email
+FROM ordine o JOIN cliente c ON o.cliente = c.email
 WHERE NOT EXISTS (
 	SELECT *
-	FROM ordine o join dettagli_ordine do on o.codice = do.ordine join pietanza p on do.pietanza = p.codice
-	WHERE cottura <> "vapore" and tipologia <> "vegetariana"
+	FROM ordine o JOIN dettagli_ordine do ON o.codice = do.ordine JOIN pietanza p ON do.pietanza = p.codice
+	WHERE cottura <> "VAPORE" AND tipologia <> "VEGETARIANA"
 )
 \end{lstlisting}
 	\item Query che ritorna i codici fiscali di tutti i fattorini che hanno portato a termine tutti gli ordini senza nessun ticket aperto ed hanno ottenuto un punteggio superiore a 10.
@@ -321,7 +321,7 @@ SELECT cf
 FROM (SELECT f.cf, f.punteggio FROM fattorino f
 		EXCEPT
 	  SELECT f.cf
-	  FROM fattorino f join ordine o on f.cf = o.codice join ticket t on o.codice = t.ordine)
+	  FROM fattorino f JOIN ordine o ON f.cf = o.codice JOIN ticket t ON o.codice = t.ordine)
 WHERE punteggio > 10
 \end{lstlisting}	
 	\end{enumerate}
@@ -341,10 +341,20 @@ DELIMITER $$
 					AND data_di_nascita = (SELECT MAX(data_di_nascita) FROM fattorino);
 			CALL AumentoStip(CF_fattorino);
 		END$$
-DELIMITER ;	
-\end{lstlisting}
+DELIMITER ;\end{lstlisting}
 		\subsection{Viste}
 		\subsection{Procedure}
 		\subsection{Trigger}
+		Un problema che si viene a creare nella tabella \texttt{Pietanza} con l'impiego di una chiave primaria composta \`e il seguente: Ogni pietanza ha un codice che associato al risorante mi permette di identificare la pientanza. Questo codice per\`o non pu\`o essere settato come \texttt{AUTO\_INCREMENT} perch\`e MySQL non supporta questa funzione con chiavi primarie composte da pi\`u attributi.
+		\begin{lstlisting}[language=sql]
+DELIMITER $$		
+	CREATE TRIGGER `MANUAL_AUTOINCREMENT` BEFORE INSERT ON `pietanza`
+		FOR EACH ROW BEGIN
+		SET NEW.codice = (
+			SELECT MAX(codice) + 1
+			FROM pietanza WHERE ristorante = NEW.ristorante
+		);
+	END $$		
+DELIMITER ;\end{lstlisting}
 		\subsection{Funzioni}
 	\end{document}
