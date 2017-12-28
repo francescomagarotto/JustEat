@@ -118,11 +118,11 @@ CREATE TABLE `dettagli_ordine` (
   `pietanza` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
-INSERT INTO 'dettagli_ordine' ('quantita','ordine','pietanza') VALUES
+INSERT INTO `dettagli_ordine`(`quantita`, `ordine`, `pietanza`) VALUES 
 (1,3,8),
-(1,1,7),
-(1,2,4),
-(1,4,5),
+(1,1,7), 
+(1,2,4), 
+(1,4,5), 
 (2,5,2);
 -- --------------------------------------------------------
 
@@ -159,8 +159,9 @@ CREATE TABLE `feedback` (
   `ristorante` char(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
-INSERT INTO 'feedback' ('codice_feedback','data_feedback','commento','cliente','ristorante') VALUES
-(1,'2017-12-28','Ottimo ristorante, ottimo cibo e veloci nella consegna. Veramente valido.','ezio12@gmail.com','98712456123'),
+
+INSERT INTO `feedback`(`codice_feedback`, `data_feedback`, `commento`, `cliente`, `ristorante`) VALUES 
+(1,'2017-12-28','Ottimo ristorante, ottimo cibo e veloci nella consegna. Veramente valido.','ezio12@gmail.com','98712456123'), 
 (2,'2017-12-27','Ottimo cibo. Unica pecca la consegna.','caty65@libero.com','33343536762');
 -- --------------------------------------------------------
 
@@ -177,12 +178,12 @@ CREATE TABLE `ordine` (
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 
-INSERT INTO 'ordine' ('codice','cliente','orario_ordine','orario_consegna','fattorino') VALUES
-(1,'ezio12@gmail.com',NULL,'16:30:00','MDNCRA00A41Z226A'),
-(2,'timoty96@yahoo.com','18:50:09','20:00:47','ZLIDVD97R24A703I'),
-(3,'caty65@icloud.com','18:48:28','20:10:00','ZLIDVD97R24A703I'),
-(4,'harona_123@gmail.com','19:56:51','21:30:00','MGRFNC97T15G224H');
-(5,'marcocostantitno@libero.it','18:40:00','19:30:00','MGRFNC97T15G224H');
+INSERT INTO `ordine`(`codice`, `cliente`, `orario_ordine`, `orario_consegna`, `fattorino`) VALUES 
+(1,'ezio12@gmail.com',NULL,NULL,'MDNCRA00A41Z226A'),
+(2,'timoty96@yahoo.com','2014-09-18 18:50:09','2014-09-11 20:00:47','ZLIDVD97R24A703I'),
+(3,'caty65@icloud.com','2013-10-11 18:48:28','2013-10-11 20:10:00','ZLIDVD97R24A703I'),
+(4,'harona_123@gmail.com','2013-11-11 19:56:51','2013-11-11 21:30:00','MGRFNC97T15G224H'),
+(5,'marcocostantitno@libero.it','2015-12-11 18:40:00','2015-12-11 19:30:00','MGRFNC97T15G224H');
 -- --------------------------------------------------------
 
 --
@@ -194,7 +195,7 @@ CREATE TABLE `patologia` (
   `allergia` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
-INSERT INTO 'patologia' ('cliente','allergia') VALUES
+INSERT INTO `patologia`(`cliente`, `allergia`) VALUES 
 ('ezio12@gmail.com',6),
 ('caty65@icloud.com',10);
 -- --------------------------------------------------------
@@ -271,9 +272,9 @@ CREATE TABLE `ticket` (
   `ordine` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
-INSERT INTO 'ticket' ('cliente','commento','ordine') VALUES 
-('ezio12@gmail.com','Cibo freddo e non cotto a dovere.',1),
-('caty65@icloud.com','Verdura non fresca.',3),
+INSERT INTO `ticket`(`cliente`, `commento`, `ordine`) VALUES 
+('ezio12@gmail.com','Cibo freddo e non cotto a dovere.',1), 
+('caty65@icloud.com','Verdura non fresca.',3), 
 ('marcocostantitno@libero.it','Risotto mai arrivato.',5);
 --
 -- Indici per le tabelle scaricate
@@ -408,7 +409,7 @@ ALTER TABLE `feedback`
 --
 ALTER TABLE `ordine`
   ADD CONSTRAINT `ordine_ibfk_1` FOREIGN KEY (`fattorino`) REFERENCES `fattorino` (`CF`) ON DELETE SET NULL ON UPDATE CASCADE,
-  ADD CONSTRAINT `ordine_ibfk_2` FOREIGN KEY (`cliente`) REFERENCES `cliente` (`email`) ON DELETE CASCADE ON UPDATE CASCADE;
+  ADD CONSTRAINT `ordine_ibfk_2` FOREIGN KEY (`cliente`) REFERENCES `cliente` (`email`) ON DELETE SET NULL ON UPDATE CASCADE;
 
 --
 -- Limiti per la tabella `patologia`
