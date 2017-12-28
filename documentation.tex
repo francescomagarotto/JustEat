@@ -219,7 +219,8 @@
 				\paragraph{Totalità: totale verso Pietanza / totale verso Ristorante} Un ristorante propone almeno una pietanza, la pietanza viene proposta da un solo ristorante.
 			\subsubsection{Pietanza-Ordine: ``Composizione"}
 				\paragraph{Molteplicit\`a N:N} Una pietanza può comporre un ordine, un ordine \`e composto da una o più pietanze.
-				\paragraph{Totalità: totale verso Pietanza / parziale verso Ordine} Una pietanza può non comporre un ordine, un ordine deve essere composto da almeno una pietanza.
+				\paragraph{Totalità: totale verso Pietanza / parziale verso Ordine} Una pietanza può non comporre un ordine, un ordine deve essere composto da almeno una pietanza. 
+				\paragraph{NB:} L'associazione \textit{Composizione} verrà chiamata \textit{dettagli\_ordine} nel codice sql per comodit\`a e praticit\`a. 
 			\subsubsection{Ordine-Fattorino: ``Trasporto"}
 				\paragraph{Molteplicit\`a 1:N} Un ordine viene trasportato da un solo fattorino, il fattorino può trasportare più ordini.
 				\paragraph{Totalità: totale verso Fattorino / parziale verso Ordine} Un ordine deve essere trasportato da un solo fattorino, il fattorino può non avere ordini da trasportare.
