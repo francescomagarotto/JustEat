@@ -122,7 +122,7 @@ INSERT INTO 'dettagli_ordine' ('quantita','ordine','pietanza') VALUES
 (1,3,8),
 (1,1,7),
 (1,2,4),
-(1,4,5);
+(1,4,5),
 (2,5,2);
 -- --------------------------------------------------------
 
@@ -144,7 +144,7 @@ CREATE TABLE `fattorino` (
 INSERT INTO `fattorino` (`CF`, `telefono`, `cognome`, `nome`, `data_di_nascita`, 'stipendio_ora', 'ore_lavoro', 'punteggio') VALUES
 ('ZLIDVD97R24A703I', '3450990675','Zilio','Davide','1997-10-24','6.20','40','20'),
 ('MGRFNC97T15G224H', '3550799965','Magarotto','Francesco','1997-12-15','6.20','40','0'),
-('MDNCRA00A41Z226A', '3333333333','Madonna', 'Cara', '1900-01-01','4.20','40','3');
+('MDNCRA00A41Z226A', '3333333333','Magia', 'Maria', '1900-01-01','4.20','40','3');
 -- --------------------------------------------------------
 
 --
