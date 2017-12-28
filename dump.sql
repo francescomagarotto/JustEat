@@ -48,7 +48,8 @@ INSERT INTO `allergia` (`codice`, `nome`) VALUES
 (5, 'Molluschi'),
 (2, 'Preservanti'),
 (9, 'Soia'),
-(6, 'Uovo');
+(6, 'Uova'),
+(10, 'Celiachia');
 
 -- --------------------------------------------------------
 
@@ -74,7 +75,8 @@ INSERT INTO `citta` (`cap`, `nome`, `nazione`) VALUES
 ('18192', 'Vicenza', 'Italia'),
 ('51617', 'Genova', 'Italia'),
 ('67891', 'Milano', 'Italia'),
-('36061', 'Bassano del Grappa', 'Italia');
+('36061', 'Bassano del Grappa', 'Italia'),
+('80121','Napoli','Italia');
 
 -- --------------------------------------------------------
 
@@ -101,7 +103,8 @@ INSERT INTO `cliente` (`email`, `nome`, `cognome`, `indirizzo`, `citta`, `data_d
 ('caty65@libero.com', 'Caty', 'Rowling', 'Via Belzoni 23', '12223', '1965-01-02', '2016-02-29 23:00:00'),
 ('ezio12@gmail.com', 'Ezio', 'Auditore', 'Via Maseralino 12', '12345', '1969-05-23', '0000-00-00 00:00:00'),
 ('sharona_123@gmail.com', 'Sharona', 'Jet', 'Via Ohibò 12', '13141', '1965-01-02', '2015-12-11 23:00:00'),
-('timoty96@yahoo.com', 'Timoty', 'Genialetti', 'Via Pippo Baudo 69', '18192', '1965-01-02', NULL);
+('timoty96@yahoo.com', 'Timoty', 'Genialetti', 'Via Pippo Baudo 69', '18192', '1965-01-02', NULL),
+('marcocostantitno@libero.it', 'Marco', 'Costantino', 'Via Baggio 146', '36061', '1997-09-26', '2016-08-11 15:46:58');
 
 -- --------------------------------------------------------
 
@@ -115,6 +118,12 @@ CREATE TABLE `dettagli_ordine` (
   `pietanza` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
+INSERT INTO 'dettagli_ordine' ('quantita','ordine','pietanza') VALUES
+(1,3,8),
+(1,1,7),
+(1,2,4),
+(1,4,5);
+(2,5,2);
 -- --------------------------------------------------------
 
 --
@@ -150,6 +159,9 @@ CREATE TABLE `feedback` (
   `ristorante` char(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
+INSERT INTO 'feedback' ('codice_feedback','data_feedback','commento','cliente','ristorante') VALUES
+(1,'2017-12-28','Ottimo ristorante, ottimo cibo e veloci nella consegna. Veramente valido.','ezio12@gmail.com','98712456123'),
+(2,'2017-12-27','Ottimo cibo. Unica pecca la consegna.','caty65@libero.com','33343536762');
 -- --------------------------------------------------------
 
 --
@@ -166,7 +178,11 @@ CREATE TABLE `ordine` (
 
 
 INSERT INTO 'ordine' ('codice','cliente','orario_ordine','orario_consegna','fattorino') VALUES
-('1','ezio12@gmail.com',NULL,'16:30:00','MDNCRA00A41Z226A');
+(1,'ezio12@gmail.com',NULL,'16:30:00','MDNCRA00A41Z226A'),
+(2,'timoty96@yahoo.com','18:50:09','20:00:47','ZLIDVD97R24A703I'),
+(3,'caty65@icloud.com','18:48:28','20:10:00','ZLIDVD97R24A703I'),
+(4,'harona_123@gmail.com','19:56:51','21:30:00','MGRFNC97T15G224H');
+(5,'marcocostantitno@libero.it','18:40:00','19:30:00','MGRFNC97T15G224H');
 -- --------------------------------------------------------
 
 --
@@ -178,6 +194,9 @@ CREATE TABLE `patologia` (
   `allergia` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
+INSERT INTO 'patologia' ('cliente','allergia') VALUES
+('ezio12@gmail.com',6),
+('caty65@icloud.com',10);
 -- --------------------------------------------------------
 
 --
@@ -200,13 +219,15 @@ CREATE TABLE `pietanza` (
 --
 
 INSERT INTO `pietanza` (`codice`, `nome`, `ristorante`, `costo`, `descrizione`, `tipologia`, `cottura`, `disponibilita`) VALUES
-(0, 'Ravioli di carne', '21222324252', '4.50', 'Raviolo di carne cinese (10gr)', 'ALTRO', 'VAPORE', 1),
-(1, 'Riso al curry', '21222324252', '10.40', 'Riso al curry per due persone:\r\n - Riso basmati 250gr\r\n - Pollo al curry 250gr\r\n', 'ALTRO', NULL, 1),
-(2, 'Risotto ai funghi porcini', '01234567891', '18.99', 'Porzione da 120gr di risotto ai funghi porcini per una persona.\r\nI funghi sono freschi.', 'ALTRO', NULL, 1),
+(0, 'Ravioli di carne', '21222324252', '4.50', 'Raviolo di carne cinese (10gr)', 'ALTRO', 'VAPORE', 10),
+(1, 'Riso al curry', '62728293031', '10.40', 'Riso al curry per due persone:\r\n - Riso basmati 250gr\r\n - Pollo al curry 250gr\r\n', 'ALTRO', NULL, 3),
+(2, 'Risotto ai funghi porcini', '98712456123', '18.99', 'Porzione da 120gr di risotto ai funghi porcini per una persona.\r\nI funghi sono freschi.', 'ALTRO', NULL, 2),
 (3, 'Pasta al forno calabrese', '98712456123', '13.00', 'Classica ricetta calabrese: pasta, mozzarella, salamino piccante, polpettine.', 'ALTRO', 'FORNO', 1),
-(4, 'Risotto ai frutti di mare', '62728293031', '27.40', 'Porzione da 120gr di risotto ai frutti di mare.\r\n - Si utilizza pesce fresco\r\n - Il riso utilizzato è il basmati.', 'ALTRO', NULL, 1),
-(5, 'Pesce fritto misto', '10111234685', '27.30', 'Porzione di pesce fritto misto con polenta per due persone (250gr) ', 'ALTRO', 'FRITTA', 1),
-(6, 'Ravioli di carne', '21222324252', '4.50', 'Raviolo di carne cinese (10gr)', 'ALTRO', 'VAPORE', 1);
+(4, 'Risotto ai frutti di mare', '62728293031', '27.40', 'Porzione da 120gr di risotto ai frutti di mare.\r\n - Si utilizza pesce fresco\r\n - Il riso utilizzato è il basmati.', 'ALTRO', NULL, 5),
+(5, 'Pesce fritto misto', '10111234685', '27.30', 'Porzione di pesce fritto misto con polenta per due persone (250gr) ', 'ALTRO', 'FRITTA', 3),
+(6, 'Ravioli di carne', '21222324252', '4.50', 'Raviolo di carne cinese (10gr)', 'ALTRO', 'VAPORE', 10),
+(7, 'Goulash con patate', '17247391301', '16.00', 'Porzione di goulash leggermente piccante con un contorno di patate al forno (100gr)', 'ALTRO', NULL, 2),
+(8, 'Mix di contorni', '01234567891', '10.00', 'Mix di contorni vari (insalata, carote, piselli, fagioli, pomodori freschi)', 'VEGETARIANA', NULL, 5);
 
 -- --------------------------------------------------------
 
@@ -250,6 +271,10 @@ CREATE TABLE `ticket` (
   `ordine` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
+INSERT INTO 'ticket' ('cliente','commento','ordine') VALUES 
+('ezio12@gmail.com','Cibo freddo e non cotto a dovere.',1),
+('caty65@icloud.com','Verdura non fresca.',3),
+('marcocostantitno@libero.it','Risotto mai arrivato.',5);
 --
 -- Indici per le tabelle scaricate
 --
