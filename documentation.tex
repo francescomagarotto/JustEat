@@ -235,6 +235,9 @@
 			\subsubsection{Ticket-Ordine: ``Relativo"}
 				\paragraph{Molteplicit\`a 1:1} Un ticket si riferisce ad un solo ordine, un ordine può avere al massimo un ticket.
 				\paragraph{Totalit\`a: totale verso Ordine / parziale verso Ticket} Un ticket \`e riferito ad un solo ordine, un ordine può non avere un ticket.
+			\subsubsection{Ticket-Cliente registrato: ``Apertura"}
+				\paragraph{Molteplicit\`a N:1} Il cliente registrato pu\`o aprire pi\`u ticket, il ticket pu\`o essere aperto dal solo cliente interessato, relativo all'ordine effettuato.
+				\paragraph{Totalit\`a: parziale verso Ticket / parziale verso Cliente registrato} Il cliente pu\`o non aprire un ticket, il ticket pu\`o non essere aperto dal cliente interessato.
 		\subsection{Output: Modello E/R}
 		\begin{figure}[H]
 			\begin{center}
