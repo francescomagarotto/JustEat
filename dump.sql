@@ -141,7 +141,7 @@ CREATE TABLE `fattorino` (
   `punteggio` int(10) NOT NULL DEFAULT '0'
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
-INSERT INTO `fattorino` (`CF`, `telefono`, `cognome`, `nome`, `data_di_nascita`, 'stipendio_ora', 'ore_lavoro', 'punteggio') VALUES
+INSERT INTO `fattorino` (`CF`, `telefono`, `cognome`, `nome`, `data_di_nascita`, `stipendio_ora`, `ore_lavoro`, `punteggio`) VALUES
 ('ZLIDVD97R24A703I', '3450990675','Zilio','Davide','1997-10-24','6.20','40','20'),
 ('MGRFNC97T15G224H', '3550799965','Magarotto','Francesco','1997-12-15','6.20','40','0'),
 ('MDNCRA00A41Z226A', '3333333333','Magia', 'Maria', '1900-01-01','4.20','40','3');
