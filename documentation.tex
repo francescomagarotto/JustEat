@@ -328,7 +328,7 @@ WHERE NOT EXISTS (
 	\item Query che ritorna i codici fiscali di tutti i fattorini che hanno portato a termine tutti gli ordini senza nessun ticket aperto ed hanno ottenuto un punteggio superiore a 10.
 \begin{lstlisting}[language=sql]
 SELECT f.CF 
-FROM fattorino f LEFT JOIN ordine o ON f . cf = o. codice LEFT JOIN ticket t ON o. codice = t . ordine 
+FROM fattorino f LEFT JOIN ordine o ON f.cf = o.codice LEFT JOIN ticket t ON o.codice = t.ordine 
 WHERE punteggio > 10
 \end{lstlisting}	
 \begin{center}
@@ -377,4 +377,4 @@ DELIMITER ;
 \hspace*{-1cm}
 \end{center}
 		\subsection{Funzioni}
-	\end{document}
+\end{document}
