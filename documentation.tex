@@ -342,14 +342,12 @@ DELIMITER ;
 CREATE OR REPLACE VIEW o1 AS
 SELECT cognome AS ordini
 FROM cliente c JOIN ordine o ON c.email = o.cliente JOIN dettagli_ordine as do ON o.codice = do.ordine
-GROUP BY cognome;
 DELIMITER ;
 
 DELIMITER ;
 CREATE OR REPLACE VIEW a1 AS
 SELECT cognome AS allergie
 FROM cliente c JOIN patologia p ON c.email = p.cliente JOIN allergia a ON p.allergia = a.codice
-GROUP BY cognome;
 DELIMITER ;
 
 SELECT cognome
