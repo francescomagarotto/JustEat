@@ -236,8 +236,8 @@
 				\paragraph{Molteplicit\`a 1:1} Un ticket si riferisce ad un solo ordine, un ordine può avere al massimo un ticket.
 				\paragraph{Totalit\`a: totale verso Ordine / parziale verso Ticket} Un ticket \`e riferito ad un solo ordine, un ordine può non avere un ticket.
 			\subsubsection{Ticket-Cliente registrato: ``Apertura"}
-				\paragraph{Molteplicit\`a N:1} Il cliente registrato pu\`o aprire pi\`u ticket, il ticket pu\`o essere aperto dal solo cliente interessato, relativo all'ordine effettuato.
-				\paragraph{Totalit\`a: parziale verso Ticket / parziale verso Cliente registrato} Il cliente pu\`o non aprire un ticket, il ticket deve essere aperto dal solo cliente interessato.
+				\paragraph{Molteplicit\`a 1:N} Il ticket pu\`o essere aperto dal solo cliente interessato, relativo all'ordine effettuato; Il cliente registrato pu\`o aprire pi\`u ticket, i
+				\paragraph{Totalit\`a: parziale verso Ticket / totale verso Cliente registrato} Il cliente pu\`o non aprire un ticket, il ticket deve essere aperto da un cliente registrato.
 		\subsection{Output: Modello E/R}
 		\begin{figure}[H]
 			\begin{center}
@@ -317,18 +317,25 @@ FROM ordine o JOIN cliente c ON o.cliente = c.email
 WHERE NOT EXISTS (
 	SELECT *
 	FROM ordine o JOIN dettagli_ordine do ON o.codice = do.ordine JOIN pietanza p ON do.pietanza = p.codice
-	WHERE cottura <> "VAPORE" AND tipologia <> "VEGETARIANA"
+	WHERE cottura <> 'VAPORE' AND tipologia <> 'VEGETARIANA'
 )
 \end{lstlisting}
+\begin{center}
+\hspace*{-1cm}
+\includegraphics[scale=0.9]{query1.png}
+\hspace*{-1cm}
+\end{center}
 	\item Query che ritorna i codici fiscali di tutti i fattorini che hanno portato a termine tutti gli ordini senza nessun ticket aperto ed hanno ottenuto un punteggio superiore a 10.
 \begin{lstlisting}[language=sql]
-SELECT cf
-FROM (SELECT f.cf, f.punteggio FROM fattorino f
-		EXCEPT
-	  SELECT f.cf
-	  FROM fattorino f JOIN ordine o ON f.cf = o.codice JOIN ticket t ON o.codice = t.ordine)
+SELECT f.CF 
+FROM fattorino f LEFT JOIN ordine o ON f . cf = o. codice LEFT JOIN ticket t ON o. codice = t . ordine 
 WHERE punteggio > 10
 \end{lstlisting}	
+\begin{center}
+\hspace*{-1cm}
+\includegraphics[scale=0.9]{query2.png}
+\hspace*{-1cm}
+\end{center}
 	\end{enumerate}
 	\pagebreak
 	\section{Eventi, Viste, procedure, trigger e funzioni}
@@ -347,7 +354,8 @@ DELIMITER $$
 					AND data_di_nascita = (SELECT MAX(data_di_nascita) FROM fattorino);
 			CALL AumentoStip(CF_fattorino);
 		END$$
-DELIMITER ;\end{lstlisting}
+DELIMITER ;
+\end{lstlisting}
 		\subsection{Viste}
 		\subsection{Procedure}
 		\subsection{Trigger}
@@ -361,6 +369,12 @@ DELIMITER $$
 			FROM pietanza WHERE ristorante = NEW.ristorante
 		);
 	END $$		
-DELIMITER ;\end{lstlisting}
+DELIMITER ;
+\end{lstlisting}
+\begin{center}
+\hspace*{-1cm}
+\includegraphics[scale=0.9]{trigger1.png}
+\hspace*{-1cm}
+\end{center}
 		\subsection{Funzioni}
 	\end{document}
