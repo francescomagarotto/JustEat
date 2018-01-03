@@ -282,7 +282,7 @@ Partendo dallo schema Entit\`a/Relazioni (Figura \ref{fig:ER1}) non ristrutturat
 			Rispetto alla precedente entit\`a aggiungiamo gli attributi:
 			\begin{itemize}[noitemsep]
 				\item Tipologia: \textit{stringa} - tipologia del cibo (i.e. vegana, vegetariana, [...])
-				\item Metodo di cottura: \textit{stringa} - indica il metodo di cottura della pietanza.
+				\item Metodo di cottura: \textit{stringa} - indica il metodo di cottura della pietanza vegetariana/vegana.
 			\end{itemize}
 		\subsection{Schema logico}
 			\begin{center}
@@ -322,7 +322,7 @@ WHERE NOT EXISTS (
 \end{lstlisting}
 \begin{center}
 \hspace*{-1cm}
-\includegraphics[scale=0.9]{query1.png}
+\includegraphics[width=19cm, height=1cm]{query1.png}
 \hspace*{-1cm}
 \end{center}
 	\item Query che ritorna i codici fiscali di tutti i fattorini che hanno portato a termine tutti gli ordini senza nessun ticket aperto ed hanno ottenuto un punteggio superiore a 10.
@@ -338,18 +338,14 @@ WHERE punteggio > 10
 \end{center}
 	\item Query che ritorna i cognomi dei clienti che hanno effettuato un ordine e soffrono di particolari allergie.
 	\begin{lstlisting}[language=sql]
-DELIMITER ;
 CREATE OR REPLACE VIEW o1 AS
 SELECT cognome AS ordini
 FROM cliente c JOIN ordine o ON c.email = o.cliente JOIN dettagli_ordine as do ON o.codice = do.ordine
-DELIMITER ;
-
-DELIMITER ;
+GROUP BY cognome;
 CREATE OR REPLACE VIEW a1 AS
 SELECT cognome AS allergie
 FROM cliente c JOIN patologia p ON c.email = p.cliente JOIN allergia a ON p.allergia = a.codice
-DELIMITER ;
-
+GROUP BY cognome;
 SELECT cognome
 FROM cliente AS c, o1, a1
 WHERE c.cognome = o1.ordini AND  c.cognome = a1.allergie AND o1.ordini = a1.allergie
@@ -367,16 +363,12 @@ WHERE c.cognome = o1.ordini AND  c.cognome = a1.allergie AND o1.ordini = a1.alle
 		Le operazioni sulla tabella fattorino vengono delegate alla procedure \texttt{AumentoStip}.
 \begin{lstlisting}[language=sql]
 DELIMITER $$
-	CREATE EVENT MigliorImpiegato
-		ON SCHEDULE EVERY '1' MONTH
-		STARTS '2018-01-01 00:00:00'
-		DO 
-		BEGIN
-			DECLARE CF_fattorino varchar(20);
-			CF_fattorino = SELECT cf FROM fattorino WHERE punteggio = (SELECT MAX(punteggio) FROM fattorino) 
-					AND data_di_nascita = (SELECT MAX(data_di_nascita) FROM fattorino);
-			CALL AumentoStip(CF_fattorino);
-		END$$
+CREATE EVENT `MigliorImpiegato` 
+ON SCHEDULE EVERY 1 MONTH STARTS '2018-03-01 00:00:00'
+DO BEGIN 
+UPDATE fattorino SET stipendio_ora = stipendio_ora + 0.20 WHERE CF = (SELECT CF FROM fattorino WHERE CF NOT IN (SELECT f1.CF FROM fattorino f1 CROSS JOIN fattorino f2 WHERE f1.data_di_nascita < f2.data_di_nascita AND f1.punteggio < f2.punteggio AND f1.CF != f2.CF));
+UPDATE fattorino SET punteggio = 0;
+END $$
 DELIMITER ;
 \end{lstlisting}
 		\subsection{Procedure}
