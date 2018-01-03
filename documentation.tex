@@ -317,8 +317,7 @@ FROM ordine o JOIN cliente c ON o.cliente = c.email
 WHERE NOT EXISTS (
 	SELECT *
 	FROM ordine o JOIN dettagli_ordine do ON o.codice = do.ordine JOIN pietanza p ON do.pietanza = p.codice
-	WHERE cottura <> 'VAPORE' AND tipologia <> 'VEGETARIANA'
-)
+	WHERE cottura <> 'VAPORE' AND tipologia <> 'VEGETARIANA' )
 \end{lstlisting}
 \begin{center}
 \hspace*{-1cm}
@@ -336,7 +335,7 @@ WHERE punteggio > 10
 \includegraphics[scale=0.9]{query2.png}
 \hspace*{-1cm}
 \end{center}
-	\item Query che ritorna i cognomi dei clienti che hanno effettuato un ordine e soffrono di particolari allergie.
+	\item Query che ritorna i cognomi dei clienti che hanno effettuato un ordine e soffrono di particolari allergie (realizzata con viste).
 	\begin{lstlisting}[language=sql]
 SELECT cognome
 FROM cliente AS c, o1, a1
