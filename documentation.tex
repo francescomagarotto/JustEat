@@ -338,14 +338,6 @@ WHERE punteggio > 10
 \end{center}
 	\item Query che ritorna i cognomi dei clienti che hanno effettuato un ordine e soffrono di particolari allergie.
 	\begin{lstlisting}[language=sql]
-CREATE OR REPLACE VIEW o1 AS
-SELECT cognome AS ordini
-FROM cliente c JOIN ordine o ON c.email = o.cliente JOIN dettagli_ordine as do ON o.codice = do.ordine
-GROUP BY cognome;
-CREATE OR REPLACE VIEW a1 AS
-SELECT cognome AS allergie
-FROM cliente c JOIN patologia p ON c.email = p.cliente JOIN allergia a ON p.allergia = a.codice
-GROUP BY cognome;
 SELECT cognome
 FROM cliente AS c, o1, a1
 WHERE c.cognome = o1.ordini AND  c.cognome = a1.allergie AND o1.ordini = a1.allergie
@@ -357,7 +349,7 @@ WHERE c.cognome = o1.ordini AND  c.cognome = a1.allergie AND o1.ordini = a1.alle
 \end{center}
 
 	\end{enumerate}
-		\section{Eventi, procedure, trigger e funzioni}
+		\section{Eventi, viste,  procedure, trigger e funzioni}
 		\subsection{Eventi}
 		Nell'analisi dei requisiti viene espressamente richiesto che ogni mese il fattorino pi\`u giovane con punteggio pi\`u alto riceva un incremento stipendiale di 0,20 \euro{} all'ora.
 		Le operazioni sulla tabella fattorino vengono delegate alla procedure \texttt{AumentoStip}.
@@ -371,6 +363,16 @@ UPDATE fattorino SET punteggio = 0;
 END $$
 DELIMITER ;
 \end{lstlisting}
+	\subsection{Viste}
+	\begin{lstlisting}[language=sql]
+CREATE OR REPLACE VIEW o1 AS
+SELECT cognome AS ordini
+FROM cliente c JOIN ordine o ON c.email = o.cliente JOIN dettagli_ordine as do ON o.codice = do.ordine
+
+CREATE OR REPLACE VIEW a1 AS
+SELECT cognome AS allergie
+FROM cliente c JOIN patologia p ON c.email = p.cliente JOIN allergia a ON p.allergia = a.codice
+	\end{lstlisting}
 		\subsection{Procedure}
 		\subsection{Trigger}
 		Un problema che si viene a creare nella tabella \texttt{Pietanza} con l'impiego di una chiave primaria composta \`e il seguente: Ogni pietanza ha un codice che associato al risorante mi permette di identificare la pientanza. Questo codice per\`o non pu\`o essere settato come \texttt{AUTO\_INCREMENT} perch\`e MySQL non supporta questa funzione con chiavi primarie composte da pi\`u attributi.
