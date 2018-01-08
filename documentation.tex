@@ -20,6 +20,7 @@
 	\usepackage{listings}	
 	\definecolor{dkgreen}{rgb}{0,0.6,0}
 	\definecolor{ltgray}{rgb}{0.5,0.5,0.5}
+	\definecolor{amber(sae/ece)}{rgb}{1.0, 0.49, 0.0}
 	\lstset{
   	backgroundcolor=\color{white},
   	basicstyle=\footnotesize,
@@ -334,9 +335,16 @@ WHERE punteggio > 10 AND f.CF NOT IN (
     )
 \end{lstlisting}	
 \begin{center}
-\hspace*{-1cm}
-\includegraphics[scale=0.9]{query2.png}
-\hspace*{-1cm}
+	\begin{table}[H]
+		\centering
+		\caption{Risultato query 2.}
+		\label{table:query2}
+		\begin{tabular}{|c|}
+			\hline
+			\textbf{CF} \\ \hline
+			ZKYDEV87A45T560I \\ \hline
+		\end{tabular}
+	\end{table}
 \end{center}
 	\item Query che ritorna i cognomi dei clienti che hanno effettuato un ordine e soffrono di particolari allergie (realizzata con viste).
 	\begin{lstlisting}[language=sql]
@@ -345,9 +353,18 @@ FROM cliente AS c, o1, a1
 WHERE c.cognome = o1.ordini AND  c.cognome = a1.allergie AND o1.ordini = a1.allergie
 \end{lstlisting}	
 \begin{center}
-\hspace*{-1cm}
-\includegraphics[scale=0.9]{query3.png}
-\hspace*{-1cm}
+	\begin{table}[H]
+		\centering
+		\caption{Risultato query 3.}
+		\label{table:query3}
+		\begin{tabular}{|c|}
+			\hline
+			\textbf{cognome} \\ \hline
+			Rowling          \\ \hline
+			Rowling          \\	\hline
+			Auditore         \\	\hline
+		\end{tabular}
+	\end{table}
 \end{center}
 	\item Query che ritorna il codice fiscale del cliente che ha ordinato più volte la stessa pietanza
 	\end{enumerate}
@@ -413,27 +430,42 @@ ELSE
 END IF;
 \end{lstlisting}
 \begin{center}
-\hspace*{-1cm}
-\includegraphics[scale=0.9]{prezzoMin.png}
-\hspace*{-1cm}
+	\begin{table}[H]
+	\centering
+	\caption{Risultato funzione 1}
+	\label{table:query2}
+	\begin{tabular}{|c|}
+		\hline
+		\textbf{prezzoMinMax} \\ \hline
+		10.00 \\ \hline
+	\end{tabular}
+\end{table}
 \end{center}
 		\item Funzione che restituisce il costo totale dell'ordine di un cliente.
 \begin{lstlisting}[language=sql]
 DELIMITER $$
-CREATE FUNCTION `costoTotale`(`tot` DECIMAL(4,2), `email` VARCHAR(30)) RETURNS decimal(4,2)
-    COMMENT 'Il cliente è passato per parametro (email).'
+FUNCTION `costoTotale`(`tot` DECIMAL(4,2), `email` VARCHAR(30)) RETURNS decimal(4,2)
+COMMENT 'Il cliente è passato per parametro (email).'
 BEGIN
-	SELECT SUM(p.costo) INTO tot
-	FROM ordine o JOIN dettagli_ordine do on o.codice = do.ordine JOIN pietanza p on do.pietanza = p.codice
-	WHERE o.cliente = email;
-	RETURN tot;
+SELECT SUM(p.costo * d_o.quantita) INTO tot
+FROM ordine o JOIN dettagli_ordine d_o on o.codice = d_o.ordine JOIN pietanza p on d_o.pietanza = p.codice
+WHERE o.cliente = email;
+RETURN tot;
 END$$
 DELIMITER ;
 \end{lstlisting}
 \begin{center}
-\hspace*{-1cm}
-\includegraphics[scale=0.9]{costoTot.png}
-\hspace*{-1cm}
+		\begin{table}[H]
+		\centering
+		\caption{Risultato della funzione 2}
+		\label{table:query2}
+		\begin{tabular}{|c|}
+			\hline
+			\textcolor{blue}{SET} \textcolor{amber(sae/ece)}{@}p0='0.0'; \textcolor{blue}{SET} \textcolor{amber(sae/ece)}{@}p1='marcocostantino@libero.it';\\ \textcolor{blue}{SELECT} `costoTotale`(\textcolor{amber(sae/ece)}{@}p0, \textcolor{amber(sae/ece)}{@}p1) \textcolor{blue}{AS} `costoTotale`; \\ \hline
+			 \textbf{costoTotale} \\ \hline
+			 37.98 \\ \hline
+		\end{tabular}
+	\end{table}
 \end{center}
 \end{enumerate}
 \end{document}
