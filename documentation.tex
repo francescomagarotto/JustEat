@@ -397,18 +397,23 @@ DELIMITER ;
 		\subsection{Funzioni}
 		Funzione che restituisce il prezzo minimo o massimo delle pietanze ordinate.
 		\begin{lstlisting}[language=sql]
-CREATE FUNCTION `prezzoMinMax MinMax ENUM ('min','max')`(`cos` DECIMAL(4,2)) RETURNS DECIMAL(4,2) 
+CREATE FUNCTION `prezzoMinMax`(`cos` DECIMAL(4,2), `MinMax` ENUM('min', 'max')) RETURNS DECIMAL(4,2)
 DETERMINISTIC 
 CONTAINS SQL 
 SQL SECURITY DEFINER 
 IF(MinMax = 'min') THEN
-	SELECT MIN(costo) into cos 
-	FROM dettagli_ordine dor JOIN pietanza p on dor.pietanza=p.codice;
+	SELECT MIN(p.costo) into cos
+	FROM dettagli_ordine dor JOIN pietanza p on dor.pietanza=p.codice ; 
 	RETURN cos;
 ELSE
-	SELECT MAX(costo) into cos 
-	FROM dettagli_ordine dor JOIN pietanza p on dor.pietanza=p.codice;
+	SELECT MAX(p.costo) into cos
+	FROM dettagli_ordine dor JOIN pietanza p on dor.pietanza=p.codice ; 
 	RETURN cos;
 END IF;
 \end{lstlisting}
+\begin{center}
+\hspace*{-1cm}
+\includegraphics[scale=0.9]{prezzoMin.png}
+\hspace*{-1cm}
+\end{center}
 \end{document}
