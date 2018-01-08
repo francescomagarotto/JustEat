@@ -1,4 +1,4 @@
-This is XeTeX, Version 3.14159265-2.6-0.99998 (MiKTeX 2.9.6350 64-bit) (preloaded format=xelatex 2017.11.21)  8 JAN 2018 17:49
+This is XeTeX, Version 3.14159265-2.6-0.99998 (MiKTeX 2.9.6350 64-bit) (preloaded format=xelatex 2017.11.21)  8 JAN 2018 19:33
 entering extended mode
 **./documentation.tex
 (documentation.tex
@@ -941,6 +941,9 @@ Package: etoolbox 2017/01/02 v2.4 e-TeX tools for LaTeX (JAW)
 
 LaTeX Warning: Label `table:query2' multiply defined.
 
+
+LaTeX Warning: Label `table:query2' multiply defined.
+
 )
 \openout1 = `documentation.aux'.
 
@@ -1129,26 +1132,26 @@ Overfull \hbox (10.07593pt too wide) in paragraph at lines 324--327
 
 [10] [11]
 File: trigger1.png Graphic file (type QTm)
- <use  "trigger1.png" >
-Package atveryend Info: Empty hook `BeforeClearDocument' on input line 471.
- [12]
-Package atveryend Info: Empty hook `AfterLastShipout' on input line 471.
+ <use  "trigger1.png" > [12]
+Package atveryend Info: Empty hook `BeforeClearDocument' on input line 481.
+ [13]
+Package atveryend Info: Empty hook `AfterLastShipout' on input line 481.
  (documentation.aux)
-Package atveryend Info: Empty hook `AtVeryEndDocument' on input line 471.
-Package atveryend Info: Empty hook `AtEndAfterFileList' on input line 471.
+Package atveryend Info: Empty hook `AtVeryEndDocument' on input line 481.
+Package atveryend Info: Empty hook `AtEndAfterFileList' on input line 481.
 
 
 LaTeX Warning: There were multiply-defined labels.
 
-Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 471.
+Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 481.
  ) 
 Here is how much of TeX's memory you used:
- 23083 strings out of 427834
- 414786 string characters out of 3152469
- 651385 words of memory out of 3000000
- 26844 multiletter control sequences out of 15000+200000
+ 23085 strings out of 427834
+ 414817 string characters out of 3152469
+ 655297 words of memory out of 3000000
+ 26846 multiletter control sequences out of 15000+200000
  537293 words of font info for 75 fonts, out of 3000000 for 9000
  1328 hyphenation exceptions out of 8191
- 39i,12n,65p,10420b,1773s stack positions out of 5000i,500n,10000p,200000b,50000s
+ 39i,12n,65p,10420b,1374s stack positions out of 5000i,500n,10000p,200000b,50000s
 
-Output written on documentation.pdf (12 pages).
+Output written on documentation.pdf (13 pages).

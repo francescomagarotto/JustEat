@@ -366,7 +366,17 @@ WHERE c.cognome = o1.ordini AND  c.cognome = a1.allergie AND o1.ordini = a1.alle
 		\end{tabular}
 	\end{table}
 \end{center}
-	\item Query che ritorna il codice fiscale del cliente che ha ordinato più volte la stessa pietanza
+	\item Query che ritorna il codice fiscale del cliente che ha ordinato più volte la stessa pietanza in ordini diversi.
+	\begin{lstlisting}[language=sql]
+	\end{lstlisting}
+	\item Query che ritorna l'email clienti che non hanno mai effettuato un ordine nonstante possano farlo (data\_di\_attivazione non nulla).
+	Realizziamo questa query anche in algebra relazionale per completezza.\newline
+	$ R1:= \pi_{email}((cliente \bowtie_{\ email\ =\ cliente\ \wedge\ data\_di\_attivazione\ \neg\ NULL} \ ordine)\bowtie_{codice\ = \ ordine} dettagli\_ordine)  \\
+	R2:= \pi_{email}(cliente) - R1$ \\
+	Siccome il DBMS MariaDB/MySQL non mette a disposizione l'operazione di intersezione (keyword \texttt{INTERSECT}), faremo uso della keyword \texttt{IN} preceduta dalla negazione \texttt{NOT}.
+	\begin{lstlisting}[language=sql]
+SELECT email from cliente WHERE email NOT IN (SELECT email from cliente c JOIN ordine o ON c.email = o.cliente JOIN dettagli_ordine d_o ON o.codice = d_o.ordine WHERE c.data_di_attivazione IS NOT NULL)
+	\end{lstlisting}	
 	\end{enumerate}
 		\section{Eventi, viste,  procedure, trigger e funzioni}
 		\subsection{Eventi}
@@ -420,12 +430,12 @@ DETERMINISTIC
 CONTAINS SQL 
 SQL SECURITY DEFINER 
 IF(MinMax = 'min') THEN
-	SELECT MIN(p.costo) into cos
-	FROM dettagli_ordine dor JOIN pietanza p on dor.pietanza=p.codice ; 
+	SELECT MIN(p.costo) INTO cos
+	FROM dettagli_ordine dor JOIN pietanza p ON dor.pietanza=p.codice ; 
 	RETURN cos;
 ELSE
-	SELECT MAX(p.costo) into cos
-	FROM dettagli_ordine dor JOIN pietanza p on dor.pietanza=p.codice ; 
+	SELECT MAX(p.costo) INTO cos
+	FROM dettagli_ordine dor JOIN pietanza p ON dor.pietanza=p.codice ; 
 	RETURN cos;
 END IF;
 \end{lstlisting}
