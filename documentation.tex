@@ -395,7 +395,8 @@ DELIMITER ;
 \hspace*{-1cm}
 \end{center}
 		\subsection{Funzioni}
-		Funzione che restituisce il prezzo minimo o massimo delle pietanze ordinate.
+		\begin{enumerate}[noitemsep]
+		\item Funzione che restituisce il prezzo minimo o massimo delle pietanze ordinate.
 		\begin{lstlisting}[language=sql]
 CREATE FUNCTION `prezzoMinMax`(`cos` DECIMAL(4,2), `MinMax` ENUM('min', 'max')) RETURNS DECIMAL(4,2)
 DETERMINISTIC 
@@ -416,4 +417,23 @@ END IF;
 \includegraphics[scale=0.9]{prezzoMin.png}
 \hspace*{-1cm}
 \end{center}
+		\item Funzione che restituisce il costo totale dell'ordine di un cliente.
+\begin{lstlisting}[language=sql]
+DELIMITER $$
+CREATE FUNCTION `costoTotale`(`tot` DECIMAL(4,2), `email` VARCHAR(30)) RETURNS decimal(4,2)
+    COMMENT 'Il cliente è passato per parametro (email).'
+BEGIN
+	SELECT SUM(p.costo) INTO tot
+	FROM ordine o JOIN dettagli_ordine do on o.codice = do.ordine JOIN pietanza p on do.pietanza = p.codice
+	WHERE o.cliente = email;
+	RETURN tot;
+END$$
+DELIMITER ;
+\end{lstlisting}
+\begin{center}
+\hspace*{-1cm}
+\includegraphics[scale=0.9]{costoTot.png}
+\hspace*{-1cm}
+\end{center}
+\end{enumerate}
 \end{document}
