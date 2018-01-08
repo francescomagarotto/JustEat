@@ -349,7 +349,7 @@ WHERE c.cognome = o1.ordini AND  c.cognome = a1.allergie AND o1.ordini = a1.alle
 \includegraphics[scale=0.9]{query3.png}
 \hspace*{-1cm}
 \end{center}
-
+	\item Query che ritorna il codice fiscale del cliente che ha ordinato più volte la stessa pietanza
 	\end{enumerate}
 		\section{Eventi, viste,  procedure, trigger e funzioni}
 		\subsection{Eventi}
@@ -395,4 +395,20 @@ DELIMITER ;
 \hspace*{-1cm}
 \end{center}
 		\subsection{Funzioni}
+		Funzione che restituisce il prezzo minimo o massimo delle pietanze ordinate.
+		\begin{lstlisting}[language=sql]
+CREATE FUNCTION `prezzoMinMax MinMax ENUM ('min','max')`(`cos` DECIMAL(4,2)) RETURNS DECIMAL(4,2) 
+DETERMINISTIC 
+CONTAINS SQL 
+SQL SECURITY DEFINER 
+IF(MinMax = 'min') THEN
+	SELECT MIN(costo) into cos 
+	FROM dettagli_ordine dor JOIN pietanza p on dor.pietanza=p.codice;
+	RETURN cos;
+ELSE
+	SELECT MAX(costo) into cos 
+	FROM dettagli_ordine dor JOIN pietanza p on dor.pietanza=p.codice;
+	RETURN cos;
+END IF;
+\end{lstlisting}
 \end{document}
