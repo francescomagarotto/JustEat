@@ -405,6 +405,22 @@ WHERE email NOT IN (
 			timoty96@yahoo.com          \\	\hline
 		\end{tabular}
 	\end{table}
+	\item Query che ritorna il nome della pietanza ordinata più volte e il suo numero di occorrenze (realizzata con vista).
+	\begin{lstlisting}[language=sql]
+SELECT nome, maxP as occorrenze
+FROM pmax JOIN ( SELECT MAX(maxP) as maP FROM pmax) AS mocc ON mocc.maP = maxP
+	\end{lstlisting}	
+	\begin{table}[ht]
+	\centering
+		\label{table:query4}
+		\begin{tabular}{|c|c|}
+			\hline
+			\multirow{1}{*}{\textbf{nome}} & \multicolumn{1}{c|}{\textbf{occorrenze}}\\
+			\hline
+			Risotto ai frutti di mare & 2\\ 
+			\hline
+			\end{tabular}
+	\end{table}
 	\end{enumerate}
 		\section{Eventi, viste,  procedure, trigger e funzioni}
 		\subsection{Eventi}
@@ -434,6 +450,11 @@ CREATE OR REPLACE VIEW occ AS
 SELECT COUNT(o.cliente) AS occorrenze, o.cliente AS cliente 
 FROM dettagli_ordine d_o JOIN dettagli_ordine d_or ON (d_o.ordine <> d_or.ordine AND d_o.pietanza = d_or.pietanza) JOIN ordine o ON d_o.ordine = o.codice JOIN ordine o2 ON (o.codice <> o2.codice AND o.cliente = o2.cliente) 
 WHERE d_o.quantita >= 1
+
+CREATE OR REPLACE VIEW pmax AS
+SELECT p.nome AS nome, COUNT(d_o.pietanza) AS maxP
+FROM dettagli_ordine d_o JOIN pietanza p ON d_o.pietanza = p.codice
+GROUP BY p.nome
 		\end{lstlisting}
 		\subsection{Procedure}
 		\subsection{Trigger}
