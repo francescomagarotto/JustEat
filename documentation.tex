@@ -458,7 +458,8 @@ FROM dettagli_ordine d_o JOIN pietanza p ON d_o.pietanza = p.codice
 GROUP BY p.nome
 		\end{lstlisting}
 		\subsection{Trigger}
-		Un problema che si viene a creare nella tabella \texttt{Pietanza} con l'impiego di una chiave primaria composta \`e il seguente: Ogni pietanza ha un codice che associato al risorante mi permette di identificare la pientanza. Questo codice per\`o non pu\`o essere settato come \texttt{AUTO\_INCREMENT} perch\`e MySQL non supporta questa funzione con chiavi primarie composte da pi\`u attributi.
+		\begin{enumerate}[noitemsep]
+		\item Un problema che si viene a creare nella tabella \texttt{Pietanza} con l'impiego di una chiave primaria composta \`e il seguente: Ogni pietanza ha un codice che associato al risorante mi permette di identificare la pientanza. Questo codice per\`o non pu\`o essere settato come \texttt{AUTO\_INCREMENT} perch\`e MySQL non supporta questa funzione con chiavi primarie composte da pi\`u attributi.
 		\begin{lstlisting}[language=sql]
 DELIMITER $$		
 	CREATE TRIGGER `MANUAL_AUTOINCREMENT` BEFORE INSERT ON `pietanza`
@@ -475,6 +476,8 @@ DELIMITER ;
 \includegraphics[scale=0.9]{trigger1.png}
 \hspace*{-1cm}
 \end{center}
+	\item Trigger che applica un'offerta ogni tot ordini (?)
+	\end{enumerate}
 		\subsection{Funzioni}
 		\begin{enumerate}[noitemsep]
 		\item Funzione che restituisce il prezzo minimo o massimo delle pietanze ordinate.
