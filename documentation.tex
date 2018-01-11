@@ -422,7 +422,8 @@ FROM pmax JOIN ( SELECT MAX(maxP) as maP FROM pmax) AS mocc ON mocc.maP = maxP
 			\end{tabular}
 	\end{table}
 	\end{enumerate}
-		\section{Eventi, viste,  procedure, trigger e funzioni}
+		\pagebreak
+		\section{Eventi, viste, trigger e funzioni}
 		\subsection{Eventi}
 		Nell'analisi dei requisiti viene espressamente richiesto che ogni mese il fattorino pi\`u giovane con punteggio pi\`u alto riceva un incremento stipendiale di 0,20 \euro{} all'ora.
 		Le operazioni sulla tabella fattorino vengono delegate alla procedure \texttt{AumentoStip}.
@@ -456,7 +457,6 @@ SELECT p.nome AS nome, COUNT(d_o.pietanza) AS maxP
 FROM dettagli_ordine d_o JOIN pietanza p ON d_o.pietanza = p.codice
 GROUP BY p.nome
 		\end{lstlisting}
-		\subsection{Procedure}
 		\subsection{Trigger}
 		Un problema che si viene a creare nella tabella \texttt{Pietanza} con l'impiego di una chiave primaria composta \`e il seguente: Ogni pietanza ha un codice che associato al risorante mi permette di identificare la pientanza. Questo codice per\`o non pu\`o essere settato come \texttt{AUTO\_INCREMENT} perch\`e MySQL non supporta questa funzione con chiavi primarie composte da pi\`u attributi.
 		\begin{lstlisting}[language=sql]
@@ -485,11 +485,11 @@ CONTAINS SQL
 SQL SECURITY DEFINER 
 IF(MinMax = 'min') THEN
 	SELECT MIN(p.costo) INTO cos
-	FROM dettagli_ordine dor JOIN pietanza p ON dor.pietanza=p.codice ; 
+	FROM dettagli_ordine dor JOIN pietanza p ON dor.pietanza = p.codice; 
 	RETURN cos;
 ELSE
 	SELECT MAX(p.costo) INTO cos
-	FROM dettagli_ordine dor JOIN pietanza p ON dor.pietanza=p.codice ; 
+	FROM dettagli_ordine dor JOIN pietanza p ON dor.pietanza = p.codice; 
 	RETURN cos;
 END IF;
 \end{lstlisting}
