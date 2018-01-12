@@ -19,10 +19,12 @@
 	\usepackage{float}
 	\usepackage{amssymb}
 	\usepackage{listings}	
+	\lstloadlanguages{sql}
 	\definecolor{dkgreen}{rgb}{0,0.6,0}
 	\definecolor{ltgray}{rgb}{0.5,0.5,0.5}
 	\definecolor{amber(sae/ece)}{rgb}{1.0, 0.49, 0.0}
-	\lstset{
+	\definecolor{awesome}{rgb}{1.0, 0.13, 0.32}
+	\lstdefinestyle{Mysql}{
   	backgroundcolor=\color{white},
   	basicstyle=\footnotesize,
   	breakatwhitespace=false,
@@ -34,9 +36,9 @@
   	extendedchars=true,
   	frame=single,
   	keepspaces=true,
-  	keywordstyle=\color{blue},
+  	keywordstyle=\color{awesome},
   	language=SQL,
-  	morekeywords={*,modify,MODIFY,..., DELIMITER},
+  	morekeywords={*,MODIFY, DELIMITER, IF, FOR, EACH, ROW, BEGIN, END, RETURN, COMMENT, FUNCTION},
   	numbers=left,
   	numbersep=15pt,
   	numberstyle=\tiny,
@@ -313,12 +315,12 @@ Partendo dallo schema Entit\`a/Relazioni (Figura \ref{fig:ER1}) non ristrutturat
 	\section{Query}
 	\begin{enumerate}[noitemsep]
 		\item Query che ritorna tutti i codici degli ordini (conclusi e non) e le email dei clienti che li hanno effettuati, nei quali sono stati ordinate solamente pietanze vegetariane cotte a vapore.
-\begin{lstlisting}[language=sql]
+\begin{lstlisting}[style=Mysql]
 SELECT o.codice, o.cliente
 FROM ordine o JOIN cliente c ON o.cliente = c.email
 WHERE NOT EXISTS (
 	SELECT *
-	FROM ordine o JOIN dettagli_ordine do ON o.codice = do.ordine JOIN pietanza p ON do.pietanza = p.codice
+	FROM ordine o JOIN dettagli_ordine d_o ON o.codice = d_o.ordine JOIN pietanza p ON d_o.pietanza = p.codice
 	WHERE cottura <> 'VAPORE' AND tipologia <> 'VEGETARIANA' )
 \end{lstlisting}
 \begin{center}
@@ -327,12 +329,12 @@ WHERE NOT EXISTS (
 \hspace*{-1cm}
 \end{center}
 	\item Query che ritorna i codici fiscali di tutti i fattorini che hanno portato a termine tutti gli ordini senza nessun ticket aperto ed hanno ottenuto un punteggio superiore a 10.
-\begin{lstlisting}[language=sql]
+\begin{lstlisting}[style=Mysql]
 SELECT f.CF
 FROM fattorino f LEFT JOIN ordine o ON f.cf = o.codice 
 WHERE punteggio > 10 AND f.CF NOT IN (
     	SELECT o.fattorino
-    	FROM ordine o JOIN ticket t on o.codice = t.ordine
+    	FROM ordine o JOIN ticket t ON o.codice = t.ordine
     )
 \end{lstlisting}	
 \begin{center}
@@ -347,7 +349,7 @@ WHERE punteggio > 10 AND f.CF NOT IN (
 	\end{table}
 \end{center}
 	\item Query che ritorna i cognomi dei clienti che hanno effettuato un ordine e soffrono di particolari allergie (realizzata con viste).
-	\begin{lstlisting}[language=sql]
+	\begin{lstlisting}[style=Mysql]
 SELECT cognome
 FROM cliente AS c, o1, a1
 WHERE c.cognome = o1.ordini AND  c.cognome = a1.allergie AND o1.ordini = a1.allergie
@@ -366,10 +368,9 @@ WHERE c.cognome = o1.ordini AND  c.cognome = a1.allergie AND o1.ordini = a1.alle
 	\end{table}
 \end{center}
 	\item Query che ritorna l'email del cliente e il codice della pietanza che ha ordinato più volte in ordini diversi (realizzata con vista).
-	\begin{lstlisting}[language=sql]
+	\begin{lstlisting}[style=Mysql]
 SELECT cliente, occorrenze as numero_pietanza
-FROM occ JOIN ( SELECT MAX(occorrenze) as oc FROM occ ) AS Mocc ON Mocc.oc = occorrenze
-	\end{lstlisting}
+FROM occ JOIN ( SELECT MAX(occorrenze) as oc FROM occ ) AS Mocc ON Mocc.oc = occorrenze	\end{lstlisting}
 	\begin{table}[ht]
 	\centering
 		\label{table:query4}
@@ -386,15 +387,14 @@ FROM occ JOIN ( SELECT MAX(occorrenze) as oc FROM occ ) AS Mocc ON Mocc.oc = occ
 	$ R1:= \pi_{email}((cliente \bowtie_{\ email\ =\ cliente\ \wedge\ data\_di\_attivazione\ \neg\ NULL} \ ordine)\bowtie_{codice\ = \ ordine} dettagli\_ordine)  \\
 	R2:= \pi_{email}(cliente) - R1$ \\
 	Siccome il DBMS MariaDB/MySQL non mette a disposizione l'operazione di intersezione (keyword \texttt{INTERSECT}), faremo uso della keyword \texttt{IN} preceduta dalla negazione \texttt{NOT}.
-	\begin{lstlisting}[language=sql]
+	\begin{lstlisting}[style=Mysql]
 SELECT email 
 FROM cliente 
 WHERE email NOT IN (
 	SELECT email 
 	FROM cliente c JOIN ordine o ON c.email = o.cliente JOIN dettagli_ordine d_o ON o.codice = d_o.ordine 
 	WHERE c.data_di_attivazione IS NOT NULL
-)
-	\end{lstlisting}	
+)	\end{lstlisting}	
 	\begin{table}[H]
 		\centering
 		\label{table:query5}
@@ -406,10 +406,9 @@ WHERE email NOT IN (
 		\end{tabular}
 	\end{table}
 	\item Query che ritorna il nome della pietanza ordinata più volte e il suo numero di occorrenze (realizzata con vista).
-	\begin{lstlisting}[language=sql]
+	\begin{lstlisting}[style=Mysql]
 SELECT nome, maxP as occorrenze
-FROM pmax JOIN ( SELECT MAX(maxP) as maP FROM pmax) AS mocc ON mocc.maP = maxP
-	\end{lstlisting}	
+FROM pmax JOIN ( SELECT MAX(maxP) as maP FROM pmax) AS mocc ON mocc.maP = maxP \end{lstlisting}	
 	\begin{table}[ht]
 	\centering
 		\label{table:query4}
@@ -427,7 +426,7 @@ FROM pmax JOIN ( SELECT MAX(maxP) as maP FROM pmax) AS mocc ON mocc.maP = maxP
 		\subsection{Eventi}
 		Nell'analisi dei requisiti viene espressamente richiesto che ogni mese il fattorino pi\`u giovane con punteggio pi\`u alto riceva un incremento stipendiale di 0,20 \euro{} all'ora.
 		Le operazioni sulla tabella fattorino vengono delegate alla procedure \texttt{AumentoStip}.
-\begin{lstlisting}[language=sql]
+\begin{lstlisting}[style=Mysql]
 DELIMITER $$
 CREATE EVENT `MigliorImpiegato` 
 ON SCHEDULE EVERY 1 MONTH STARTS '2018-03-01 00:00:00'
@@ -438,29 +437,28 @@ END $$
 DELIMITER ;
 \end{lstlisting}
 	\subsection{Viste}
-	\begin{lstlisting}[language=sql]
+	\begin{lstlisting}[style=Mysql]
 CREATE OR REPLACE VIEW o1 AS
 SELECT cognome AS ordini
-FROM cliente c JOIN ordine o ON c.email = o.cliente JOIN dettagli_ordine as do ON o.codice = do.ordine
-
+FROM cliente c JOIN ordine o ON c.email = o.cliente JOIN dettagli_ordine as do ON o.codice = do.ordine \end{lstlisting}
+\begin{lstlisting}[style=Mysql]
 CREATE OR REPLACE VIEW a1 AS
 SELECT cognome AS allergie
-FROM cliente c JOIN patologia p ON c.email = p.cliente JOIN allergia a ON p.allergia = a.codice
-
+FROM cliente c JOIN patologia p ON c.email = p.cliente JOIN allergia a ON p.allergia = a.codice \end{lstlisting}
+\begin{lstlisting}[style=Mysql]
 CREATE OR REPLACE VIEW occ AS
 SELECT COUNT(o.cliente) AS occorrenze, o.cliente AS cliente 
 FROM dettagli_ordine d_o JOIN dettagli_ordine d_or ON (d_o.ordine <> d_or.ordine AND d_o.pietanza = d_or.pietanza) JOIN ordine o ON d_o.ordine = o.codice JOIN ordine o2 ON (o.codice <> o2.codice AND o.cliente = o2.cliente) 
-WHERE d_o.quantita >= 1
-
+WHERE d_o.quantita >= 1 \end{lstlisting}
+\begin{lstlisting}[style=Mysql]
 CREATE OR REPLACE VIEW pmax AS
 SELECT p.nome AS nome, COUNT(d_o.pietanza) AS maxP
 FROM dettagli_ordine d_o JOIN pietanza p ON d_o.pietanza = p.codice
-GROUP BY p.nome
-		\end{lstlisting}
+GROUP BY p.nome \end{lstlisting}
 		\subsection{Trigger}
 		\begin{enumerate}[noitemsep]
 		\item Un problema che si viene a creare nella tabella \texttt{Pietanza} con l'impiego di una chiave primaria composta \`e il seguente: Ogni pietanza ha un codice che associato al risorante mi permette di identificare la pientanza. Questo codice per\`o non pu\`o essere settato come \texttt{AUTO\_INCREMENT} perch\`e MySQL non supporta questa funzione con chiavi primarie composte da pi\`u attributi.
-		\begin{lstlisting}[language=sql]
+		\begin{lstlisting}[style=Mysql]
 DELIMITER $$		
 	CREATE TRIGGER `MANUAL_AUTOINCREMENT` BEFORE INSERT ON `pietanza`
 		FOR EACH ROW BEGIN
@@ -476,12 +474,22 @@ DELIMITER ;
 \includegraphics[scale=0.9]{trigger1.png}
 \hspace*{-1cm}
 \end{center}
-	\item Trigger che applica un'offerta ogni tot ordini (?)
+	\item Trigger che verifica che il cliente abbia attivato il suo account (\texttt{data di attivazione} diversa da \texttt{null})
+	\begin{lstlisting}[style=Mysql]
+DELIMITER $$
+CREATE TRIGGER `ClienteAttivato` BEFORE INSERT ON `ordine`
+ FOR EACH ROW BEGIN
+  IF((SELECT cliente.data_di_attivazione FROM cliente = cliente) IS NULL)
+   THEN 
+	SIGNAL SQLSTATE '45000' SET message_text = 'Cliente non puo''  effettuare ordini se non ha attivato il suo account';
+  END IF;
+END $$
+DELIMITER ;	\end{lstlisting}
 	\end{enumerate}
 		\subsection{Funzioni}
 		\begin{enumerate}[noitemsep]
 		\item Funzione che restituisce il prezzo minimo o massimo delle pietanze ordinate.
-		\begin{lstlisting}[language=sql]
+		\begin{lstlisting}[style=Mysql]
 CREATE FUNCTION `prezzoMinMax`(`cos` DECIMAL(4,2), `MinMax` ENUM('min', 'max')) RETURNS DECIMAL(4,2)
 DETERMINISTIC 
 CONTAINS SQL 
@@ -508,7 +516,7 @@ END IF;
 \end{table}
 \end{center}
 		\item Funzione che restituisce il costo totale dell'ordine di un cliente.
-\begin{lstlisting}[language=sql]
+\begin{lstlisting}[style=Mysql]
 DELIMITER $$
 FUNCTION `costoTotale`(`tot` DECIMAL(4,2), `email` VARCHAR(30)) RETURNS decimal(4,2)
 COMMENT 'Il cliente è passato per parametro (email).'
@@ -523,7 +531,7 @@ DELIMITER ;
 \begin{center}
 		\begin{table}[H]
 		\centering
-		\label{table:query2}
+		\label{table:query3}
 		\begin{tabular}{|c|}
 			\hline
 			\textcolor{blue}{SET} \textcolor{amber(sae/ece)}{@}p0='0.0'; \textcolor{blue}{SET} \textcolor{amber(sae/ece)}{@}p1='marcocostantino@libero.it';\\ \textcolor{blue}{SELECT} `costoTotale`(\textcolor{amber(sae/ece)}{@}p0, \textcolor{amber(sae/ece)}{@}p1) \textcolor{blue}{AS} `costoTotale`; \\ \hline
