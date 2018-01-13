@@ -3,9 +3,9 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Creato il: Dic 26, 2017 alle 18:26
--- Versione del server: 10.1.28-MariaDB
--- Versione PHP: 7.1.11
+-- Creato il: Gen 13, 2018 alle 15:13
+-- Versione del server: 10.1.29-MariaDB
+-- Versione PHP: 7.2.0
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET AUTOCOMMIT = 0;
@@ -21,8 +21,37 @@ SET time_zone = "+00:00";
 --
 -- Database: `just_eat`
 --
-CREATE DATABASE IF NOT EXISTS `just_eat` DEFAULT CHARACTER SET latin1 COLLATE latin1_swedish_ci;
-USE `just_eat`;
+
+DELIMITER $$
+--
+-- Funzioni
+--
+CREATE DEFINER=`root`@`localhost` FUNCTION `costoTotale` (`tot` DECIMAL(4,2) UNSIGNED ZEROFILL, `email` VARCHAR(30)) RETURNS DECIMAL(4,2) BEGIN
+SELECT SUM(p.costo) INTO tot
+FROM ordine o JOIN dettagli_ordine do on o.codice = do.ordine JOIN pietanza p on do.pietanza = p.codice
+WHERE o.cliente = email;
+RETURN tot;
+END$$
+
+CREATE DEFINER=`root`@`localhost` FUNCTION `prezzoMinMax` (`cos` DECIMAL(4,2) UNSIGNED ZEROFILL, `MinMax` ENUM('min','max')) RETURNS DECIMAL(4,2) IF(MinMax = 'min') THEN
+SELECT MIN(p.costo) into cos
+FROM dettagli_ordine dor JOIN pietanza p on dor.pietanza=p.codice; RETURN cos;
+ELSE
+SELECT MAX(p.costo) into cos
+FROM dettagli_ordine dor JOIN pietanza p on dor.pietanza=p.codice; RETURN cos;
+END IF$$
+
+DELIMITER ;
+
+-- --------------------------------------------------------
+
+--
+-- Struttura stand-in per le viste `a1`
+-- (Vedi sotto per la vista effettiva)
+--
+CREATE TABLE `a1` (
+`allergie` varchar(25)
+);
 
 -- --------------------------------------------------------
 
@@ -42,14 +71,25 @@ CREATE TABLE `allergia` (
 INSERT INTO `allergia` (`codice`, `nome`) VALUES
 (3, 'Antiossidanti'),
 (8, 'Arachide'),
+(10, 'Celiachia'),
 (1, 'Coloranti'),
 (4, 'Esaltatori del sapor'),
 (7, 'Latte'),
 (5, 'Molluschi'),
 (2, 'Preservanti'),
 (9, 'Soia'),
-(6, 'Uova'),
-(10, 'Celiachia');
+(6, 'Uova');
+
+-- --------------------------------------------------------
+
+--
+-- Struttura stand-in per le viste `c12`
+-- (Vedi sotto per la vista effettiva)
+--
+CREATE TABLE `c12` (
+`occorrenze` bigint(21)
+,`cliente` varchar(50)
+);
 
 -- --------------------------------------------------------
 
@@ -73,10 +113,10 @@ INSERT INTO `citta` (`cap`, `nome`, `nazione`) VALUES
 ('12345', 'Roma', 'Italia'),
 ('13141', 'Padova', 'Italia'),
 ('18192', 'Vicenza', 'Italia'),
+('36061', 'Bassano del Grappa', 'Italia'),
 ('51617', 'Genova', 'Italia'),
 ('67891', 'Milano', 'Italia'),
-('36061', 'Bassano del Grappa', 'Italia'),
-('80121','Napoli','Italia');
+('80121', 'Napoli', 'Italia');
 
 -- --------------------------------------------------------
 
@@ -99,12 +139,12 @@ CREATE TABLE `cliente` (
 --
 
 INSERT INTO `cliente` (`email`, `nome`, `cognome`, `indirizzo`, `citta`, `data_di_nascita`, `data_di_attivazione`) VALUES
-('caty65@icloud.com', 'Caty', 'Rowling', 'Via Re D\'Italia 43', '51617', '1965-01-02', '2017-04-20 22:00:00'),
+('caty65@icloud.com', 'Caty', 'Rowling', 'Via Re D\'Italia 43', '51617', '1965-01-02', '2018-01-02 12:42:03'),
 ('caty65@libero.com', 'Caty', 'Rowling', 'Via Belzoni 23', '12223', '1965-01-02', '2016-02-29 23:00:00'),
 ('ezio12@gmail.com', 'Ezio', 'Auditore', 'Via Maseralino 12', '12345', '1969-05-23', '0000-00-00 00:00:00'),
+('marcocostantitno@libero.it', 'Marco', 'Costantino', 'Via Baggio 146', '36061', '1997-09-26', '2016-08-11 15:46:58'),
 ('sharona_123@gmail.com', 'Sharona', 'Jet', 'Via Ohibò 12', '13141', '1965-01-02', '2015-12-11 23:00:00'),
-('timoty96@yahoo.com', 'Timoty', 'Genialetti', 'Via Pippo Baudo 69', '18192', '1965-01-02', NULL),
-('marcocostantitno@libero.it', 'Marco', 'Costantino', 'Via Baggio 146', '36061', '1997-09-26', '2016-08-11 15:46:58');
+('timoty96@yahoo.com', 'Timoty', 'Genialetti', 'Via Pippo Baudo 69', '18192', '1965-01-02', NULL);
 
 -- --------------------------------------------------------
 
@@ -118,12 +158,17 @@ CREATE TABLE `dettagli_ordine` (
   `pietanza` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
-INSERT INTO `dettagli_ordine`(`quantita`, `ordine`, `pietanza`) VALUES 
-(1,3,8),
-(1,1,7), 
-(1,2,4), 
-(1,4,5), 
-(2,5,2);
+--
+-- Dump dei dati per la tabella `dettagli_ordine`
+--
+
+INSERT INTO `dettagli_ordine` (`quantita`, `ordine`, `pietanza`) VALUES
+(1, 1, 7),
+(1, 2, 4),
+(1, 3, 8),
+(1, 4, 5),
+(2, 5, 2);
+
 -- --------------------------------------------------------
 
 --
@@ -141,10 +186,16 @@ CREATE TABLE `fattorino` (
   `punteggio` int(10) NOT NULL DEFAULT '0'
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
+--
+-- Dump dei dati per la tabella `fattorino`
+--
+
 INSERT INTO `fattorino` (`CF`, `telefono`, `cognome`, `nome`, `data_di_nascita`, `stipendio_ora`, `ore_lavoro`, `punteggio`) VALUES
-('ZLIDVD97R24A703I', '3450990675','Zilio','Davide','1997-10-24','6.20','40','20'),
-('MGRFNC97T15G224H', '3550799965','Magarotto','Francesco','1997-12-15','6.20','40','0'),
-('MDNCRA00A41Z226A', '3333333333','Magia', 'Maria', '1900-01-01','4.20','40','3');
+('MDNCRA00A41Z226A', 2147483647, 'Magia', 'Maria', '1900-01-01', '4.20', 40, 3),
+('MGRFNC97T15G224H', 2147483647, 'Magarotto', 'Francesco', '1997-12-15', '6.20', 40, 0),
+('ZKYDEV87A45T560I', 2147483647, 'Rossi', 'Mario', '1987-04-15', '4.00', 22, 11),
+('ZLIDVD97R24A703I', 2147483647, 'Zilio', 'Davide', '1997-10-24', '6.20', 40, 20);
+
 -- --------------------------------------------------------
 
 --
@@ -159,10 +210,24 @@ CREATE TABLE `feedback` (
   `ristorante` char(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
+--
+-- Dump dei dati per la tabella `feedback`
+--
 
-INSERT INTO `feedback`(`codice_feedback`, `data_feedback`, `commento`, `cliente`, `ristorante`) VALUES 
-(1,'2017-12-28','Ottimo ristorante, ottimo cibo e veloci nella consegna. Veramente valido.','ezio12@gmail.com','98712456123'), 
-(2,'2017-12-27','Ottimo cibo. Unica pecca la consegna.','caty65@libero.com','33343536762');
+INSERT INTO `feedback` (`codice_feedback`, `data_feedback`, `commento`, `cliente`, `ristorante`) VALUES
+(1, '2017-12-28', 'Ottimo ristorante, ottimo cibo e veloci nella consegna. Veramente valido.', 'ezio12@gmail.com', '98712456123'),
+(2, '2017-12-27', 'Ottimo cibo. Unica pecca la consegna.', 'caty65@libero.com', '33343536762');
+
+-- --------------------------------------------------------
+
+--
+-- Struttura stand-in per le viste `o1`
+-- (Vedi sotto per la vista effettiva)
+--
+CREATE TABLE `o1` (
+`ordini` varchar(25)
+);
+
 -- --------------------------------------------------------
 
 --
@@ -177,13 +242,17 @@ CREATE TABLE `ordine` (
   `fattorino` char(20) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
+--
+-- Dump dei dati per la tabella `ordine`
+--
 
-INSERT INTO `ordine`(`codice`, `cliente`, `orario_ordine`, `orario_consegna`, `fattorino`) VALUES 
-(1,'ezio12@gmail.com',NULL,NULL,'MDNCRA00A41Z226A'),
-(2,'timoty96@yahoo.com','2014-09-18 18:50:09','2014-09-11 20:00:47','ZLIDVD97R24A703I'),
-(3,'caty65@icloud.com','2013-10-11 18:48:28','2013-10-11 20:10:00','ZLIDVD97R24A703I'),
-(4,'harona_123@gmail.com','2013-11-11 19:56:51','2013-11-11 21:30:00','MGRFNC97T15G224H'),
-(5,'marcocostantitno@libero.it','2015-12-11 18:40:00','2015-12-11 19:30:00','MGRFNC97T15G224H');
+INSERT INTO `ordine` (`codice`, `cliente`, `orario_ordine`, `orario_consegna`, `fattorino`) VALUES
+(1, 'ezio12@gmail.com', '2017-12-28 10:02:35', '2017-12-28 10:02:35', 'MDNCRA00A41Z226A'),
+(2, 'timoty96@yahoo.com', '2014-09-18 16:50:09', '2014-09-11 18:00:47', 'ZLIDVD97R24A703I'),
+(3, 'caty65@icloud.com', '2013-10-11 16:48:28', '2013-10-11 18:10:00', 'ZLIDVD97R24A703I'),
+(4, 'sharona_123@gmail.com', '2013-11-11 18:56:51', '2013-11-11 20:30:00', 'MGRFNC97T15G224H'),
+(5, 'marcocostantitno@libero.it', '2015-12-11 17:40:00', '2015-12-11 18:30:00', 'MGRFNC97T15G224H');
+
 -- --------------------------------------------------------
 
 --
@@ -195,9 +264,14 @@ CREATE TABLE `patologia` (
   `allergia` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
-INSERT INTO `patologia`(`cliente`, `allergia`) VALUES 
-('ezio12@gmail.com',6),
-('caty65@icloud.com',10);
+--
+-- Dump dei dati per la tabella `patologia`
+--
+
+INSERT INTO `patologia` (`cliente`, `allergia`) VALUES
+('caty65@icloud.com', 10),
+('ezio12@gmail.com', 6);
+
 -- --------------------------------------------------------
 
 --
@@ -229,6 +303,16 @@ INSERT INTO `pietanza` (`codice`, `nome`, `ristorante`, `costo`, `descrizione`, 
 (6, 'Ravioli di carne', '21222324252', '4.50', 'Raviolo di carne cinese (10gr)', 'ALTRO', 'VAPORE', 10),
 (7, 'Goulash con patate', '17247391301', '16.00', 'Porzione di goulash leggermente piccante con un contorno di patate al forno (100gr)', 'ALTRO', NULL, 2),
 (8, 'Mix di contorni', '01234567891', '10.00', 'Mix di contorni vari (insalata, carote, piselli, fagioli, pomodori freschi)', 'VEGETARIANA', NULL, 5);
+
+--
+-- Trigger `pietanza`
+--
+DELIMITER $$
+CREATE TRIGGER `MANUAL_AUTOINCREMENT` BEFORE INSERT ON `pietanza` FOR EACH ROW SET NEW.codice = (
+SELECT MAX(codice)+1 
+FROM pietanza WHERE ristorante = NEW.ristorante)
+$$
+DELIMITER ;
 
 -- --------------------------------------------------------
 
@@ -272,10 +356,42 @@ CREATE TABLE `ticket` (
   `ordine` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
-INSERT INTO `ticket`(`cliente`, `commento`, `ordine`) VALUES 
-('ezio12@gmail.com','Cibo freddo e non cotto a dovere.',1), 
-('caty65@icloud.com','Verdura non fresca.',3), 
-('marcocostantitno@libero.it','Risotto mai arrivato.',5);
+--
+-- Dump dei dati per la tabella `ticket`
+--
+
+INSERT INTO `ticket` (`cliente`, `commento`, `ordine`) VALUES
+('caty65@icloud.com', 'Verdura non fresca.', 3),
+('ezio12@gmail.com', 'Cibo freddo e non cotto a dovere.', 1),
+('marcocostantitno@libero.it', 'Risotto mai arrivato.', 5);
+
+-- --------------------------------------------------------
+
+--
+-- Struttura per vista `a1`
+--
+DROP TABLE IF EXISTS `a1`;
+
+CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `a1`  AS  select `c`.`cognome` AS `allergie` from ((`cliente` `c` join `patologia` `p` on((`c`.`email` = `p`.`cliente`))) join `allergia` `a` on((`p`.`allergia` = `a`.`codice`))) ;
+
+-- --------------------------------------------------------
+
+--
+-- Struttura per vista `c12`
+--
+DROP TABLE IF EXISTS `c12`;
+
+CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `c12`  AS  select count(`o1`.`cliente`) AS `occorrenze`,`o1`.`cliente` AS `cliente` from (`ordine` `o1` join `ordine` `o2` on((`o1`.`cliente` = `o2`.`cliente`))) where (`o1`.`codice` <> `o2`.`codice`) group by `o1`.`cliente` ;
+
+-- --------------------------------------------------------
+
+--
+-- Struttura per vista `o1`
+--
+DROP TABLE IF EXISTS `o1`;
+
+CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `o1`  AS  select `c`.`cognome` AS `ordini` from ((`cliente` `c` join `ordine` `o` on((`c`.`email` = `o`.`cliente`))) join `dettagli_ordine` `do` on((`o`.`codice` = `do`.`ordine`))) ;
+
 --
 -- Indici per le tabelle scaricate
 --
@@ -366,19 +482,19 @@ ALTER TABLE `ticket`
 -- AUTO_INCREMENT per la tabella `allergia`
 --
 ALTER TABLE `allergia`
-  MODIFY `codice` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
+  MODIFY `codice` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
 
 --
 -- AUTO_INCREMENT per la tabella `feedback`
 --
 ALTER TABLE `feedback`
-  MODIFY `codice_feedback` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `codice_feedback` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT per la tabella `ordine`
 --
 ALTER TABLE `ordine`
-  MODIFY `codice` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `codice` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- Limiti per le tabelle scaricate
@@ -409,7 +525,7 @@ ALTER TABLE `feedback`
 --
 ALTER TABLE `ordine`
   ADD CONSTRAINT `ordine_ibfk_1` FOREIGN KEY (`fattorino`) REFERENCES `fattorino` (`CF`) ON DELETE SET NULL ON UPDATE CASCADE,
-  ADD CONSTRAINT `ordine_ibfk_2` FOREIGN KEY (`cliente`) REFERENCES `cliente` (`email`) ON DELETE SET NULL ON UPDATE CASCADE;
+  ADD CONSTRAINT `ordine_ibfk_2` FOREIGN KEY (`cliente`) REFERENCES `cliente` (`email`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Limiti per la tabella `patologia`
@@ -417,25 +533,6 @@ ALTER TABLE `ordine`
 ALTER TABLE `patologia`
   ADD CONSTRAINT `patologia_ibfk_1` FOREIGN KEY (`cliente`) REFERENCES `cliente` (`email`) ON DELETE CASCADE ON UPDATE CASCADE,
   ADD CONSTRAINT `patologia_ibfk_2` FOREIGN KEY (`allergia`) REFERENCES `allergia` (`codice`) ON DELETE NO ACTION ON UPDATE CASCADE;
-
---
--- Limiti per la tabella `pietanza`
---
-ALTER TABLE `pietanza`
-  ADD CONSTRAINT `pietanza_ibfk_1` FOREIGN KEY (`ristorante`) REFERENCES `ristorante` (`piva`) ON DELETE CASCADE ON UPDATE CASCADE;
-
---
--- Limiti per la tabella `ristorante`
---
-ALTER TABLE `ristorante`
-  ADD CONSTRAINT `ristorante_ibfk_1` FOREIGN KEY (`citta`) REFERENCES `citta` (`cap`) ON DELETE NO ACTION ON UPDATE CASCADE;
-
---
--- Limiti per la tabella `ticket`
---
-ALTER TABLE `ticket`
-  ADD CONSTRAINT `ticket_ibfk_1` FOREIGN KEY (`cliente`) REFERENCES `cliente` (`email`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `ticket_ibfk_2` FOREIGN KEY (`ordine`) REFERENCES `ordine` (`codice`) ON DELETE NO ACTION ON UPDATE NO ACTION;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
