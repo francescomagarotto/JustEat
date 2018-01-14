@@ -22,7 +22,7 @@
 	\lstloadlanguages{sql}
 	\definecolor{dkgreen}{rgb}{0,0.6,0}
 	\definecolor{ltgray}{rgb}{0.5,0.5,0.5}
-	\definecolor{amber(sae/ece)}{rgb}{1.0, 0.49, 0.0}
+	\definecolor{amber}{rgb}{1.0, 0.49, 0.0}
 	\definecolor{awesome}{rgb}{1.0, 0.13, 0.32}
 	\lstdefinestyle{Mysql}{
   	backgroundcolor=\color{white},
@@ -38,7 +38,7 @@
   	keepspaces=true,
   	keywordstyle=\color{awesome},
   	language=SQL,
-  	morekeywords={*,MODIFY, DELIMITER, IF, FOR, EACH, ROW, BEGIN, END, RETURN, COMMENT, FUNCTION},
+  	morekeywords={*,MODIFY, DELIMITER, IF, FOR, EACH, ROW, BEGIN, END, RETURN, COMMENT, FUNCTION, DECLARE, RETURNS, UNSIGNED, ENUM, BEFORE, AFTER, SIGNAL, IS, NEW, OLD},
   	numbers=left,
   	numbersep=15pt,
   	numberstyle=\tiny,
@@ -411,7 +411,7 @@ SELECT nome, maxP as occorrenze
 FROM pmax JOIN ( SELECT MAX(maxP) as maP FROM pmax) AS mocc ON mocc.maP = maxP \end{lstlisting}	
 	\begin{table}[ht]
 	\centering
-		\label{table:query4}
+		\label{table:query5}
 		\begin{tabular}{|c|c|}
 			\hline
 			\multirow{1}{*}{\textbf{nome}} & \multicolumn{1}{c|}{\textbf{occorrenze}}\\
@@ -476,72 +476,76 @@ DELIMITER ;
 \end{center}
 	\item Trigger che verifica che il cliente abbia attivato il suo account (\texttt{data di attivazione} diversa da \texttt{null})
 	\begin{lstlisting}[style=Mysql]
-DELIMITER $$
-CREATE TRIGGER `ClienteAttivato` BEFORE INSERT ON `ordine`
- FOR EACH ROW BEGIN
-  IF((SELECT cliente.data_di_attivazione FROM cliente = cliente) IS NULL)
-   THEN 
-	SIGNAL SQLSTATE '45000' SET message_text = 'Cliente non puo''  effettuare ordini se non ha attivato il suo account';
-  END IF;
-END $$
+DELIMITER $$	
+ CREATE TRIGGER `ClienteAttivato` BEFORE INSERT ON `ordine`
+  FOR EACH ROW BEGIN
+   DECLARE p DATE;
+    SELECT cliente.data_di_attivazione INTO p FROM cliente WHERE cliente.email = new.cliente;
+     IF(p IS NULL)
+      THEN 
+       SIGNAL SQLSTATE '45000' SET message_text = "Cliente non puo  effettuare ordini se non ha attivato il suo account";
+     END IF;
+   END $$
 DELIMITER ;	\end{lstlisting}
-\begin{center}
-\hspace*{-1cm}
-\includegraphics[scale=0.9]{trigger2.png}
-\hspace*{-1cm}
-\end{center}
+Il trigger funziona in quanto se proviamo ad inserire l'utente con email 'timoty96@yahoo.com', che ha l'attributo \texttt{data\_di\_attivazione} a \texttt{NULL}, otteniamo il messaggio di errore da parte di MySql:\newline \underline{\#1644 - Cliente non puo`  effettuare ordini se non ha attivato il suo account}
 	\end{enumerate}
 		\subsection{Funzioni}
 		\begin{enumerate}[noitemsep]
-		\item Funzione che restituisce il prezzo minimo o massimo delle pietanze ordinate.
+		\item Funzione che restituisce il prezzo minimo o massimo delle pietanze ordine dato il codice dell'ordine.
 		\begin{lstlisting}[style=Mysql]
-CREATE FUNCTION `prezzoMinMax`(`cos` DECIMAL(4,2), `MinMax` ENUM('min', 'max')) RETURNS DECIMAL(4,2)
-DETERMINISTIC 
-CONTAINS SQL 
-SQL SECURITY DEFINER 
+DELIMITER $$
+CREATE FUNCTION `PrezzoMinMax`(`MinMax` ENUM('min','max'), `CodOrd` INT(11) UNSIGNED) RETURNS decimal(4,2)
+BEGIN
+DECLARE cos DECIMAL(6,2);
 IF(MinMax = 'min') THEN
-	SELECT MIN(p.costo) INTO cos
-	FROM dettagli_ordine dor JOIN pietanza p ON dor.pietanza = p.codice; 
-	RETURN cos;
+SELECT MIN(quantita * pietanza.costo) INTO cos FROM pietanza, dettagli_ordine WHERE dettagli_ordine.pietanza = pietanza.codice AND dettagli_ordine.ordine = CodOrd; 
 ELSE
-	SELECT MAX(p.costo) INTO cos
-	FROM dettagli_ordine dor JOIN pietanza p ON dor.pietanza = p.codice; 
-	RETURN cos;
+SELECT MAX(quantita * pietanza.costo) INTO cos FROM pietanza, dettagli_ordine WHERE dettagli_ordine.pietanza = pietanza.codice AND dettagli_ordine.ordine = CodOrd;
 END IF;
+RETURN cos;
+END $$
+DELIMITER ;
 \end{lstlisting}
 \begin{center}
 	\begin{table}[H]
-	\centering
-	\label{table:query2}
-	\begin{tabular}{|c|}
-		\hline
-		\textbf{prezzoMinMax} \\ \hline
-		10.00 \\ \hline
-	\end{tabular}
-\end{table}
+		\centering
+		\label{table:fun1}
+		\begin{tabular}{|c|}
+			\hline
+			\textcolor{blue}{SET} \textcolor{amber}{@}p0='min'; \\
+			\textcolor{blue}{SET} \textcolor{amber}{@}p1='5'; \\
+			\textcolor{blue}{SELECT} `PrezzoMinMax`(\textcolor{amber}{@}p0,\textcolor{amber}{@}p1) \textcolor{blue}{AS} `PrezzoMin`;
+			\\ \hline
+			\textbf{PrezzoMin} \\ \hline
+			37.98 \\ \hline
+			Se invece mettiamo 'max' in p0 otteniamo 54.80 \\ \hline
+		\end{tabular}
+	\end{table}
 \end{center}
 		\item Funzione che restituisce il costo totale dell'ordine di un cliente.
 \begin{lstlisting}[style=Mysql]
 DELIMITER $$
-FUNCTION `costoTotale`(`tot` DECIMAL(4,2), `email` VARCHAR(30)) RETURNS decimal(4,2)
-COMMENT 'Il cliente è passato per parametro (email).'
+CREATE FUNCTION `CostoTotale`(`ordine` INT(11) UNSIGNED) RETURNS decimal(6,2)
 BEGIN
+DECLARE tot DECIMAL(6,2);
 SELECT SUM(p.costo * d_o.quantita) INTO tot
-FROM ordine o JOIN dettagli_ordine d_o on o.codice = d_o.ordine JOIN pietanza p on d_o.pietanza = p.codice
-WHERE o.cliente = email;
+FROM ordine o JOIN dettagli_ordine d_o ON o.codice = d_o.ordine JOIN pietanza p ON d_o.pietanza = p.codice
+WHERE d_o.ordine = ordine;
 RETURN tot;
-END$$
+END $$
 DELIMITER ;
 \end{lstlisting}
 \begin{center}
 		\begin{table}[H]
 		\centering
-		\label{table:query3}
+		\label{table:fun2}
 		\begin{tabular}{|c|}
 			\hline
-			\textcolor{blue}{SET} \textcolor{amber(sae/ece)}{@}p0='0.0'; \textcolor{blue}{SET} \textcolor{amber(sae/ece)}{@}p1='marcocostantino@libero.it';\\ \textcolor{blue}{SELECT} `costoTotale`(\textcolor{amber(sae/ece)}{@}p0, \textcolor{amber(sae/ece)}{@}p1) \textcolor{blue}{AS} `costoTotale`; \\ \hline
+				\textcolor{blue}{SET} \textcolor{amber}{@}p0='5'; \\
+				\textcolor{blue}{SELECT} `CostoTotale`(\textcolor{amber}{@}p0) \textcolor{blue}{AS} `CostoTotale`;
+			 \\ \hline
 			 \textbf{costoTotale} \\ \hline
-			 37.98 \\ \hline
+			 142.78 \\ \hline
 		\end{tabular}
 	\end{table}
 \end{center}
