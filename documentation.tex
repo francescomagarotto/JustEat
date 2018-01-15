@@ -459,21 +459,20 @@ GROUP BY p.nome \end{lstlisting}
 		\begin{enumerate}[noitemsep]
 		\item Un problema che si viene a creare nella tabella \texttt{Pietanza} con l'impiego di una chiave primaria composta \`e il seguente: Ogni pietanza ha un codice che associato al risorante mi permette di identificare la pientanza. Questo codice per\`o non pu\`o essere settato come \texttt{AUTO\_INCREMENT} perch\`e MySQL non supporta questa funzione con chiavi primarie composte da pi\`u attributi.
 		\begin{lstlisting}[style=Mysql]
+INSERT INTO `pietanza` (`codice`, `nome`, `ristorante`, `costo`, `descrizione`, `tipologia`, `cottura`, `disponibilita`) VALUES ('0', 'Pasta alla carbonare', '10111234685', '11.34', 'Pasta alla carbonara con il guanciale, uova di prima qualita`', 'ALTRO', NULL, '1');		\end{lstlisting}
+All'interno della tabella \texttt{Pietanza}, il piatto ``Spaghetti alla carbonara" ha il campo codice con valore 6 perch\`e il trigger che segue ha calcolato il massimo valore del codice delle pietanze inserite in quel ristorante e ha aggiunto 1.
+		\begin{lstlisting}[style=Mysql]
 DELIMITER $$		
 	CREATE TRIGGER `MANUAL_AUTOINCREMENT` BEFORE INSERT ON `pietanza`
-		FOR EACH ROW BEGIN
-		SET NEW.codice = (
-			SELECT MAX(codice) + 1
-			FROM pietanza WHERE ristorante = NEW.ristorante
-		);
-	END $$		
+		FOR EACH ROW 
+		BEGIN
+			IF(NEW.codice = 0) 
+				THEN 
+					SET NEW.codice = (SELECT MAX(codice) FROM pietanza WHERE pietanza.ristorante = NEW.ristorante) + 1;
+			END IF;
+		END $$		
 DELIMITER ;
 \end{lstlisting}
-\begin{center}
-\hspace*{-1cm}
-\includegraphics[scale=0.9]{trigger1.png}
-\hspace*{-1cm}
-\end{center}
 	\item Trigger che verifica che il cliente abbia attivato il suo account (\texttt{data di attivazione} diversa da \texttt{null})
 	\begin{lstlisting}[style=Mysql]
 DELIMITER $$	
