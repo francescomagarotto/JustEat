@@ -1037,7 +1037,7 @@ DELIMITER $$
     SELECT cliente.data_di_attivazione INTO p FROM cliente WHERE cliente.email = new.cliente;
      IF(p IS NULL)
       THEN 
-       SIGNAL SQLSTATE '45000' SET message_text = "Cliente non puo  effettuare ordini se non ha attivato il suo account";
+       SIGNAL SQLSTATE '45000' SET message_text = "Cliente non puo effettuare ordini se non ha attivato il suo account";
      END IF;
    END $$
 DELIMITER ;	\end{lstlisting}
@@ -1050,7 +1050,7 @@ Il trigger funziona in quanto se proviamo ad inserire l'utente con email 'timoty
 DELIMITER $$
 CREATE FUNCTION `PrezzoMinMax`(`MinMax` ENUM('min','max'), `CodOrd` INT(11) UNSIGNED) RETURNS decimal(4,2)
 BEGIN
-DECLARE cos DECIMAL(6,2);
+DECLARE cos DECIMAL(4,2);
 IF(MinMax = 'min') THEN
 SELECT MIN(quantita * pietanza.costo) INTO cos FROM pietanza, dettagli_ordine WHERE dettagli_ordine.pietanza = pietanza.codice AND dettagli_ordine.ordine = CodOrd; 
 ELSE
