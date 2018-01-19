@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 4.7.4
+-- version 4.7.6
 -- https://www.phpmyadmin.net/
 --
--- Host: 127.0.0.1
--- Creato il: Gen 13, 2018 alle 15:13
+-- Host: localhost
+-- Creato il: Gen 19, 2018 alle 11:20
 -- Versione del server: 10.1.29-MariaDB
--- Versione PHP: 7.2.0
+-- Versione PHP: 7.1.12
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET AUTOCOMMIT = 0;
@@ -26,20 +26,24 @@ DELIMITER $$
 --
 -- Funzioni
 --
-CREATE DEFINER=`root`@`localhost` FUNCTION `costoTotale` (`tot` DECIMAL(4,2) UNSIGNED ZEROFILL, `email` VARCHAR(30)) RETURNS DECIMAL(4,2) BEGIN
-SELECT SUM(p.costo) INTO tot
-FROM ordine o JOIN dettagli_ordine do on o.codice = do.ordine JOIN pietanza p on do.pietanza = p.codice
-WHERE o.cliente = email;
+CREATE DEFINER=`root`@`localhost` FUNCTION `costoTotale` (`ordine` INT(11) UNSIGNED ZEROFILL) RETURNS DECIMAL(6,2) BEGIN
+DECLARE tot DECIMAL(6,2);
+SELECT SUM(p.costo * d_o.quantita) INTO tot
+FROM ordine o JOIN dettagli_ordine d_o ON o.codice = d_o.ordine JOIN pietanza p ON d_o.pietanza = p.codice
+WHERE d_o.ordine = ordine;
 RETURN tot;
 END$$
 
-CREATE DEFINER=`root`@`localhost` FUNCTION `prezzoMinMax` (`cos` DECIMAL(4,2) UNSIGNED ZEROFILL, `MinMax` ENUM('min','max')) RETURNS DECIMAL(4,2) IF(MinMax = 'min') THEN
-SELECT MIN(p.costo) into cos
-FROM dettagli_ordine dor JOIN pietanza p on dor.pietanza=p.codice; RETURN cos;
+CREATE DEFINER=`root`@`localhost` FUNCTION `prezzoMinMax` (`CodOrd` INT(11) UNSIGNED, `MinMax` ENUM('min','max')) RETURNS DECIMAL(4,2) BEGIN
+DECLARE cos DECIMAL(4,2);
+IF(MinMax = 'min') THEN
+SELECT MIN(quantita*pietanza.costo) INTO cos FROM pietanza, dettagli_ordine WHERE dettagli_ordine.
+pietanza = pietanza.codice AND dettagli_ordine.ordine = CodOrd;
 ELSE
-SELECT MAX(p.costo) into cos
-FROM dettagli_ordine dor JOIN pietanza p on dor.pietanza=p.codice; RETURN cos;
-END IF$$
+SELECT MAX( quantita*pietanza.costo ) INTO cos FROM pietanza, dettagli_ordine WHERE dettagli_ordine.pietanza = pietanza.codice AND dettagli_ordine.ordine = CodOrd; 
+END IF;
+RETURN cos;
+END$$
 
 DELIMITER ;
 
@@ -74,6 +78,7 @@ INSERT INTO `allergia` (`codice`, `nome`) VALUES
 (10, 'Celiachia'),
 (1, 'Coloranti'),
 (4, 'Esaltatori del sapor'),
+(11, 'glucosio'),
 (7, 'Latte'),
 (5, 'Molluschi'),
 (2, 'Preservanti'),
@@ -167,7 +172,9 @@ INSERT INTO `dettagli_ordine` (`quantita`, `ordine`, `pietanza`) VALUES
 (1, 2, 4),
 (1, 3, 8),
 (1, 4, 5),
-(2, 5, 2);
+(2, 5, 2),
+(1, 6, 3),
+(2, 7, 4);
 
 -- --------------------------------------------------------
 
@@ -216,7 +223,8 @@ CREATE TABLE `feedback` (
 
 INSERT INTO `feedback` (`codice_feedback`, `data_feedback`, `commento`, `cliente`, `ristorante`) VALUES
 (1, '2017-12-28', 'Ottimo ristorante, ottimo cibo e veloci nella consegna. Veramente valido.', 'ezio12@gmail.com', '98712456123'),
-(2, '2017-12-27', 'Ottimo cibo. Unica pecca la consegna.', 'caty65@libero.com', '33343536762');
+(2, '2017-12-27', 'Ottimo cibo. Unica pecca la consegna.', 'caty65@libero.com', '33343536762'),
+(3, '2018-01-12', 'Buonissimo', 'sharona_123@gmail.com', '62728293031');
 
 -- --------------------------------------------------------
 
@@ -231,6 +239,17 @@ CREATE TABLE `o1` (
 -- --------------------------------------------------------
 
 --
+-- Struttura stand-in per le viste `occ`
+-- (Vedi sotto per la vista effettiva)
+--
+CREATE TABLE `occ` (
+`occorrenze` bigint(21)
+,`cliente` varchar(50)
+);
+
+-- --------------------------------------------------------
+
+--
 -- Struttura della tabella `ordine`
 --
 
@@ -239,6 +258,7 @@ CREATE TABLE `ordine` (
   `cliente` varchar(50) NOT NULL,
   `orario_ordine` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `orario_consegna` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `metodo_pagamento` varchar(20) NOT NULL DEFAULT 'Paypal',
   `fattorino` char(20) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
@@ -246,12 +266,29 @@ CREATE TABLE `ordine` (
 -- Dump dei dati per la tabella `ordine`
 --
 
-INSERT INTO `ordine` (`codice`, `cliente`, `orario_ordine`, `orario_consegna`, `fattorino`) VALUES
-(1, 'ezio12@gmail.com', '2017-12-28 10:02:35', '2017-12-28 10:02:35', 'MDNCRA00A41Z226A'),
-(2, 'timoty96@yahoo.com', '2014-09-18 16:50:09', '2014-09-11 18:00:47', 'ZLIDVD97R24A703I'),
-(3, 'caty65@icloud.com', '2013-10-11 16:48:28', '2013-10-11 18:10:00', 'ZLIDVD97R24A703I'),
-(4, 'sharona_123@gmail.com', '2013-11-11 18:56:51', '2013-11-11 20:30:00', 'MGRFNC97T15G224H'),
-(5, 'marcocostantitno@libero.it', '2015-12-11 17:40:00', '2015-12-11 18:30:00', 'MGRFNC97T15G224H');
+INSERT INTO `ordine` (`codice`, `cliente`, `orario_ordine`, `orario_consegna`, `metodo_pagamento`, `fattorino`) VALUES
+(1, 'ezio12@gmail.com', '2017-12-28 10:02:35', '2017-12-28 10:02:35', 'Paypal', 'MDNCRA00A41Z226A'),
+(2, 'timoty96@yahoo.com', '2014-09-18 16:50:09', '2014-09-11 18:00:47', 'Paypal', 'ZLIDVD97R24A703I'),
+(3, 'caty65@icloud.com', '2013-10-11 16:48:28', '2013-10-11 18:10:00', 'contanti', 'ZLIDVD97R24A703I'),
+(4, 'sharona_123@gmail.com', '2013-11-11 18:56:51', '2013-11-11 20:30:00', 'Mastercard', 'MGRFNC97T15G224H'),
+(5, 'marcocostantitno@libero.it', '2015-12-11 17:40:00', '2015-12-11 18:30:00', 'Paypal', 'MGRFNC97T15G224H'),
+(6, 'timoty96@yahoo.com', '2018-01-08 12:06:55', '2018-01-08 12:06:55', 'Paypal', 'MDNCRA00A41Z226A'),
+(7, 'timoty96@yahoo.com', '2018-01-09 08:52:23', '2018-01-09 08:52:23', 'contanti', 'ZLIDVD97R24A703I');
+
+--
+-- Trigger `ordine`
+--
+DELIMITER $$
+CREATE TRIGGER `ClienteAttivato` BEFORE INSERT ON `ordine` FOR EACH ROW BEGIN 
+DECLARE p DATE;
+SELECT cliente.data_di_attivazione INTO p FROM cliente WHERE cliente.email = new.cliente ; 
+IF(p IS NULL)
+THEN
+SIGNAL SQLSTATE '45000' SET message_text = 'Cliente non puo effettuare ordini se non ha attivato Il suo account' ; 
+END IF;
+END
+$$
+DELIMITER ;
 
 -- --------------------------------------------------------
 
@@ -313,6 +350,17 @@ SELECT MAX(codice)+1
 FROM pietanza WHERE ristorante = NEW.ristorante)
 $$
 DELIMITER ;
+
+-- --------------------------------------------------------
+
+--
+-- Struttura stand-in per le viste `pmax`
+-- (Vedi sotto per la vista effettiva)
+--
+CREATE TABLE `pmax` (
+`nome` varchar(40)
+,`maxP` bigint(21)
+);
 
 -- --------------------------------------------------------
 
@@ -391,6 +439,24 @@ CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW 
 DROP TABLE IF EXISTS `o1`;
 
 CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `o1`  AS  select `c`.`cognome` AS `ordini` from ((`cliente` `c` join `ordine` `o` on((`c`.`email` = `o`.`cliente`))) join `dettagli_ordine` `do` on((`o`.`codice` = `do`.`ordine`))) ;
+
+-- --------------------------------------------------------
+
+--
+-- Struttura per vista `occ`
+--
+DROP TABLE IF EXISTS `occ`;
+
+CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `occ`  AS  select count(`o`.`cliente`) AS `occorrenze`,`o`.`cliente` AS `cliente` from (((`dettagli_ordine` `d_o` join `dettagli_ordine` `d_or` on(((`d_o`.`ordine` <> `d_or`.`ordine`) and (`d_o`.`pietanza` = `d_or`.`pietanza`)))) join `ordine` `o` on((`d_o`.`ordine` = `o`.`codice`))) join `ordine` `o2` on(((`o`.`codice` <> `o2`.`codice`) and (`o`.`cliente` = `o2`.`cliente`)))) where (`d_o`.`quantita` >= 1) ;
+
+-- --------------------------------------------------------
+
+--
+-- Struttura per vista `pmax`
+--
+DROP TABLE IF EXISTS `pmax`;
+
+CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `pmax`  AS  select `p`.`nome` AS `nome`,count(`d_o`.`pietanza`) AS `maxP` from (`dettagli_ordine` `d_o` join `pietanza` `p` on((`d_o`.`pietanza` = `p`.`codice`))) group by `p`.`nome` ;
 
 --
 -- Indici per le tabelle scaricate
@@ -482,19 +548,19 @@ ALTER TABLE `ticket`
 -- AUTO_INCREMENT per la tabella `allergia`
 --
 ALTER TABLE `allergia`
-  MODIFY `codice` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
+  MODIFY `codice` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
 
 --
 -- AUTO_INCREMENT per la tabella `feedback`
 --
 ALTER TABLE `feedback`
-  MODIFY `codice_feedback` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `codice_feedback` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT per la tabella `ordine`
 --
 ALTER TABLE `ordine`
-  MODIFY `codice` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `codice` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 
 --
 -- Limiti per le tabelle scaricate
@@ -526,13 +592,6 @@ ALTER TABLE `feedback`
 ALTER TABLE `ordine`
   ADD CONSTRAINT `ordine_ibfk_1` FOREIGN KEY (`fattorino`) REFERENCES `fattorino` (`CF`) ON DELETE SET NULL ON UPDATE CASCADE,
   ADD CONSTRAINT `ordine_ibfk_2` FOREIGN KEY (`cliente`) REFERENCES `cliente` (`email`) ON DELETE CASCADE ON UPDATE CASCADE;
-
---
--- Limiti per la tabella `patologia`
---
-ALTER TABLE `patologia`
-  ADD CONSTRAINT `patologia_ibfk_1` FOREIGN KEY (`cliente`) REFERENCES `cliente` (`email`) ON DELETE CASCADE ON UPDATE CASCADE,
-  ADD CONSTRAINT `patologia_ibfk_2` FOREIGN KEY (`allergia`) REFERENCES `allergia` (`codice`) ON DELETE NO ACTION ON UPDATE CASCADE;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
