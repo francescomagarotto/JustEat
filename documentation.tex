@@ -105,7 +105,7 @@
 	\tableofcontents{}
 	\pagebreak
 	\section{Analisi dei requisiti}
-	Si vuole realizzare una base di dati che contenga e gestisca gli ordini Just Eat\texttrademark{}, effettuati dai clienti presso i vari ristoranti localizzati nelle diverse citt\`a, individuate tramite il CAP. In particolare, per quanto riguarda i clienti \`e fondamentale che questi siano registrati sul sistema per permettere loro di lasciare un \textit{feedback}, cio\`e un commento relativo alla qualit\`a delle pietanze ricevute, ed effettuare gli ordini presso i vari ristoranti. Quest'ultimi si servono di fattorini\footnotemark{} dipendenti di Just Eat\texttrademark{} che una volta consegnato l'ordine ricevono un punteggio (per ogni ordine completato correttamente, cio\`e completato senza danneggiamenti dovuti al trasporto, l'impiegato riceve un punto in più). In caso contrario, i danneggiamenti vengono segnalati, specificandone la natura, direttamente dall'utente attraverso l'apertura di un \textit{ticket}. Ogni mese il fattorino più giovane con il punteggio più alto riceve un incremento stipendiale di 0,20 \euro{} all'ora. \`E quindi necessario tener conto dei dati anagrafici del fattorino (nome, cognome, codice fiscale, recapito telefonico) e del suo \textbf{stipendio} (composto dalle ore lavorate mensilmente e dallo stipendio all'ora). I clienti sono identificati all'interno della piattaforma attraverso l'indirizzo email che dev'essere confermato, se la conferma non dovesse avvenire, l'utente non può effettuare ordini. Inoltre, per i clienti si ritiene opportuno memorizzare i dati anagrafici come data di nascita, nome, cognome, indirizzo, citt\`a di residenza ed eventuali allergie. I ristoranti mettono a disposizione del cliente un men\`u composto da diverse \textit{pietanze} caratterizzate da un codice univoco, una descrizione, la disponibilit\`a e il costo; la pietanza può essere vegetariana o di altre tipologie, per quanto riguarda le prime si vuole sapere il \textit{metodo di cottura} (al vapore, sottovuoto, al forno). Il cliente nel proprio ordine indica per ogni pietanza desiderata la quantit\`a (espressa in porzioni) di cui necessita, e il metodo di pagamento preferito. Ogni ordine \`e indentificabile in tutta la piattaforma Just Eat\texttrademark{} tramite un codice univoco e contiene l'orario di ricezione dell'ordine e l'orario indicativo di consegna. Per i ristoranti \`e d'interesse sapere la partita iva, il nome, la locazione, il genere culinario, il titolare, un eventuale sito web e il numero di telefono.
+	Si vuole realizzare una base di dati che contenga e gestisca gli ordini Just Eat\texttrademark{}, effettuati dai clienti presso i vari ristoranti localizzati nelle diverse citt\`a, individuate tramite il CAP. In particolare, per quanto riguarda i clienti \`e fondamentale che questi siano registrati sul sistema per permettere loro di lasciare un \textit{feedback}, cio\`e un commento relativo alla qualit\`a delle pietanze ricevute, ed effettuare gli ordini presso i vari ristoranti. Quest'ultimi si servono di fattorini\footnotemark{} dipendenti di Just Eat\texttrademark{} che una volta consegnato l'ordine ricevono un punteggio (per ogni ordine completato correttamente, cio\`e completato senza danneggiamenti dovuti al trasporto, l'impiegato riceve un punto in più. In caso contrario, i danneggiamenti vengono segnalati, specificandone la natura, direttamente dall'utente attraverso l'apertura di un \textit{ticket}. Ogni mese il fattorino più giovane con il punteggio più alto riceve un incremento stipendiale di 0,20 \euro{} all'ora. \`E quindi necessario tener conto dei dati anagrafici del fattorino (nome, cognome, codice fiscale, recapito telefonico) e del suo \textbf{stipendio} (composto dalle ore lavorate mensilmente e dallo stipendio all'ora). I clienti sono identificati all'interno della piattaforma attraverso l'indirizzo email che dev'essere confermato, se la conferma non dovesse avvenire, l'utente non può effettuare ordini. Inoltre, per i clienti si ritiene opportuno memorizzare i dati anagrafici come data di nascita, nome, cognome, indirizzo, citt\`a di residenza ed eventuali allergie. I ristoranti mettono a disposizione del cliente un men\`u composto da diverse \textit{pietanze} caratterizzate da un codice univoco, una descrizione, la disponibilit\`a e il costo; la pietanza può essere vegetariana o di altre tipologie, per quanto riguarda le prime si vuole sapere il \textit{metodo di cottura} (al vapore, sottovuoto, al forno). Il cliente nel proprio ordine indica per ogni pietanza desiderata la quantit\`a (espressa in porzioni) di cui necessita, e il metodo di pagamento preferito. Ogni ordine \`e indentificabile in tutta la piattaforma Just Eat\texttrademark{} tramite un codice univoco e contiene l'orario di ricezione dell'ordine e l'orario indicativo di consegna. Per i ristoranti \`e d'interesse sapere la partita iva, il nome, la locazione, il genere culinario, il titolare, un eventuale sito web e il numero di telefono.
 	\footnotetext{Si analizza un contesto internazionale dove i fattorini sono dipendenti Just Eat\texttrademark{}. In Italia invece il 90\% di questi sono dipendenti del ristorante dove lavorano}
 		\subsection{Glossario dei termini}
 		\begin{table}[ht]
@@ -116,7 +116,7 @@
 			 \hline
 			 Cliente& Persona fisica che attraverso telefono o applicazione web ordina pietanze. & Nome, Cognome, CF, Indirizzo, Email, Allergia&   CF \\
 			 \hline
-			 Ordine&   Ordine eseguito da un cliente.  & Codice, Ora ordinazione,  Ora consegna, metodo di pagamento   &Codice\\
+			 Ordine&   Ordine eseguito da un cliente.  & Codice, Ora ordinazione, metodo di pagamento   &Codice\\
 			 \hline
 			 Fattorino& Persona fisica che consegna l'ordine a casa di un cliente. & Nome, Cognome, CF, Data di nascita, Telefono, Stipendio &  CF\\
 			 \hline
@@ -203,7 +203,6 @@
 						\item Codice: \textit{stringa  $\ll$PK$\gg$} - codice dell'ordinazione.
 						\item Orario ordine: \textit{time} - ora dell'ordinazione.
 						\item Orario consegna: \textit{time} - ora della consegna dell'ordine.
-						\item Metodo di pagamento: \textit{stringa} - metodo di pagamento dell'ordine (Paypal, Mastercard, contanti).
 					\end{itemize}
 			\subsubsection{Ticket}
 				La classe ticket \`e identificata da un codice e contiene il commento relativo al danneggiamento della pietanza ordinata.
@@ -281,7 +280,7 @@ Partendo dallo schema Entit\`a/Relazioni (Figura \ref{fig:ER1}) non ristrutturat
 					\end{itemize}
 			\paragraph{Cliente-Allergia: ``Soffre"}
 				\paragraph{Molteplicit\`a N:N} Il cliente può soffrire di più allergie, un'allergia può appartenere a più clienti.
-				\paragraph{Totalit\`a: parziale verso Allergia/ parziale verso Cliente} Un cliente può non avere allergie, un'allergia pu\`o non essere sofferta da nessun cliente..
+				\paragraph{Totalit\`a: parziale verso Allergia/ Totale verso Cliente} Un cliente può non avere allergie, un'allergia appartiene ad almeno un cliente.
 			\subsubsection{Pietanza}
 			L'entit\`a Pietanza rappresenta l'insieme di pietanze che l'utente può ordinare.
 			Rispetto alla precedente entit\`a aggiungiamo gli attributi:
@@ -305,7 +304,7 @@ Partendo dallo schema Entit\`a/Relazioni (Figura \ref{fig:ER1}) non ristrutturat
 			\item[] \textbf{Allergia}(\underline{Codice}, Nome)
 			\item[] \textbf{Citt\`a}(\underline{CAP}, Nome, Nazione)
 			\item[] \textbf{Cliente}(\underline{Email}, Nome, Cognome, Indirizzo, \textit{Citt\`a}, Data di nascita, Data attivazione account, Allergia\textsuperscript{*})
-			\item[] \textbf{Ordine}(\underline{Codice}, Orario ordine, Orario Consegna, Metodo di pagamento, \textit{Cliente})
+			\item[] \textbf{Ordine}(\underline{Codice}, Orario ordine, Orario Consegna, \textit{Cliente})
 			\item[] \textbf{Ristorante}(\underline{PIVA}, Nome, Titolare, Web, Indirizzo, Telefono, Genere, \textit{Citt\`a})
 			\item[] \textbf{Fattorino}(\underline{CF}, Nome, Cognome, Data di nascita, Telefono, Stipendio/h, Ore lavorate)			
 			\item[] \textbf{Pietanza}(\underline{Codice}, \underline{\textit{Ristorante}}, Costo, Disponibilit\`a, Descrizione, Tipologia, Metodo di cottura\textsuperscript{*})
