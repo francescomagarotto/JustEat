@@ -101,10 +101,10 @@ CREATE TABLE `cliente` (
   `email` varchar(50) NOT NULL,
   `nome` varchar(25) NOT NULL,
   `cognome` varchar(25) NOT NULL,
-  `indirizzo` varchar(20) NOT NULL,
+  `indirizzo` varchar(40) NOT NULL,
   `citta` char(5) NOT NULL,
   `data_di_nascita` date NOT NULL,
-  `data_di_attivazione` timestamp NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  `data_di_attivazione` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`email`),
   KEY `citta` (`citta`),
   CONSTRAINT `cliente_ibfk_1` FOREIGN KEY (`citta`) REFERENCES `citta` (`cap`) ON DELETE NO ACTION ON UPDATE CASCADE
@@ -117,7 +117,7 @@ CREATE TABLE `cliente` (
 
 LOCK TABLES `cliente` WRITE;
 /*!40000 ALTER TABLE `cliente` DISABLE KEYS */;
-INSERT INTO `cliente` VALUES ('caty65@icloud.com','Caty','Rowling','Via Re D\'Italia 43','51617','1965-01-02','2018-01-02 12:42:03'),('caty65@libero.com','Caty','Rowling','Via Belzoni 23','12223','1965-01-02','2016-02-29 23:00:00'),('ezio12@gmail.com','Ezio','Auditore','Via Maseralino 12','12345','1969-05-23','0000-00-00 00:00:00'),('marcocostantitno@libero.it','Marco','Costantino','Via Baggio 146','36061','1997-09-26','2016-08-11 15:46:58'),('sharona_123@gmail.com','Sharona','Jet','Via Ohibò 12','13141','1965-01-02','2015-12-11 23:00:00'),('timoty96@yahoo.com','Timoty','Genialetti','Via Pippo Baudo 69','18192','1965-01-02',NULL);
+INSERT INTO `cliente` VALUES ('alexasattin@virgilio.it','Alexa','Sattin','Via Ugo Bassi 14','13141','1996-05-13','2015-07-14 13:46:21'),('caty65@icloud.com','Caty','Rowling','Via Re D\'Italia 43','51617','1965-01-02','2018-01-02 12:42:03'),('catybassotto@libero.com','Caty','Bassotto','Via Belzoni 23','12223','1985-01-02','2016-02-29 23:00:00'),('ezio12@gmail.com','Ezio','Auditore','Via Maseralino 12','12345','1969-05-23','0000-00-00 00:00:00'),('gianna@icloud.com','Gianna','Nannini','Via Cantautorato 13','80121','1959-06-18','2016-10-11 15:14:12'),('marcocostantino@libero.it','Marco','Costantino','Via Baggio 146','36061','1997-09-26','2018-01-20 20:57:50'),('rosannacall@gmail.com','Rosanna','Callegaro','Via Rinaldo 1','51617','1965-01-10',NULL),('sharona_123@gmail.com','Sharona','Jet','Via Ohibò 12','13141','1965-01-02','2015-12-11 23:00:00'),('timoty96@yahoo.com','Timoty','Genialetti','Via Pippo Baudo 69','18192','1965-01-02',NULL),('vascorossi@yahoo.com','Vasco','Rossi','Via Dell\'industria 5','18192','1958-04-07','2017-04-12 06:47:41');
 /*!40000 ALTER TABLE `cliente` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -206,7 +206,7 @@ CREATE TABLE `feedback` (
 
 LOCK TABLES `feedback` WRITE;
 /*!40000 ALTER TABLE `feedback` DISABLE KEYS */;
-INSERT INTO `feedback` VALUES (1,'2017-12-28','Ottimo ristorante, ottimo cibo e veloci nella consegna. Veramente valido.','ezio12@gmail.com','98712456123'),(2,'2017-12-27','Ottimo cibo. Unica pecca la consegna.','caty65@libero.com','33343536762'),(3,'2018-01-12','Buonissimo','sharona_123@gmail.com','62728293031');
+INSERT INTO `feedback` VALUES (1,'2017-12-28','Ottimo ristorante, ottimo cibo e veloci nella consegna. Veramente valido.','ezio12@gmail.com','98712456123'),(2,'2017-12-27','Ottimo cibo. Unica pecca la consegna.','catybassotto@libero.com','33343536762'),(3,'2018-01-12','Buonissimo','sharona_123@gmail.com','62728293031');
 /*!40000 ALTER TABLE `feedback` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -263,7 +263,7 @@ CREATE TABLE `ordine` (
 
 LOCK TABLES `ordine` WRITE;
 /*!40000 ALTER TABLE `ordine` DISABLE KEYS */;
-INSERT INTO `ordine` VALUES (1,'ezio12@gmail.com','2017-12-28 10:02:35','2017-12-28 10:02:35','Paypal','MDNCRA00A41Z226A'),(2,'timoty96@yahoo.com','2014-09-18 16:50:09','2014-09-11 18:00:47','Paypal','ZLIDVD97R24A703I'),(3,'caty65@icloud.com','2013-10-11 16:48:28','2013-10-11 18:10:00','contanti','ZLIDVD97R24A703I'),(4,'sharona_123@gmail.com','2013-11-11 18:56:51','2013-11-11 20:30:00','Mastercard','MGRFNC97T15G224H'),(5,'marcocostantitno@libero.it','2015-12-11 17:40:00','2015-12-11 18:30:00','Paypal','MGRFNC97T15G224H'),(6,'timoty96@yahoo.com','2018-01-08 12:06:55','2018-01-08 12:06:55','Paypal','MDNCRA00A41Z226A'),(7,'timoty96@yahoo.com','2018-01-09 08:52:23','2018-01-09 08:52:23','contanti','ZLIDVD97R24A703I');
+INSERT INTO `ordine` VALUES (1,'ezio12@gmail.com','2017-12-28 10:02:35','2017-12-28 10:02:35','Paypal','MDNCRA00A41Z226A'),(2,'timoty96@yahoo.com','2014-09-18 16:50:09','2014-09-11 18:00:47','Paypal','ZLIDVD97R24A703I'),(3,'caty65@icloud.com','2013-10-11 16:48:28','2013-10-11 18:10:00','contanti','ZLIDVD97R24A703I'),(4,'sharona_123@gmail.com','2013-11-11 18:56:51','2013-11-11 20:30:00','Mastercard','MGRFNC97T15G224H'),(5,'marcocostantino@libero.it','2015-12-11 17:40:00','2015-12-11 18:30:00','Paypal','MGRFNC97T15G224H'),(6,'timoty96@yahoo.com','2018-01-08 12:06:55','2018-01-08 12:06:55','Paypal','MDNCRA00A41Z226A'),(7,'timoty96@yahoo.com','2018-01-09 08:52:23','2018-01-09 08:52:23','contanti','ZLIDVD97R24A703I');
 /*!40000 ALTER TABLE `ordine` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!50003 SET @saved_cs_client      = @@character_set_client */ ;
@@ -413,6 +413,19 @@ SET character_set_client = utf8;
 SET character_set_client = @saved_cs_client;
 
 --
+-- Temporary view structure for view `q4`
+--
+
+DROP TABLE IF EXISTS `q4`;
+/*!50001 DROP VIEW IF EXISTS `q4`*/;
+SET @saved_cs_client     = @@character_set_client;
+SET character_set_client = utf8;
+/*!50001 CREATE VIEW `q4` AS SELECT 
+ 1 AS `cliente`,
+ 1 AS `numero_pietanza`*/;
+SET character_set_client = @saved_cs_client;
+
+--
 -- Temporary view structure for view `q5`
 --
 
@@ -422,6 +435,19 @@ SET @saved_cs_client     = @@character_set_client;
 SET character_set_client = utf8;
 /*!50001 CREATE VIEW `q5` AS SELECT 
  1 AS `email`*/;
+SET character_set_client = @saved_cs_client;
+
+--
+-- Temporary view structure for view `q6`
+--
+
+DROP TABLE IF EXISTS `q6`;
+/*!50001 DROP VIEW IF EXISTS `q6`*/;
+SET @saved_cs_client     = @@character_set_client;
+SET character_set_client = utf8;
+/*!50001 CREATE VIEW `q6` AS SELECT 
+ 1 AS `nome`,
+ 1 AS `occorrenze`*/;
 SET character_set_client = @saved_cs_client;
 
 --
@@ -684,6 +710,24 @@ DELIMITER ;
 /*!50001 SET collation_connection      = @saved_col_connection */;
 
 --
+-- Final view structure for view `q4`
+--
+
+/*!50001 DROP VIEW IF EXISTS `q4`*/;
+/*!50001 SET @saved_cs_client          = @@character_set_client */;
+/*!50001 SET @saved_cs_results         = @@character_set_results */;
+/*!50001 SET @saved_col_connection     = @@collation_connection */;
+/*!50001 SET character_set_client      = utf8 */;
+/*!50001 SET character_set_results     = utf8 */;
+/*!50001 SET collation_connection      = utf8_general_ci */;
+/*!50001 CREATE ALGORITHM=UNDEFINED */
+/*!50013 DEFINER=`root`@`localhost` SQL SECURITY DEFINER */
+/*!50001 VIEW `q4` AS select `occ`.`cliente` AS `cliente`,`occ`.`occorrenze` AS `numero_pietanza` from `occ` where (`occ`.`occorrenze` = (select max(`occ`.`occorrenze`) from `occ`)) */;
+/*!50001 SET character_set_client      = @saved_cs_client */;
+/*!50001 SET character_set_results     = @saved_cs_results */;
+/*!50001 SET collation_connection      = @saved_col_connection */;
+
+--
 -- Final view structure for view `q5`
 --
 
@@ -700,6 +744,24 @@ DELIMITER ;
 /*!50001 SET character_set_client      = @saved_cs_client */;
 /*!50001 SET character_set_results     = @saved_cs_results */;
 /*!50001 SET collation_connection      = @saved_col_connection */;
+
+--
+-- Final view structure for view `q6`
+--
+
+/*!50001 DROP VIEW IF EXISTS `q6`*/;
+/*!50001 SET @saved_cs_client          = @@character_set_client */;
+/*!50001 SET @saved_cs_results         = @@character_set_results */;
+/*!50001 SET @saved_col_connection     = @@collation_connection */;
+/*!50001 SET character_set_client      = utf8 */;
+/*!50001 SET character_set_results     = utf8 */;
+/*!50001 SET collation_connection      = utf8_general_ci */;
+/*!50001 CREATE ALGORITHM=UNDEFINED */
+/*!50013 DEFINER=`root`@`localhost` SQL SECURITY DEFINER */
+/*!50001 VIEW `q6` AS select `pmax`.`nome` AS `nome`,`pmax`.`maxP` AS `occorrenze` from `pmax` where (`pmax`.`maxP` = (select max(`pmax`.`maxP`) from `pmax`)) */;
+/*!50001 SET character_set_client      = @saved_cs_client */;
+/*!50001 SET character_set_results     = @saved_cs_results */;
+/*!50001 SET collation_connection      = @saved_col_connection */;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
@@ -710,4 +772,4 @@ DELIMITER ;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2018-01-20 21:42:22
+-- Dump completed on 2018-01-20 22:10:32
