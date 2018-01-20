@@ -314,6 +314,10 @@ Partendo dallo schema Entit\`a/Relazioni (Figura \ref{fig:ER1}) non ristrutturat
 			\item[] \textbf{Feedback}(\underline{Codice}, Cliente, Ristorante, Data commento, Commento)
 		\end{itemize}
 	\section{Query}
+	\begin{framed}
+\noindent Le query sono state incapsulate all'interno di viste, pertanto mostrare in output i vari risultati delle query, fare uso della seguente sintassi:
+\texttt{SELECT * FROM q\underline{n};} \\Dove \underline{n} indica il numero assegnato nell'elenco numerato delle query a seguire.\\Ad esempio, se si vuole eseguire la query subito a seguire, cio\`e la numero 1, sostituire n con il valore: \texttt{SELECT * FROM q1;}
+    \end{framed}
 	\begin{enumerate}[noitemsep]
 		\item Query che ritorna tutti i codici degli ordini (conclusi e non) e le email dei clienti che li hanno effettuati, nei quali sono stati ordinate solamente pietanze vegetariane cotte a vapore.
 \begin{lstlisting}[style=Mysql]
@@ -369,9 +373,10 @@ WHERE c.cognome = o1.ordini AND  c.cognome = a1.allergie AND o1.ordini = a1.alle
 	\end{table}
 \end{center}
 	\item Query che ritorna l'email del cliente e il codice della pietanza che ha ordinato più volte in ordini diversi (realizzata con vista).
+%ERROR 1349: View's SELECT contains a subquery in the FROM clause SQL Statement:
+%
 	\begin{lstlisting}[style=Mysql]
-SELECT cliente, occorrenze as numero_pietanza
-FROM occ JOIN ( SELECT MAX(occorrenze) as oc FROM occ ) AS Mocc ON Mocc.oc = occorrenze	\end{lstlisting}
+SELECT cliente, occorrenze AS numero_pietanza FROM occ where occorrenze = (SELECT MAX(occorrenze) FROM occ);	\end{lstlisting}
 	\begin{table}[ht]
 	\centering
 		\label{table:query4}
@@ -408,8 +413,7 @@ WHERE email NOT IN (
 	\end{table}
 	\item Query che ritorna il nome della pietanza ordinata più volte e il suo numero di occorrenze (realizzata con vista).
 	\begin{lstlisting}[style=Mysql]
-SELECT nome, maxP as occorrenze
-FROM pmax JOIN ( SELECT MAX(maxP) as maP FROM pmax) AS mocc ON mocc.maP = maxP \end{lstlisting}	
+SELECT nome, maxP AS occorrenze FROM pmax WHERE maxP = (SELECT MAX(maxP) FROM pmax) \end{lstlisting}	
 	\begin{table}[ht]
 	\centering
 		\label{table:query5}
@@ -868,6 +872,10 @@ Partendo dallo schema Entit\`a/Relazioni (Figura \ref{fig:ER1}) non ristrutturat
 			\item[] \textbf{Feedback}(\underline{Codice}, Cliente, Ristorante, Data commento, Commento)
 		\end{itemize}
 	\section{Query}
+\begin{framed}
+Come esplicitamente richiesto le query sono state incapsulate all'interno di viste, pertanto per visualizzare i risultato delle query fare uso della seguente sintassi:
+\texttt{mysql > q\underline{n}}
+\end{framed}
 	\begin{enumerate}[noitemsep]
 		\item Query che ritorna tutti i codici degli ordini (conclusi e non) e le email dei clienti che li hanno effettuati, nei quali sono stati ordinate solamente pietanze vegetariane cotte a vapore.
 \begin{lstlisting}[style=Mysql]
