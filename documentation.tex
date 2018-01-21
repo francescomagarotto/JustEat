@@ -911,23 +911,24 @@ WHERE punteggio > 10 AND f.CF NOT IN (
 		\end{tabular}
 	\end{table}
 \end{center}
-	\item Query che ritorna i cognomi dei clienti che hanno effettuato un ordine e soffrono di particolari allergie (realizzata con viste).
+	\item Query che ritorna il nome del cliente che ha effettuato almeno 2 ordini mostrando la media dell'importo speso.
 	\begin{lstlisting}[style=Mysql]
-SELECT cognome
-FROM cliente AS c, o1, a1
-WHERE c.cognome = o1.ordini AND  c.cognome = a1.allergie AND o1.ordini = a1.allergie
+SELECT c.nome, COUNT(o.cliente) as numero_ordini, AVG(p.costo)
+FROM cliente c join ordine o on c.email = o.cliente join dettagli_ordine d_o on o.codice = d_o.ordine join pietanza p on p.codice = d_o.pietanza 
+GROUP BY c.nome
+HAVING COUNT(o.cliente) >= 2
 \end{lstlisting}	
 \begin{center}
-	\begin{table}[H]
-		\centering
-		\label{table:query3}
-		\begin{tabular}{|c|}
+	\begin{table}[ht]
+	\centering
+		\label{table:query4}
+		\begin{tabular}{|c|c|c|}
 			\hline
-			\textbf{cognome} \\ \hline
-			Rowling          \\ \hline
-			Rowling          \\	\hline
-			Auditore         \\	\hline
-		\end{tabular}
+			\multirow{1}{*}{\textbf{nome}} & \multicolumn{1}{c|}{\textbf{numero\_ordini}} & \multicolumn{1}{cl}{\textbf{AVG(p.costo)}}\\
+			\hline
+			Ezio & 2 & 21.65\\ \hline
+			Timoty & 3 & 22.60\\ \hline
+			\end{tabular}
 	\end{table}
 \end{center}
 	\item Query che ritorna l'email del cliente e il codice della pietanza che ha ordinato più volte in ordini diversi (realizzata con vista).
@@ -941,8 +942,7 @@ FROM occ JOIN ( SELECT MAX(occorrenze) as oc FROM occ ) AS Mocc ON Mocc.oc = occ
 			\hline
 			\multirow{1}{*}{\textbf{email}} & \multicolumn{1}{c|}{\textbf{numero\_pietanza}}\\
 			\hline
-			timoty96@yahoo.com & 4\\ 
-			\hline
+			timoty96@yahoo.com & 4\\ \hline
 			\end{tabular}
 	\end{table}
 	\item Query che ritorna l'email clienti che non hanno mai effettuato un ordine nonostante possano farlo (data\_di\_attivazione non nulla).
