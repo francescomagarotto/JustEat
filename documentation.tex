@@ -322,17 +322,24 @@ Partendo dallo schema Entit\`a/Relazioni (Figura \ref{fig:ER1}) non ristrutturat
 		\item Query che ritorna tutti i codici degli ordini (conclusi e non) e le email dei clienti che li hanno effettuati, nei quali sono stati ordinate solamente pietanze vegetariane cotte a vapore.
 \begin{lstlisting}[style=Mysql]
 SELECT o.codice, o.cliente
-FROM ordine o JOIN cliente c ON o.cliente = c.email
-WHERE NOT EXISTS (
-	SELECT *
+FROM ordine o JOIN cliente c ON o.cliente = c.email 
+WHERE o.codice = ANY (
+	SELECT o.codice
 	FROM ordine o JOIN dettagli_ordine d_o ON o.codice = d_o.ordine JOIN pietanza p ON d_o.pietanza = p.codice
-	WHERE cottura <> 'VAPORE' AND tipologia <> 'VEGETARIANA' )
+	WHERE p.cottura = 'VAPORE' AND p.tipologia = 'VEGETARIANA'
+ )
 \end{lstlisting}
-\begin{center}
-\hspace*{-1cm}
-\includegraphics[width=19cm, height=1cm]{query1.png}
-\hspace*{-1cm}
-\end{center}
+	\begin{table}[ht]
+	\centering
+		\label{table:query4}
+		\begin{tabular}{|c|c|}
+			\hline
+			\multirow{1}{*}{\textbf{codice\_ordine}} & \multicolumn{1}{c|}{\textbf{cliente}}\\
+			\hline
+			1 & ezio12@gmail.com\\ \hline
+			9 & vascorossi@yahoo.com\\ \hline
+			\end{tabular}
+	\end{table}
 	\item Query che ritorna i codici fiscali di tutti i fattorini che hanno portato a termine tutti gli ordini senza nessun ticket aperto ed hanno ottenuto un punteggio superiore a 10.
 \begin{lstlisting}[style=Mysql]
 SELECT f.CF
@@ -353,25 +360,24 @@ WHERE punteggio > 10 AND f.CF NOT IN (
 		\end{tabular}
 	\end{table}
 \end{center}
-	\item Query che ritorna il nome del cliente che ha effettuato almeno 2 ordini mostrando la media dell'importo speso.	\begin{lstlisting}[style=Mysql]
-SELECT c.nome, COUNT(o.cliente) as numero_ordini, AVG(p.costo)
-FROM cliente c join ordine o on c.email = o.cliente join dettagli_ordine d_o on o.codice = d_o.ordine join pietanza p on p.codice = d_o.pietanza 
-GROUP BY c.nome
-HAVING COUNT(o.cliente) >= 2
-\end{lstlisting}	
-\begin{center}
-	\begin{table}[ht]
-	\centering
-		\label{table:query4}
-		\begin{tabular}{|c|c|c|}
+	\item Query che ritorna il cognome del cliente che ha effettuato un ordine ed è soggetto a malattie.
+	\begin{lstlisting}[style=Mysql]
+SELECT c.cognome 
+FROM cliente c join o1 join a1 
+WHERE c.cognome = o1.ordini AND c.cognome = a1.allergie AND o1.ordini = a1.allergie
+	\end{lstlisting}
+	\begin{table}[H]
+		\centering
+		\label{table:query5}
+		\begin{tabular}{|c|}
 			\hline
-			\multirow{1}{*}{\textbf{nome}} & \multicolumn{1}{c|}{\textbf{numero\_ordini}} & \multicolumn{1}{c|}{\textbf{AVG(p.costo)}}\\
-			\hline
-			Ezio & 2 & 21.65\\ \hline
-			Timoty & 3 & 22.60\\ \hline
-			\end{tabular}
+			\textbf{cognome} \\ \hline
+			Rowling          \\ \hline
+			Auditore          \\	\hline
+			Auditore          \\	\hline
+		\end{tabular}
 	\end{table}
-\end{center}
+
 	\item Query che ritorna l'email del cliente e il codice della pietanza che ha ordinato più volte in ordini diversi (realizzata con vista).
 %ERROR 1349: View's SELECT contains a subquery in the FROM clause SQL Statement:
 %
@@ -425,6 +431,26 @@ SELECT nome, maxP AS occorrenze FROM pmax WHERE maxP = (SELECT MAX(maxP) FROM pm
 			\hline
 			\end{tabular}
 	\end{table}
+		\item Query che ritorna il nome del cliente che ha effettuato almeno 2 ordini mostrando la media dell'importo speso.	\begin{lstlisting}[style=Mysql]
+SELECT c.nome, COUNT(o.cliente) as numero_ordini, AVG(p.costo)
+FROM cliente c join ordine o on c.email = o.cliente join dettagli_ordine d_o on o.codice = d_o.ordine join pietanza p on p.codice = d_o.pietanza 
+GROUP BY c.nome
+HAVING COUNT(o.cliente) >= 2
+\end{lstlisting}	
+\begin{center}
+	\begin{table}[ht]
+	\centering
+		\label{table:query4}
+		\begin{tabular}{|c|c|c|}
+			\hline
+			\multirow{1}{*}{\textbf{nome}} & \multicolumn{1}{c|}{\textbf{numero\_ordini}} & \multicolumn{1}{c|}{\textbf{AVG(p.costo)}}\\
+			\hline
+			Ezio & 2 & 21.65\\ \hline
+			Timoty & 3 & 22.60\\ \hline
+			Vasco & 2 & 17.80\\ \hline
+			\end{tabular}
+	\end{table}
+\end{center}
 	\end{enumerate}
 		\pagebreak
 		\section{Eventi, viste, trigger e funzioni}
@@ -880,17 +906,24 @@ Come esplicitamente richiesto le query sono state incapsulate all'interno di vis
 		\item Query che ritorna tutti i codici degli ordini (conclusi e non) e le email dei clienti che li hanno effettuati, nei quali sono stati ordinate solamente pietanze vegetariane cotte a vapore.
 \begin{lstlisting}[style=Mysql]
 SELECT o.codice, o.cliente
-FROM ordine o JOIN cliente c ON o.cliente = c.email
-WHERE NOT EXISTS (
-	SELECT *
+FROM ordine o JOIN cliente c ON o.cliente = c.email 
+WHERE o.codice = ANY (
+	SELECT o.codice
 	FROM ordine o JOIN dettagli_ordine d_o ON o.codice = d_o.ordine JOIN pietanza p ON d_o.pietanza = p.codice
-	WHERE cottura <> 'VAPORE' AND tipologia <> 'VEGETARIANA' )
+	WHERE p.cottura = 'VAPORE' AND p.tipologia = 'VEGETARIANA'
+ )
 \end{lstlisting}
-\begin{center}
-\hspace*{-1cm}
-\includegraphics[width=19cm, height=1cm]{query1.png}
-\hspace*{-1cm}
-\end{center}
+	\begin{table}[ht]
+	\centering
+		\label{table:query4}
+		\begin{tabular}{|c|c|}
+			\hline
+			\multirow{1}{*}{\textbf{codice_ordine}} & \multicolumn{1}{c|}{\textbf{cliente}}\\
+			\hline
+			1 & ezio12@gmail.com
+			9 & vascorossi@yahoo.com\\ \hline
+			\end{tabular}
+	\end{table}
 	\item Query che ritorna i codici fiscali di tutti i fattorini che hanno portato a termine tutti gli ordini senza nessun ticket aperto ed hanno ottenuto un punteggio superiore a 10.
 \begin{lstlisting}[style=Mysql]
 SELECT f.CF
@@ -928,6 +961,7 @@ HAVING COUNT(o.cliente) >= 2
 			\hline
 			Ezio & 2 & 21.65\\ \hline
 			Timoty & 3 & 22.60\\ \hline
+			Vasco & 2 & 17.80\\ \hline
 			\end{tabular}
 	\end{table}
 \end{center}
