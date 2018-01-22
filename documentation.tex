@@ -390,7 +390,7 @@ SELECT cliente, occorrenze AS numero_pietanza FROM occ where occorrenze = (SELEC
 			\hline
 			\multirow{1}{*}{\textbf{email}} & \multicolumn{1}{c|}{\textbf{numero\_pietanza}}\\
 			\hline
-			timoty96@yahoo.com & 4\\ 
+			 ezio12@gmail.com & 6\\ 
 			\hline
 			\end{tabular}
 	\end{table}
@@ -413,8 +413,11 @@ WHERE email NOT IN (
 		\begin{tabular}{|c|}
 			\hline
 			\textbf{email} \\ \hline
-			caty65@libero.com          \\ \hline
+			catybassotto@libero.com         \\ \hline
+			alexsattin@virgilio.it          \\	\hline
 			timoty96@yahoo.com          \\	\hline
+			rosannacall@gmail.com          \\	\hline
+			gianna@icloud.com          \\	\hline
 		\end{tabular}
 	\end{table}
 	\item Query che ritorna il nome della pietanza ordinata più volte e il suo numero di occorrenze (realizzata con vista).
@@ -427,8 +430,10 @@ SELECT nome, maxP AS occorrenze FROM pmax WHERE maxP = (SELECT MAX(maxP) FROM pm
 			\hline
 			\multirow{1}{*}{\textbf{nome}} & \multicolumn{1}{c|}{\textbf{occorrenze}}\\
 			\hline
-			Risotto ai frutti di mare & 2\\ 
-			\hline
+			Goulash con patate & 2\\ \hline
+			Mix di verdure cotte a vapore & 2\\ \hline
+			Pesce fritto misto & 2\\ \hline
+			Risotto ai frutti di mare & 2\\  \hline
 			\end{tabular}
 	\end{table}
 		\item Query che ritorna il nome del cliente che ha effettuato almeno 2 ordini mostrando la media dell'importo speso.	\begin{lstlisting}[style=Mysql]
@@ -452,7 +457,6 @@ HAVING COUNT(o.cliente) >= 2
 	\end{table}
 \end{center}
 	\end{enumerate}
-		\pagebreak
 		\section{Eventi, viste, trigger e funzioni}
 		\subsection{Eventi}
 		Nell'analisi dei requisiti viene espressamente richiesto che ogni mese il fattorino pi\`u giovane con punteggio pi\`u alto riceva un incremento stipendiale di 0,20 \euro{} all'ora.
@@ -524,7 +528,7 @@ Il trigger funziona in quanto se proviamo ad inserire l'utente con email 'timoty
 	\end{enumerate}
 		\subsection{Funzioni}
 		\begin{enumerate}[noitemsep]
-		\item Funzione che restituisce il prezzo minimo o massimo delle pietanze ordine dato il codice dell'ordine.
+		\item Funzione che restituisce il prezzo minimo o massimo delle pietanze dato il codice dell'ordine.
 		\begin{lstlisting}[style=Mysql]
 DELIMITER $$
 CREATE FUNCTION `PrezzoMinMax`(`MinMax` ENUM('min','max'), `CodOrd` INT(11) UNSIGNED) RETURNS decimal(4,2)
@@ -555,7 +559,7 @@ DELIMITER ;
 		\end{tabular}
 	\end{table}
 \end{center}
-		\item Funzione che restituisce il costo totale dell'ordine di un cliente.
+		\item Funzione che restituisce il costo totale dell'ordine di un cliente, dato il codice dell'ordine.
 \begin{lstlisting}[style=Mysql]
 DELIMITER $$
 CREATE FUNCTION `CostoTotale`(`ordine` INT(11) UNSIGNED) RETURNS decimal(6,2)
