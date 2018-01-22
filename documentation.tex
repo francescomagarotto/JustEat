@@ -363,7 +363,7 @@ WHERE punteggio > 10 AND f.CF NOT IN (
 	\item Query che ritorna il cognome del cliente che ha effettuato un ordine ed è soggetto a malattie.
 	\begin{lstlisting}[style=Mysql]
 SELECT c.cognome 
-FROM cliente c join o1 join a1 
+FROM cliente c JOIN o1 JOIN a1 
 WHERE c.cognome = o1.ordini AND c.cognome = a1.allergie AND o1.ordini = a1.allergie
 	\end{lstlisting}
 	\begin{table}[H]
@@ -382,7 +382,9 @@ WHERE c.cognome = o1.ordini AND c.cognome = a1.allergie AND o1.ordini = a1.aller
 %ERROR 1349: View's SELECT contains a subquery in the FROM clause SQL Statement:
 %
 	\begin{lstlisting}[style=Mysql]
-SELECT cliente, occorrenze AS numero_pietanza FROM occ where occorrenze = (SELECT MAX(occorrenze) FROM occ);	\end{lstlisting}
+SELECT cliente, occorrenze AS numero_pietanza 
+FROM occ 
+WHERE occorrenze = (SELECT MAX(occorrenze) FROM occ);	\end{lstlisting}
 	\begin{table}[ht]
 	\centering
 		\label{table:query4}
@@ -438,7 +440,7 @@ SELECT nome, maxP AS occorrenze FROM pmax WHERE maxP = (SELECT MAX(maxP) FROM pm
 	\end{table}
 		\item Query che ritorna il nome del cliente che ha effettuato almeno 2 ordini mostrando la media dell'importo speso.	\begin{lstlisting}[style=Mysql]
 SELECT c.nome, COUNT(o.cliente) as numero_ordini, AVG(p.costo)
-FROM cliente c join ordine o on c.email = o.cliente join dettagli_ordine d_o on o.codice = d_o.ordine join pietanza p on p.codice = d_o.pietanza 
+FROM cliente c JOIN ordine o on c.email = o.cliente JOIN dettagli_ordine d_o on o.codice = d_o.ordine JOIN pietanza p on p.codice = d_o.pietanza 
 GROUP BY c.nome
 HAVING COUNT(o.cliente) >= 2
 \end{lstlisting}	
