@@ -1,8 +1,8 @@
 -- MySQL dump 10.13  Distrib 5.7.17, for Win64 (x86_64)
 --
--- Host: localhost    Database: j_e
+-- Host: localhost    Database: je
 -- ------------------------------------------------------
--- Server version	5.5.5-10.1.29-MariaDB
+-- Server version	5.5.5-10.1.28-MariaDB
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
@@ -451,6 +451,20 @@ SET character_set_client = utf8;
 SET character_set_client = @saved_cs_client;
 
 --
+-- Temporary view structure for view `q7`
+--
+
+DROP TABLE IF EXISTS `q7`;
+/*!50001 DROP VIEW IF EXISTS `q7`*/;
+SET @saved_cs_client     = @@character_set_client;
+SET character_set_client = utf8;
+/*!50001 CREATE VIEW `q7` AS SELECT 
+ 1 AS `nome`,
+ 1 AS `numero_ordini`,
+ 1 AS `AVG(p.costo)`*/;
+SET character_set_client = @saved_cs_client;
+
+--
 -- Table structure for table `ristorante`
 --
 
@@ -509,11 +523,11 @@ INSERT INTO `ticket` VALUES ('caty65@icloud.com','Verdura non fresca.',3),('ezio
 UNLOCK TABLES;
 
 --
--- Dumping events for database 'j_e'
+-- Dumping events for database 'je'
 --
 
 --
--- Dumping routines for database 'j_e'
+-- Dumping routines for database 'je'
 --
 /*!50003 DROP FUNCTION IF EXISTS `costoTotale` */;
 /*!50003 SET @saved_cs_client      = @@character_set_client */ ;
@@ -762,6 +776,24 @@ DELIMITER ;
 /*!50001 SET character_set_client      = @saved_cs_client */;
 /*!50001 SET character_set_results     = @saved_cs_results */;
 /*!50001 SET collation_connection      = @saved_col_connection */;
+
+--
+-- Final view structure for view `q7`
+--
+
+/*!50001 DROP VIEW IF EXISTS `q7`*/;
+/*!50001 SET @saved_cs_client          = @@character_set_client */;
+/*!50001 SET @saved_cs_results         = @@character_set_results */;
+/*!50001 SET @saved_col_connection     = @@collation_connection */;
+/*!50001 SET character_set_client      = utf8 */;
+/*!50001 SET character_set_results     = utf8 */;
+/*!50001 SET collation_connection      = utf8_general_ci */;
+/*!50001 CREATE ALGORITHM=UNDEFINED */
+/*!50013 DEFINER=`root`@`localhost` SQL SECURITY DEFINER */
+/*!50001 VIEW `q7` AS select `c`.`nome` AS `nome`,count(`o`.`cliente`) AS `numero_ordini`,avg(`p`.`costo`) AS `AVG(p.costo)` from (((`cliente` `c` join `ordine` `o` on((`c`.`email` = `o`.`cliente`))) join `dettagli_ordine` `d_o` on((`o`.`codice` = `d_o`.`ordine`))) join `pietanza` `p` on((`p`.`codice` = `d_o`.`pietanza`))) group by `c`.`nome` having (count(`o`.`cliente`) >= 2) */;
+/*!50001 SET character_set_client      = @saved_cs_client */;
+/*!50001 SET character_set_results     = @saved_cs_results */;
+/*!50001 SET collation_connection      = @saved_col_connection */;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
@@ -772,4 +804,4 @@ DELIMITER ;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2018-01-20 22:10:32
+-- Dump completed on 2018-01-22 18:54:01
