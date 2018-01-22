@@ -145,7 +145,7 @@ CREATE TABLE `dettagli_ordine` (
 
 LOCK TABLES `dettagli_ordine` WRITE;
 /*!40000 ALTER TABLE `dettagli_ordine` DISABLE KEYS */;
-INSERT INTO `dettagli_ordine` VALUES (1,1,7),(1,2,4),(1,3,8),(1,4,5),(2,5,2),(1,6,3),(2,7,4);
+INSERT INTO `dettagli_ordine` VALUES (1,1,7),(1,2,4),(1,3,8),(1,4,5),(2,5,2),(1,6,3),(2,7,4),(1,8,5),(1,9,7);
 /*!40000 ALTER TABLE `dettagli_ordine` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -254,7 +254,7 @@ CREATE TABLE `ordine` (
   KEY `cliente` (`cliente`),
   CONSTRAINT `ordine_ibfk_1` FOREIGN KEY (`fattorino`) REFERENCES `fattorino` (`CF`) ON DELETE SET NULL ON UPDATE CASCADE,
   CONSTRAINT `ordine_ibfk_2` FOREIGN KEY (`cliente`) REFERENCES `cliente` (`email`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -263,7 +263,7 @@ CREATE TABLE `ordine` (
 
 LOCK TABLES `ordine` WRITE;
 /*!40000 ALTER TABLE `ordine` DISABLE KEYS */;
-INSERT INTO `ordine` VALUES (1,'ezio12@gmail.com','2017-12-28 10:02:35','2017-12-28 10:02:35','Paypal','MDNCRA00A41Z226A'),(2,'timoty96@yahoo.com','2014-09-18 16:50:09','2014-09-11 18:00:47','Paypal','ZLIDVD97R24A703I'),(3,'caty65@icloud.com','2013-10-11 16:48:28','2013-10-11 18:10:00','contanti','ZLIDVD97R24A703I'),(4,'sharona_123@gmail.com','2013-11-11 18:56:51','2013-11-11 20:30:00','Mastercard','MGRFNC97T15G224H'),(5,'marcocostantino@libero.it','2015-12-11 17:40:00','2015-12-11 18:30:00','Paypal','MGRFNC97T15G224H'),(6,'timoty96@yahoo.com','2018-01-08 12:06:55','2018-01-08 12:06:55','Paypal','MDNCRA00A41Z226A'),(7,'timoty96@yahoo.com','2018-01-09 08:52:23','2018-01-09 08:52:23','contanti','ZLIDVD97R24A703I');
+INSERT INTO `ordine` VALUES (1,'ezio12@gmail.com','2017-12-28 10:02:35','2017-12-28 10:02:35','Paypal','MDNCRA00A41Z226A'),(2,'timoty96@yahoo.com','2014-09-18 16:50:09','2014-09-11 18:00:47','Paypal','ZLIDVD97R24A703I'),(3,'caty65@icloud.com','2013-10-11 16:48:28','2013-10-11 18:10:00','contanti','ZLIDVD97R24A703I'),(4,'sharona_123@gmail.com','2013-11-11 18:56:51','2013-11-11 20:30:00','Mastercard','MGRFNC97T15G224H'),(5,'marcocostantino@libero.it','2015-12-11 17:40:00','2015-12-11 18:30:00','Paypal','MGRFNC97T15G224H'),(6,'timoty96@yahoo.com','2018-01-08 12:06:55','2018-01-08 12:06:55','Paypal','MDNCRA00A41Z226A'),(7,'timoty96@yahoo.com','2018-01-09 08:52:23','2018-01-09 08:52:23','contanti','ZLIDVD97R24A703I'),(8,'ezio12@gmail.com','2018-01-21 11:53:04','2018-01-21 11:53:04','contanti','MDNCRA00A41Z226A'),(9,'vascorossi@yahoo.com','2018-01-21 12:09:25','2018-01-21 12:09:25','Paypal','MGRFNC97T15G224H');
 /*!40000 ALTER TABLE `ordine` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!50003 SET @saved_cs_client      = @@character_set_client */ ;
@@ -341,7 +341,7 @@ CREATE TABLE `pietanza` (
 
 LOCK TABLES `pietanza` WRITE;
 /*!40000 ALTER TABLE `pietanza` DISABLE KEYS */;
-INSERT INTO `pietanza` VALUES (0,'Ravioli di carne','21222324252',4.50,'Raviolo di carne cinese (10gr)','ALTRO','VAPORE',10),(1,'Riso al curry','62728293031',10.40,'Riso al curry per due persone:\r\n - Riso basmati 250gr\r\n - Pollo al curry 250gr\r\n','ALTRO',NULL,3),(2,'Risotto ai funghi porcini','98712456123',18.99,'Porzione da 120gr di risotto ai funghi porcini per una persona.\r\nI funghi sono freschi.','ALTRO',NULL,2),(3,'Pasta al forno calabrese','98712456123',13.00,'Classica ricetta calabrese: pasta, mozzarella, salamino piccante, polpettine.','ALTRO','FORNO',1),(4,'Risotto ai frutti di mare','62728293031',27.40,'Porzione da 120gr di risotto ai frutti di mare.\r\n - Si utilizza pesce fresco\r\n - Il riso utilizzato è il basmati.','ALTRO',NULL,5),(5,'Pesce fritto misto','10111234685',27.30,'Porzione di pesce fritto misto con polenta per due persone (250gr) ','ALTRO','FRITTA',3),(6,'Ravioli di carne','21222324252',4.50,'Raviolo di carne cinese (10gr)','ALTRO','VAPORE',10),(7,'Goulash con patate','17247391301',16.00,'Porzione di goulash leggermente piccante con un contorno di patate al forno (100gr)','ALTRO',NULL,2),(8,'Mix di contorni','01234567891',10.00,'Mix di contorni vari (insalata, carote, piselli, fagioli, pomodori freschi)','VEGETARIANA',NULL,5);
+INSERT INTO `pietanza` VALUES (0,'Ravioli di carne','21222324252',4.50,'Raviolo di carne cinese (10gr)','ALTRO','VAPORE',10),(1,'Riso al curry','62728293031',10.40,'Riso al curry per due persone:\r\n - Riso basmati 250gr\r\n - Pollo al curry 250gr\r\n','ALTRO',NULL,3),(2,'Risotto ai funghi porcini','98712456123',18.99,'Porzione da 120gr di risotto ai funghi porcini per una persona.\r\nI funghi sono freschi.','ALTRO',NULL,2),(3,'Pasta al forno calabrese','98712456123',13.00,'Classica ricetta calabrese: pasta, mozzarella, salamino piccante, polpettine.','ALTRO','FORNO',1),(4,'Risotto ai frutti di mare','62728293031',27.40,'Porzione da 120gr di risotto ai frutti di mare.\r\n - Si utilizza pesce fresco\r\n - Il riso utilizzato è il basmati.','ALTRO',NULL,5),(5,'Pesce fritto misto','10111234685',27.30,'Porzione di pesce fritto misto con polenta per due persone (250gr) ','ALTRO','FRITTA',3),(6,'Ravioli di carne','21222324252',4.50,'Raviolo di carne cinese (10gr)','ALTRO','VAPORE',10),(7,'Goulash con patate','17247391301',16.00,'Porzione di goulash leggermente piccante con un contorno di patate al forno (100gr)','ALTRO',NULL,2),(7,'Mix di verdure cotte a vapore','21222324252',19.60,'Mix di 10 verdure tutte cotte al vapore.','VEGETARIANA','VAPORE',1),(8,'Mix di contorni','01234567891',10.00,'Mix di contorni vari (insalata, carote, piselli, fagioli, pomodori freschi)','VEGETARIANA',NULL,5);
 /*!40000 ALTER TABLE `pietanza` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!50003 SET @saved_cs_client      = @@character_set_client */ ;
@@ -682,7 +682,7 @@ DELIMITER ;
 /*!50001 SET collation_connection      = utf8mb4_general_ci */;
 /*!50001 CREATE ALGORITHM=UNDEFINED */
 /*!50013 DEFINER=`root`@`localhost` SQL SECURITY DEFINER */
-/*!50001 VIEW `q1` AS select `o`.`codice` AS `codice`,`o`.`cliente` AS `cliente` from (`ordine` `o` join `cliente` `c` on((`o`.`cliente` = `c`.`email`))) where (not(exists(select 1 from ((`ordine` `o` join `dettagli_ordine` `d_o` on((`o`.`codice` = `d_o`.`ordine`))) join `pietanza` `p` on((`d_o`.`pietanza` = `p`.`codice`))) where ((`p`.`cottura` <> 'VAPORE') and (`p`.`tipologia` <> 'VEGETARIANA'))))) */;
+/*!50001 VIEW `q1` AS select `o`.`codice` AS `codice`,`o`.`cliente` AS `cliente` from (`ordine` `o` join `cliente` `c` on((`o`.`cliente` = `c`.`email`))) where `o`.`codice` in (select `o`.`codice` from ((`ordine` `o` join `dettagli_ordine` `d_o` on((`o`.`codice` = `d_o`.`ordine`))) join `pietanza` `p` on((`d_o`.`pietanza` = `p`.`codice`))) where ((`p`.`cottura` = 'VAPORE') and (`p`.`tipologia` = 'VEGETARIANA'))) */;
 /*!50001 SET character_set_client      = @saved_cs_client */;
 /*!50001 SET character_set_results     = @saved_cs_results */;
 /*!50001 SET collation_connection      = @saved_col_connection */;
